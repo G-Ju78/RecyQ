@@ -1,0 +1,121 @@
+body {
+	margin: 0;
+	font-family: Arial;
+	background: #dfead9;
+}
+
+/* 앱 전체 */
+.app {
+	max-width: 480px;
+	margin: auto;
+	padding: 20px;
+	padding-bottom: 90px;
+}
+
+/* header */
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 22px;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+
+/* greeting */
+.hello {
+	margin-bottom: 15px;
+}
+
+/* card */
+.main-card {
+	background: white;
+	border-radius: 16px;
+	padding: 20px;
+	text-align: center;
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* tree */
+.tree-box img {
+	width: 140px;
+}
+
+/* point */
+.point-box {
+	margin-top: 15px;
+	background: #c7e3a5;
+	padding: 10px 15px;
+	border-radius: 12px;
+	display: flex;
+	justify-content: space-between;
+	font-weight: bold;
+}
+
+/* scan button */
+.scan-btn {
+	margin-top: 15px;
+	width: 100%;
+	padding: 13px;
+	border-radius: 12px;
+	border: 2px solid #7aa55a;
+	background: white;
+	font-size: 16px;
+	cursor: pointer;
+	transition: 0.2s;
+}
+
+.scan-btn:hover {
+	background: #f2f8ed;
+}
+
+/* quiz */
+.quiz {
+	margin-top: 20px;
+	background: #cfe9b6;
+	padding: 12px;
+	border-radius: 12px;
+	text-align: center;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+/* map */
+.map-area {
+	margin-top: 20px;
+}
+
+.map-title {
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.map-box {
+	height: 200px;
+	background: #ddd;
+	border-radius: 12px;
+}
+
+/* bottom nav */
+.bottom-nav {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background: white;
+	border-top: 1px solid #ddd;
+	display: flex;
+	justify-content: space-around;
+	padding: 10px 0;
+}
+
+.nav-item {
+	text-align: center;
+	font-size: 14px;
+	color: #777;
+}
+
+.nav-item.active {
+	color: #5f9c44;
+	font-weight: bold;
+}

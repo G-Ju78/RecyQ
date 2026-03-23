@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>메인화면</title>
+
+<link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}">
+
+</head>
+
+
+<body>
+
+	<div class="app">
+
+		<!-- header -->
+		<header class="header">
+
+			<div class="menu">☰</div>
+
+			<div class="logo">RecyQ</div>
+
+			<div class="logo-icon">♻</div>
+
+		</header>
+
+
+		<!-- greeting -->
+
+		<div class="hello">
+
+			<b>신건주</b> 님 안녕하세요.
+
+		</div>
+
+
+
+		<!-- main card -->
+
+		<div class="main-card">
+
+			<div class="tree-box">
+
+				<img th:src="@{/img/tree.png}">
+
+			</div>
+
+
+			<div class="point-box">
+
+				<span>P 내 포인트</span> <b>777 P</b>
+
+			</div>
+
+
+			<button class="scan-btn">📷 스캔하여 분리배출 하기</button>
+
+		</div>
+
+
+
+		<!-- quiz -->
+
+		<div class="quiz">🎁 오늘의 퀴즈 풀고 포인트 받기!</div>
+
+
+
+		<!-- map -->
+
+		<div class="map-area">
+
+			<div class="map-title">📍 내 주변 분리수거장 위치</div>
+
+			<div class="map-box">지도 API 영역</div>
+
+		</div>
+
+
+	</div>
+
+
+
+	<!-- bottom nav -->
+
+	<nav class="bottom-nav">
+
+		<div class="nav-item active">
+
+			🏠
+			<p>홈</p>
+
+		</div>
+
+		<div class="nav-item">
+
+			📷
+			<p>스캔</p>
+
+		</div>
+
+		<div class="nav-item">
+
+			🗺
+			<p>지도</p>
+
+		</div>
+
+		<div class="nav-item">
+
+			👤
+			<p>마이</p>
+
+		</div>
+
+	</nav>
+
+
+</body>
+
+</html>

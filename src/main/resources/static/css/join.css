@@ -1,0 +1,143 @@
+@charset "UTF-8";body{
+    margin:0;
+    font-family:'Inter', sans-serif;
+}
+
+/* 전체 페이지 */
+.page{
+    width:100%;
+    min-height:100vh;
+    background-color:#F1FFEA;
+    position:relative;
+    margin:0 auto;
+}
+
+/* 상단 영역 */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:40px 80px;
+}
+
+.title{
+    font-size:128px;
+    font-weight:bold;
+    color:#496D36;
+}
+
+.logo{
+    width:200px;
+}
+
+/* 회원가입 박스 */
+.login-box{
+    margin:200px auto;
+
+    width:420px;
+
+    background:#FFFFFF;
+    border-radius:20px;
+
+    box-shadow:4px 4px 4px rgba(0,0,0,0.25);
+
+    padding:40px;
+}
+
+/* 회원가입 글씨 */
+.login-title{
+    text-align:center;
+    font-size:36px;
+    font-weight:bold;
+    margin-bottom:40px;
+    color:#4B613D;
+}
+
+/* 아이디, 비밀번호, 전화번호 입력 칸들 */
+.input-group{
+    margin-bottom:20px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:bold;
+    color:#4B613D;
+}
+
+.input-group input{
+    width:100%;
+    height:40px;
+
+    border:1px solid #aaa;
+    border-radius:6px;
+
+    padding-left:10px;
+}
+
+/* 회원가입 버튼 */
+.login-btn{
+    width:100%;
+    height:45px;
+    margin-top:10px;
+    margin-bottom:10px;
+
+    background:#9bc17a;
+    border:none;
+    border-radius:8px;
+
+    font-size:20px;
+    font-weight:bold;
+    color:#2d3b26;
+
+    cursor:pointer;
+}
+
+/* -------------------- */
+/* 태블릿 반응형 */
+
+@media (max-width:1024px){
+
+
+.title{ 
+/* recyq 어플 이름 텍스트 크기*/
+    font-size:80px;
+}
+
+.logo{
+/* 재활용 로고 이미지 파일 크기*/
+    width:140px;
+}
+
+.login-box{
+/* 회원가입 박스 (아이디, 비밀번호, 전화번호 입력하는 요소가 들어있음)*/
+    margin:200px auto 0 auto;
+}
+
+}
+
+/* -------------------- */
+/* 모바일 반응형 */
+/* -------------------- */
+
+@media (max-width:768px){
+
+.title{
+    font-size:48px;
+}
+
+.logo{
+    width:90px;
+}
+
+.login-box{
+    margin:150px auto 0 auto;
+    padding:25px;
+}
+
+.login-title{
+    font-size:28px;
+}
+
+}
