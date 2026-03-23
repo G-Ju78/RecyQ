@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "tb_comment")
 public class Comment {
-
+//
     /* 댓글 고유번호 */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
