@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>메인페이지</title>
+
+<link rel="stylesheet" href="/recyq/css/main.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+	rel="stylesheet">
+
+</head>
+<script>
+function goChatbot() {
+	  window.location.href = "/recyq/chatbot";
+	}
+</script>
+<body>
+
+	<div class="app-container">
+
+		<div class="page">
+		
+		<!-- 사이드 메뉴(햄버거 버튼) -->
+		<div class="side-menu" id="sideMenu">
+			
+			<a th:href="@{main}">홈으로</a>
+			<a th:href="@{/board}">환경보호 게시판</a>
+			<a th:href="@{/mypage}">마이페이지</a>
+			<a th:href="@{/pointList}">내 포인트</a>
+			<a th:href="@{/quiz}">퀴즈 풀고 포인트 받기</a>
+			<a th:href="@{/map}">분리수거장 위치 찾기</a>
+		
+		</div>
+		
+		<!-- 메뉴 배경 -->
+		<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+			<!-- 헤더 -->
+			<div class="header">
+
+				<img src="/recyq/img/menu-btn.png" class="menu-btn" onclick="openMenu()">
+
+				<div class="title">RecyQ</div>
+
+				<img src="/recyq/img/logo.png" class="logo">
+
+			</div>
+
+
+			<!-- 로그인한 아이디 불러옴 -->
+			<div class="id-text" th:if="${session.loginMem != null}">
+				<a th:href="@{/mypage}" th:text="${session.loginMem.id}"></a> <span
+					class="hello-text">님 안녕하세요.</span>
+
+			</div>
+
+
+			<!-- 메인 카드 (나무이미지, 내 포인트, 스캔버튼 들어있는) -->
+			<div class="main-card">
+
+				<img src="/recyq/img/tree.png" class="tree-img">
+
+
+				<div class="point-box">
+					<img src="/recyq/img/point-coin.png" class="point-icon"> 
+					<span class="point-text">내 포인트</span> 
+					<a th:href="@{/pointList}" class="point-value" 
+						th:text="${#numbers.formatInteger(session.loginMem.point, 3, 'COMMA')} + ' P'"></a>
+				</div>
+
+
+				<button class="scan-btn" onclick="openCamera()">
+
+					<img src="/recyq/img/scan.png"> 스캔하여 분리배출 하기
+
+				</button>
+
+			</div>
+
+
+			<!-- 퀴즈 -->
+			<a href="/recyq/quiz" class="quiz-banner"> <img
+				src="/recyq/img/gift.png"> 
+				<span class="quiz-text">오늘의 퀴즈 풀고 포인트 받기!</span> 
+				<img src="/recyq/img/gift2.png">
+
+			</a>
+
+
+			<!-- 지도 -->
+			<div class="map-section">
+
+				<div class="map-title">📍 내 주변 분리수거장 위치</div>
+
+				<img src="/recyq/img/map.png" class="map-img">
+
+			</div>
+			
+			<!-- 챗봇 버튼 -->
+			<button class="chatbot-btn" onclick="goChatbot()">
+			  <img src="/recyq/img/111.png" alt="챗봇">
+			</button>
+			            <!--네비바-->
+			<nav class="nav-bar">
+                <a th:href="@{#}" class="nav-item">
+                    <img th:src="@{/img/home.png}">
+                    <span>홈</span>
+                </a> 
+                <a th:href="@{#}" class="nav-item">
+                    <img th:src="@{/img/board-icon.png}">
+                    <span>게시판</span>
+                </a>
+                <a th:href="@{#}" class="nav-item">
+                    <img th:src="@{/img/scan.png}">
+                    <span>스캔</span>
+                </a>
+                <a th:href="@{#}" class="nav-item">
+                    <img th:src="@{/img/shop.png}">
+                    <span>상점</span>
+                </a>
+                <a th:href="@{mypage}" class="nav-item">
+                    <img th:src="@{/img/profile.png}">
+                    <span>마이페이지</span>
+                </a>
+            </nav>
+		</div>
+	</div>
+
+	<script>
+		// 스캔 버튼 눌렀을때 카메라 오픈
+		function openCamera() {
+			window.location.href = "/recyq/camera";
+		}
+		
+		// 햄버거 버튼 눌렀을때 필요한 것
+		function openMenu(){
+			document.getElementById("sideMenu").classList.add("active");
+			document.getElementById("menuOverlay").classList.add("active");
+		}
+		// 열렸을때 화면 밖 누르면 자동으로 다시 닫힘
+		function closeMenu(){
+			document.getElementById("sideMenu").classList.remove("active");
+			document.getElementById("menuOverlay").classList.remove("active");
+		}
+	</script>
+
+</body>
+</html>

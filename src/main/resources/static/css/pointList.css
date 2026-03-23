@@ -1,0 +1,194 @@
+@charset "UTF-8";
+* { box-sizing: border-box; }
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    color: #496D36;
+}
+
+body{
+    margin:0;
+    font-family:'Inter', sans-serif;
+    font-weight:bold
+}
+
+
+/* 1. 전체 배경 */
+.background {
+    background-color: #FFFFFF; 
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+/* 2. 모바일 프레임 */
+.frame {
+width: 100%;
+    max-width: 430px; 
+    height: 100vh;      
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #F1FFEA;  
+    /* 추가: 프레임 전체가 스크롤 되도록 설정 */
+    overflow-y: auto; 
+   
+     
+}
+
+/* 상단 헤더 스타일 */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    color: #496D36;
+    height: 70px;
+    
+    top: 0; 
+    position: fixed; /* 위치에 고정 */
+    left: 50%; /* 화면 중앙 정렬을 위한 설정 */
+    transform: translateX(-50%); /* 화면 중앙 정렬 */
+    width: 100%;
+    max-width: 430px; /* 프레임 크기와 동일하게 제한 */   
+    background-color: #F1FFEA;   
+    z-index: 1000; /* 최상단에 보이도록 설정 */
+}
+
+/* 로고 텍스트 */
+.logo-text {
+   font-size: 32px;
+   font-weight: bold;
+   margin: 0;
+   margin-left: 15px;
+      margin-bottom: 10px;
+}
+
+/* 메뉴 아이콘 */
+.menu-icon{
+    display: flex;
+    align-items: center;
+}
+
+.menu-icon > a > img{ 
+    width: 28px;
+    margin-left: 5px;
+    
+}
+
+/* 로고 아이콘 */
+.logo-icon > img{
+   width: 68px;
+    margin-left: auto;
+}
+
+/* 3. 흰색 카드 영역 */
+.white-card {
+    background-color: #ffffff;
+    border-radius: 10px;    
+    padding: 20px;
+    margin-top: 50px;
+    box-shadow:4px 4px 4px rgba(0,0,0,0.25);
+    border-radius: 20px;
+    margin-bottom: 90px;
+}
+
+/* 전체 내역 텍스트, 내 포인트 묶음 */
+.head{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: #4A673B solid 1px;
+    
+}
+
+/* 내 포인트 */
+.mypoint{
+    display: flex;
+    align-items: center;
+}
+
+
+/* 현재 내 포인트 */
+.point{
+    margin-left: 15px;
+}
+
+/* 내역 날짜 */
+.date {
+    font-size: 14px;
+    font-weight: 700;
+    color: #4A673B; 
+    margin: 25px 0 10px 5px;
+}
+
+/* 연두색 내역 박스 */
+.point-item{
+    background-color: #F1FFEA; 
+    border-radius: 20px;     
+    padding: 10px;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+/* 왼쪽: 재활용 글자 */
+.item-title {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* 오른쪽: 포인트 수치 정렬 */
+.point-info {
+    text-align: right;
+}
+
+/* 포인트 변동 */
+.point-change {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* 변동 이후 포인트 */
+.point-total {
+    font-size: 12px;
+    color: #999;
+    margin-top: 2px;
+}
+
+/* 네비바 */
+.nav-bar{
+    position: fixed; /* fixed로 변경 */
+    bottom: 0;
+    left: 50%; /* 화면 중앙 정렬을 위한 설정 */
+    transform: translateX(-50%); /* 화면 중앙 정렬 */
+    width: 100%;
+    max-width: 430px; /* 프레임 크기와 동일하게 제한 */
+    height: 80px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;    
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* 최상단에 보이도록 설정 */
+}
+
+.nav-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    gap: 5px;
+    color: #496D36;
+
+}
+
+.nav-item > img{
+    width: 30px;
+}

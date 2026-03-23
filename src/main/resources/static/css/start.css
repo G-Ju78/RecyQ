@@ -1,0 +1,74 @@
+body{
+    margin:0;
+    font-family:'Inter', sans-serif;
+    background-color:#FFFFFF;
+
+    display:flex;
+    justify-content:center;
+}
+
+/* 앱 화면 */
+.app-container{
+    width:100%;
+    max-width:500px;      /* 모바일 앱 크기 */
+    min-height:100vh;
+
+    background:#F1FFEA;
+
+    box-shadow:0 0 20px rgba(0,0,0,0.1);
+}
+
+/* 전체 페이지 */
+.start-page{
+    width:100%;
+    height:100vh;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;   /* 세로 가운데 */
+    align-items:center;       /* 가로 가운데 */
+}
+
+/* 로고 영역 */
+.logo-box{
+    text-align:center;
+    margin-top:200px;
+}
+
+/* RecyQ */
+.logo{
+    font-size:85px;
+    font-weight:bold;
+    color:#496D36;
+    margin:0;
+}
+
+/* 설명 */
+.sub-text{
+    font-size:18px;
+    font-weight:bold;
+    color:#496D36;
+    margin-top:10px;
+}
+
+/*시작하기 버튼*/
+.start-btn{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    margin-top:auto;
+    margin-bottom:200px;
+
+    width:50%;
+    height:45px;
+
+    background:#A0CD88;
+    border-radius:8px;
+
+    font-size:20px;
+    font-weight:bold;
+    color:#2d3b26;
+
+    text-decoration:none;
+}

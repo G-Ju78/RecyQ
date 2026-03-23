@@ -1,0 +1,308 @@
+body {
+	margin: 0;
+	font-family: 'Inter', sans-serif;
+	background: #fff;
+	display: flex;
+	justify-content: center;
+}
+
+/* 앱 */
+.app-container {
+  	position: relative;
+	width: 100%;
+	max-width: 500px;
+	min-height: 100vh;
+	background: #F1FFEA;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* 헤더 */
+.header {
+	display: flex;
+	align-items: center;
+	padding: 15px;
+	gap: 15px;
+}
+
+.title {
+	font-size: 32px;
+	font-weight: bold;
+	color: #496D36;
+}
+
+.logo {
+	width: 68px;
+	margin-left: auto;
+}
+
+.menu-btn {
+	width: 28px;
+	margin-left:5px;
+}
+
+/* 아이디 부분 */
+.id-text {
+	font-size:18px;
+	margin-left: 20px;
+	margin-bottom: 10px;
+}
+
+.id-text a {
+	color: #496D36;
+	font-weight: bold;
+	text-decoration: underline;
+}
+.hello-text {
+	color: #496D36;
+	font-weight: bold;
+}
+
+/* 카드 */
+.main-card {
+	background: white;
+	margin: 20px;
+	padding: 30px 20px;
+	border-radius: 12px;
+	text-align: center;
+	box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 나무 */
+.tree-img {
+	width: 140px;
+	height: 140px;
+	border-radius: 50%;
+	border: 4px solid #496D36;
+	padding: 10px;
+	background: #F1FFEA;
+	object-fit: contain;
+	display: block;
+	margin: 0 auto 15px auto;
+}
+
+/* 포인트 */
+.point-box {
+	display: flex;
+	gap: 3px;
+	align-items: center;
+	background: #9BC48B;
+	color: #496D36;
+	padding: 10px 15px;
+	border-radius: 10px;
+	margin: 20px 80px;
+	justify-content: center;
+}
+.point-icon {
+	width: 24px;
+	margin-right:5px;
+}
+.point-text {
+	font-weight: 600;
+	color: #496D36;
+	margin-right: auto;
+	white-space: nowrap;  /* 줄바뀜 방지 */
+    font-weight:bold;
+}
+.point-value{
+	margin-left:30px;
+	color: #496D36;
+	text-decoration:underline;
+	font-weight:bold;
+	white-space: nowrap;
+}
+
+/* 스캔 버튼 */
+.scan-btn{
+	display:flex;
+	align-items:center;
+	justify-content:center;
+
+	width:calc(80% - 66px);
+
+	margin:0 30px;
+	margin-left:75px;
+
+	border:1px solid #496D36;
+	background:#F1FFEA;
+
+	border-radius:10px;
+	font-size:16px;
+	font-weight:bold;
+	color:#496D36;
+
+	cursor:pointer;
+}
+
+.scan-btn img {
+	width: 40px;
+}
+
+/* 퀴즈 */
+.quiz-banner {
+	background: #CDE7B7;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+	color: #496D36;
+	text-decoration: none;
+	box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+	
+}
+
+.quiz-text {
+	text-decoration: underline;
+	font-weight: bold;
+}
+
+.quiz-banner img {
+	width: 60px;
+}
+
+/* 지도 */
+.map-section {
+	padding: 20px;
+}
+
+.map-title {
+	font-weight: bold;
+	color: #496D36;
+	margin-bottom: 10px;
+}
+
+.map-img {
+	width: 100%;
+	border-radius: 10px;
+}
+.chatbot-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 88px;
+
+  width: 70px;
+  height: 70px;
+
+  border: none;
+  padding: 0;
+  background: transparent;
+  appearance: none;       
+  -webkit-appearance: none;
+
+  cursor: pointer;
+  z-index: 9999;
+}
+
+.chatbot-btn img {
+  display: block; 
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.chatbot-btn:hover {
+  transform: scale(1.1);
+  transition: 0.2s;
+}
+
+
+
+/* 햄버거 버튼 메뉴 */
+.side-menu{
+	position:fixed;
+	top:0;
+	left:-250px; /*왼쪽에 숨김*/
+
+	width:250px;
+	height:100%;
+
+	background:white;
+	box-shadow:2px 0 10px rgba(0,0,0,0.2);
+
+	display:flex;
+	flex-direction:column;
+	padding-top:80px;
+
+	transition:0.3s;
+	z-index:1000;
+}
+
+.side-menu a{
+	padding:15px 25px;
+	text-decoration:none;
+	color:#496D36;
+	font-weight:bold;
+	border-bottom:1px solid #eee;
+}
+
+.side-menu a:hover{
+	background:#F1FFEA;
+}
+
+/* 메뉴 열렸을 때 */
+.side-menu.active{
+	left:0;
+}
+
+/* 배경 어둡게 */
+.menu-overlay{
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+
+	background:rgba(0,0,0,0.3);
+
+	display:none;
+	z-index:900;
+}
+
+.menu-overlay.active{
+	display:block;
+}
+
+/* 네비바 */
+.nav-bar{
+    position: fixed; /* fixed로 변경 */
+    bottom: 0;
+    left: 50%; /* 화면 중앙 정렬을 위한 설정 */
+    transform: translateX(-50%); /* 화면 중앙 정렬 */
+    width: 100%;
+    max-width: 500px; /* 프레임 크기와 동일하게 제한 */
+    height: 80px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 999; /* 최상단에 보이도록 설정 */
+}
+
+.nav-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    gap: 5px;
+    color: #496D36;
+   flex: 1;
+   margin-right: 15px;
+    height: 100%; /* 네비바 전체 높이(80px)를 다 사용 */
+    
+}
+
+.nav-item > img{
+    width: 30px;
+    height: 30px; 
+    object-fit: contain; /* 이미지 비율 유지 */
+    margin-bottom: 6px;  /* 아이콘과 글자 사이의 간격 고정 */
+    display: block;
+    
+}
+
+.nav-item span {
+    font-size: 12px;
+    line-height: 1; /* 줄 간격을 일정하게 유지 */
+    white-space: nowrap; /* 글자가 옆으로 퍼지게 */
+}

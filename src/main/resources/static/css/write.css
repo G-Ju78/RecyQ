@@ -1,0 +1,248 @@
+body {
+	margin: 0;
+	font-family: 'Inter', sans-serif;
+	background: #fff;
+	display: flex;
+	justify-content: center;
+}
+
+.app-container {
+	position: relative;
+	width: 100%;
+	max-width: 500px;
+	min-height: 100vh;
+	background: #F1FFEA;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+	padding-bottom: 95px;
+	box-sizing: border-box;
+}
+
+/* 헤더 */
+.header {
+	display: flex;
+	align-items: center;
+	padding: 15px;
+	gap: 15px;
+}
+
+.title {
+	font-size: 32px;
+	font-weight: bold;
+	color: #496D36;
+}
+
+.logo {
+	width: 68px;
+	margin-left: auto;
+}
+
+.menu-btn {
+	width: 28px;
+	margin-left: 5px;
+	cursor: pointer;
+}
+
+/* 작성 전체 */
+.write-wrap {
+	padding: 10px 14px 20px 14px;
+}
+
+.write-page-title {
+	font-size: 22px;
+	font-weight: 800;
+	color: #355723;
+	margin-bottom: 18px;
+}
+
+/* 폼 */
+.write-form {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+
+.form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.form-label {
+	font-size: 15px;
+	font-weight: 700;
+	color: #496D36;
+}
+
+.form-input,
+.form-textarea {
+	width: 100%;
+	border: 1px solid #d8e6ce;
+	border-radius: 14px;
+	background: #fff;
+	padding: 14px 16px;
+	font-size: 14px;
+	font-family: 'Inter', sans-serif;
+	color: #333;
+	box-sizing: border-box;
+	outline: none;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+	border-color: #7fb05f;
+	box-shadow: 0 0 0 3px rgba(127, 176, 95, 0.12);
+}
+
+.form-textarea {
+	min-height: 220px;
+	resize: none;
+	line-height: 1.6;
+}
+
+/* 파일 업로드 */
+.file-input {
+	display: none;
+}
+
+.file-upload-box {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 110px;
+	border: 2px dashed #b8d2a6;
+	border-radius: 16px;
+	background: #f8fff4;
+	cursor: pointer;
+	text-align: center;
+}
+
+.file-upload-text {
+	font-size: 15px;
+	font-weight: 700;
+	color: #496D36;
+	margin-bottom: 6px;
+}
+
+.file-upload-desc {
+	font-size: 12px;
+	color: #8a9b80;
+}
+
+.file-name {
+	font-size: 13px;
+	color: #666;
+	margin-top: 6px;
+	padding-left: 2px;
+}
+
+/* 버튼 */
+.button-row {
+	display: flex;
+	gap: 10px;
+	margin-top: 6px;
+}
+
+.cancel-btn,
+.submit-btn {
+	flex: 1;
+	height: 48px;
+	border: none;
+	border-radius: 14px;
+	font-size: 15px;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.cancel-btn {
+	background: #e7efe1;
+	color: #496D36;
+}
+
+.submit-btn {
+	background: #5D8736;
+	color: #fff;
+	box-shadow: 0 4px 10px rgba(93, 135, 54, 0.2);
+}
+
+/* 햄버거 메뉴 */
+.side-menu {
+	position: fixed;
+	top: 0;
+	left: -250px;
+	width: 250px;
+	height: 100%;
+	background: white;
+	box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+	display: flex;
+	flex-direction: column;
+	padding-top: 80px;
+	transition: 0.3s;
+	z-index: 1000;
+}
+
+.side-menu a {
+	padding: 15px 25px;
+	text-decoration: none;
+	color: #496D36;
+	font-weight: bold;
+	border-bottom: 1px solid #eee;
+}
+
+.side-menu a:hover {
+	background: #F1FFEA;
+}
+
+.side-menu.active {
+	left: 0;
+}
+
+/* 메뉴 배경 */
+.menu-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.3);
+	display: none;
+	z-index: 900;
+}
+
+.menu-overlay.active {
+	display: block;
+}
+
+/* 네비바 */
+.nav-bar {
+	position: fixed;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 100%;
+	max-width: 500px;
+	height: 80px;
+	background-color: rgba(255, 255, 255, 0.78);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+	z-index: 999;
+}
+
+.nav-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	gap: 5px;
+	color: #496D36;
+	font-size: 13px;
+}
+
+.nav-item > img {
+	width: 30px;
+}

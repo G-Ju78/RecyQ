@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 상세</title>
+
+    <link rel="stylesheet" href="/recyq/css/post.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- 햄버거 메뉴 -->
+    <div class="side-menu" id="sideMenu">
+        <a th:href="@{/main}">홈으로</a>
+        <a th:href="@{/board}">환경보호 게시판</a>
+        <a th:href="@{/mypage}">마이페이지</a>
+        <a th:href="@{/pointList}">내 포인트</a>
+        <a th:href="@{/quiz}">퀴즈 풀고 포인트 받기</a>
+        <a th:href="@{/map}">분리수거장 위치 찾기</a>
+    </div>
+
+    <!-- 메뉴 배경 -->
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+    <!-- 헤더 -->
+    <div class="header">
+        <img src="/recyq/img/menu-btn.png" class="menu-btn" onclick="openMenu()">
+        <div class="title">RecyQ</div>
+        <img src="/recyq/img/logo.png" class="logo">
+    </div>
+
+    <!-- 게시글 상세 영역 -->
+    <div class="post-detail-wrap">
+
+        <!-- 작성자/작성일/조회수 -->
+        <div class="post-top-row">
+            <div class="writer-info">
+                <div class="writer-id"
+                     th:text="${#strings.length(post.userId) > 4
+                     ? #strings.substring(post.userId, 0, #strings.length(post.userId) - 4) + '****'
+                     : '****'}"></div>
+
+                <div class="writer-meta">
+                    <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}"></span>
+                    · 조회 <span th:text="${post.viewCount}"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 제목 -->
+        <div class="detail-title" th:text="${post.title}"></div>
+
+        <!-- 내용 -->
+        <div class="detail-content" th:text="${post.content}"></div>
+
+        <!-- 첨부 이미지 -->
+        <div class="detail-image-box"
+             th:if="${post.imageUrl != null and !#strings.isEmpty(post.imageUrl)}">
+            <img th:src="${post.imageUrl}" alt="게시글 이미지" class="detail-image">
+        </div>
+
+		<!-- 게시글 추천/댓글 수 -->
+		<div class="reaction-row">
+		    <div class="reaction-left">
+		
+		        <!-- 게시글 추천 기능 -->
+				<form th:action="@{/post/like}" method="post" class="inline-form">
+				    <input type="hidden" name="boardId" th:value="${post.boardId}">
+				    <button type="submit"
+				            class="icon-btn recommend-btn"
+				            th:classappend="${liked} ? ' liked' : ''">
+				        💚
+				    </button>
+				</form>
+				<!-- 좋아요 개수 텍스트로 불러오기 -->
+		        <span class="reaction-count" th:text="${post.likeCount}"></span>
+		
+		        <!-- 댓글 개수 텍스트로 불러오기 -->
+		        <button type="button" class="icon-btn comment-btn">💬</button>
+		        <span class="reaction-count" th:text="${post.replyCount}"></span>
+		    </div>
+		</div>
+
+        <!-- 댓글 기능 -->
+        <div class="comment-section">
+            <div class="comment-title">
+                댓글 <span th:text="${post.replyCount}"></span>개
+            </div>
+
+            <div class="comment-item" th:each="comment : ${commentList}">
+                <div class="comment-body">
+                    <div class="comment-top">
+                        <span class="comment-id"
+                              th:text="${#strings.length(comment.userId) > 4
+                              ? #strings.substring(comment.userId, 0, #strings.length(comment.userId) - 4) + '****'
+                              : '****'}"></span>
+
+                        <span class="comment-time"
+                              th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                    </div>
+
+                    <div class="comment-text" th:text="${comment.content}"></div>
+
+					<!-- 댓글 추천 기능 -->
+					<div class="comment-bottom">
+					    <form th:action="@{/comment/like}" method="post" class="inline-form">
+					        <input type="hidden" name="commentId" th:value="${comment.commentId}">
+					        <input type="hidden" name="boardId" th:value="${post.boardId}">
+					        <button type="submit" class="comment-like-btn">추천</button>
+					    </form>
+					    <span th:text="${comment.likeCount}"></span>
+					</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 댓글 입력 -->
+        <form class="comment-input-box" th:action="@{/comment/write}" method="post">
+            <input type="hidden" name="boardId" th:value="${post.boardId}">
+            <input type="text" name="content" placeholder="댓글을 입력하세요...">
+            <button type="submit">등록</button>
+        </form>
+
+    </div>
+
+    <!-- 하단 네비바 -->
+    <nav class="nav-bar">
+        <a th:href="@{/main}" class="nav-item">
+            <img th:src="@{/img/home.png}" alt="홈">
+            <span>홈</span>
+        </a>
+        <a th:href="@{/scan}" class="nav-item">
+            <img th:src="@{/img/scan.png}" alt="스캔">
+            <span>스캔</span>
+        </a>
+        <a th:href="@{/shop}" class="nav-item">
+            <img th:src="@{/img/shop.png}" alt="상점">
+            <span>상점</span>
+        </a>
+        <a th:href="@{/mypage}" class="nav-item">
+            <img th:src="@{/img/profile.png}" alt="마이페이지">
+            <span>마이페이지</span>
+        </a>
+    </nav>
+
+</div>
+
+<script>
+    function openMenu() {
+        document.getElementById("sideMenu").classList.add("active");
+        document.getElementById("menuOverlay").classList.add("active");
+    }
+
+    function closeMenu() {
+        document.getElementById("sideMenu").classList.remove("active");
+        document.getElementById("menuOverlay").classList.remove("active");
+    }
+</script>
+
+</body>
+</html>

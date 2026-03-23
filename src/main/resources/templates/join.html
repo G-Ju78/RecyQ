@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>회원가입</title>
+<link rel="stylesheet" href="/recyq/css/join.css">
+
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap"
+	rel="stylesheet">
+
+<script>
+
+/* 아이디 중복 체크 */
+function checkId(){
+    const id = document.getElementById("id").value;
+
+    if(id.length < 4){
+        document.getElementById("idMsg").innerText = "아이디는 4자 이상";
+        document.getElementById("idMsg").style.color = "red";
+        return;
+    }
+
+    fetch("[[@{/recyq/checkId}]]?id=" + id)
+    .then(res => res.text())
+    .then(result => {
+        const msg = document.getElementById("idMsg");
+
+        if(result.trim() === "ok"){
+            msg.innerText = "사용 가능한 아이디입니다.";
+            msg.style.color = "green";
+        }else{
+            msg.innerText = "이미 사용중인 아이디입니다.";
+            msg.style.color = "red";
+        }
+    });
+}
+
+/* 비밀번호 조건 */
+function validatePassword(pw){
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return regex.test(pw);
+}
+
+/* 비밀번호 + 조건 + 일치 체크 */
+function checkPw(){
+    const pw = document.getElementById("pw").value;
+    const pwCheck = document.getElementById("pwCheck").value;
+
+    const msg = document.getElementById("pwMsg");
+    const ruleMsg = document.getElementById("pwRuleMsg");
+
+    /* 🔹 비밀번호 조건 */
+    if(pw.length === 0){
+        ruleMsg.innerText = "";
+    } else if(!validatePassword(pw)){
+        ruleMsg.innerText = "비밀번호는 8자 이상, 영문+숫자 포함해야 합니다.";
+        ruleMsg.style.color = "red";
+    } else {
+        ruleMsg.innerText = "사용 가능한 비밀번호입니다.";
+        ruleMsg.style.color = "green";
+    }
+
+    /* 🔹 비밀번호 일치 */
+    if(pwCheck.length === 0){
+        msg.innerText = "";
+        return;
+    }
+
+    if(pw === pwCheck){
+        msg.innerText = "비밀번호가 일치합니다.";
+        msg.style.color = "green";
+    }else{
+        msg.innerText = "비밀번호가 일치하지 않습니다.";
+        msg.style.color = "red";
+    }
+}
+
+/* 전화번호 체크 */
+function checkPhone(){
+    const phone = document.getElementById("phone").value;
+    const msg = document.getElementById("phoneMsg");
+
+    const phoneNum = phone.replace(/[^0-9]/g, "");
+
+    if(phoneNum.length === 0){
+        msg.innerText = "";
+        return;
+    }
+
+    if(phoneNum.length !== 11){
+        msg.innerText = "전화번호는 11자리여야 합니다.";
+        msg.style.color = "red";
+        return;
+    }
+
+    if(!phoneNum.startsWith("010")){
+        msg.innerText = "010으로 시작해야 합니다.";
+        msg.style.color = "red";
+        return;
+    }
+
+    msg.innerText = "올바른 전화번호입니다.";
+    msg.style.color = "green";
+}
+
+/* 최종 제출 검사 */
+function checkForm(){
+
+    const pw = document.getElementById("pw").value;
+    const pwCheck = document.getElementById("pwCheck").value;
+    const idMsg = document.getElementById("idMsg").innerText;
+    const phone = document.getElementById("phone").value;
+
+    const pwMsg = document.getElementById("pwMsg");
+    const phoneMsg = document.getElementById("phoneMsg");
+
+    const phoneNum = phone.replace(/[^0-9]/g, "");
+
+    if(idMsg.includes("이미 사용중")){
+        alert("아이디 중복을 확인해주세요.");
+        return false;
+    }
+
+    if(!validatePassword(pw)){
+        document.getElementById("pwRuleMsg").innerText = "비밀번호 조건을 만족해야 합니다.";
+        document.getElementById("pwRuleMsg").style.color = "red";
+        return false;
+    }
+
+    if(pw !== pwCheck){
+        pwMsg.innerText = "비밀번호가 일치하지 않습니다.";
+        pwMsg.style.color = "red";
+        return false;
+    }
+
+    if(phoneNum.length !== 11){
+        phoneMsg.innerText = "전화번호는 11자리여야 합니다.";
+        phoneMsg.style.color = "red";
+        return false;
+    }
+
+    if(!phoneNum.startsWith("010")){
+        phoneMsg.innerText = "010으로 시작해야 합니다.";
+        phoneMsg.style.color = "red";
+        return false;
+    }
+
+    return true;
+}
+
+/* 전화번호 하이픈 자동 + 실시간 체크 */
+document.addEventListener("DOMContentLoaded", function(){
+
+    const phoneInput = document.getElementById("phone");
+
+    phoneInput.addEventListener("input", function(e){
+        let value = e.target.value.replace(/[^0-9]/g, "");
+
+        if(value.length > 11){
+            value = value.slice(0, 11);
+        }
+
+        if(value.length > 3 && value.length <= 7){
+            value = value.replace(/(\d{3})(\d+)/, "$1-$2");
+        } else if(value.length > 7){
+            value = value.replace(/(\d{3})(\d{4})(\d+)/, "$1-$2-$3");
+        }
+
+        e.target.value = value;
+
+        checkPhone();
+    });
+
+});
+
+</script>
+
+<style>
+#pwMsg, #phoneMsg, #idMsg, #pwRuleMsg{
+    font-size:13px;
+    margin-top:5px;
+}
+</style>
+
+</head>
+
+<body>
+	<div class="app-container">
+		<div class="page">
+
+			<div class="header">
+				<div class="title">RecyQ</div>
+				<img src="/recyq/img/logo.png" class="logo">
+			</div>
+
+			<div class="join-box">
+
+				<div class="join-title">회원가입</div>
+
+				<form th:action="@{/joinProcess}" method="post"
+					onsubmit="return checkForm()">
+
+					<!-- 아이디 -->
+					<div class="input-group">
+						<label>아이디</label> 
+						<input type="text" id="id" name="id"
+							placeholder="아이디를 입력해주세요." onkeyup="checkId()" required>
+						<div id="idMsg"></div>
+					</div>
+
+					<!-- 비밀번호 -->
+					<div class="input-group">
+						<label>비밀번호</label> 
+						<input type="password" id="pw" name="pw"
+					       placeholder="비밀번호를 입력해주세요."
+					       onkeyup="checkPw()" required>
+
+						<div id="pwRuleMsg"></div>
+					</div>
+
+					<!-- 비밀번호 확인 -->
+					<div class="input-group">
+						<label>비밀번호 확인</label> 
+						<input type="password" id="pwCheck"
+							name="pwCheck"
+							placeholder="비밀번호를 확인해주세요."
+							onkeyup="checkPw()" required>
+
+						<div id="pwMsg"></div>
+					</div>
+
+					<!-- 전화번호 -->
+					<div class="input-group">
+						<label>전화번호</label> 
+						<input type="tel" id="phone" name="phone"
+							placeholder="전화번호를 입력해주세요." required>
+
+						<div id="phoneMsg"></div>
+					</div>
+
+					<button type="submit" class="join-btn">회원가입</button>
+
+				</form>
+
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>
