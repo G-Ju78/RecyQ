@@ -7,7 +7,7 @@
 
 <title>메인페이지</title>
 
-<link rel="stylesheet" href="/recyq/css/main.css">
+<link rel="stylesheet" th:href="@{/css/main.css}">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +19,7 @@
 </head>
 <script>
 function goChatbot() {
-	  window.location.href = "/recyq/chatbot";
+	  window.location.href = "/chatbot";
 	}
 </script>
 <body>
@@ -31,7 +31,7 @@ function goChatbot() {
 		<!-- 사이드 메뉴(햄버거 버튼) -->
 		<div class="side-menu" id="sideMenu">
 			
-			<a th:href="@{main}">홈으로</a>
+			<a th:href="@{/main}">홈으로</a>
 			<a th:href="@{/board}">환경보호 게시판</a>
 			<a th:href="@{/mypage}">마이페이지</a>
 			<a th:href="@{/pointList}">내 포인트</a>
@@ -70,7 +70,7 @@ function goChatbot() {
 
 
 				<div class="point-box" th:if="${session.loginMem!=null}">
-					<img src="/recyq/img/point-coin.png" class="point-icon"> 
+					<img th:src="@{/img/point-coin.png}" class="point-icon"> 
 					<span class="point-text">내 포인트</span> 
 					<a th:href="@{/pointList}" class="point-value" 
 						th:text="${#numbers.formatInteger(session.loginMem.totalPoint, 0, 'COMMA')} + ' P'"></a>
@@ -88,8 +88,8 @@ function goChatbot() {
 
 
 			<!-- 퀴즈 -->
-			<a th:href=@{/quizStart} class="quiz-banner"> <img
-				th:src="{/img/gift.png}"> 
+			<a th:href="@{/quizStart}" class="quiz-banner"> <img
+				th:src="@{/img/gift.png}"> 
 				<span class="quiz-text">오늘의 퀴즈 풀고 포인트 받기!</span> 
 				<img th:src="@{/img/gift2.png}">
 
@@ -141,7 +141,7 @@ function goChatbot() {
 	<script>
 		// 스캔 버튼 눌렀을때 카메라 오픈
 		function openCamera() {
-			window.location.href = "/recyq/camera";
+			window.location.href = "/camera";
 		}
 		
 		// 햄버거 버튼 눌렀을때 필요한 것

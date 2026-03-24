@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor // (Autowired)대신 생성자 주입을 자동으로 만들어줌
 @Controller
 public class ScanController {
-
+	
 	
 	// final을 붙이면 이 객체는 필수, 절대 바꿀수 없다는 뜻(불변성/안정성)
 	private final PointLogRepository pointLogRepository;
