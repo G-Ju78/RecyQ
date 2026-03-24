@@ -70,7 +70,7 @@
 
         <div class="post"
              th:each="post : ${list}"
-             th:onclick="|location.href='/recyq/post/${post.boardId}'|">
+             th:onclick="|location.href='/recyq/post/${post.boardIdx}'|">
 
             <div class="post-content-wrap">
 
@@ -85,8 +85,8 @@
                     <div class="post-title" th:text="${post.title}"></div>
 
                     <div class="post-info">
-                        <span th:text="${#strings.length(post.userId) > 4 
-                            ? #strings.substring(post.userId, 0, #strings.length(post.userId) - 4) + '****' 
+                        <span th:text="${post.user != null and #strings.length(post.user.Id) > 4 
+                            ? #strings.substring(post.user.Id, 0, #strings.length(post.user.Id) - 4) + '****' 
                             : '****'}"></span>
                         ·
                         <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}"></span>

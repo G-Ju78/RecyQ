@@ -21,33 +21,44 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="POINT_LOG")
+@Table(name="TB_POINT_LOG")
 public class PointLog {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 로그 고유 번호(1,2,3..) 자동 증가
-	private Long seq; 
+	@Column(name="point_idx")
+	private Integer pointIdx; // 재활용 고유 번호
+	
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="loc_idx",nullable=true)
+	private Location location;
 	
 	
 	@ManyToOne(fetch=FetchType.LAZY) 
-	// ManyToOne -> 유저별로 누구의 로그인지 연결
+	// ManyToOne -> 유저별로 누구의 로그인지 연결(여러 재활용 기록이 한 명의 유저에 속함)
 	// fetch=FetchType.LAZY-> 유저 정보가 필요할때만 불러옴(매번 유저 테이블 데이터 다 가져오면 과부하)
-	@JoinColumn(name="user_id",nullable=false)
+	@JoinColumn(name="user_code",nullable=false)
 	private User user; // 어떤 유저의 포인트 인지 연결(join)
 	
 	
-	@Column(nullable=false)
-	private String activity; // 활동 타입
+	@Column(name="log_type", length=100, nullable=false)
+	private String logType; // 활동 내역 (RECYCLE, QUIZ, SHOP_BUY 등)
 	
 	
-	@Column(nullable=false)
-	private Integer amount;  // 점수 계산
+	@Column(name="log_detail", length=255, nullable=false)
+	private String logDetail; // 획득 포인트 상세 내역
 	
 	
-	@CreationTimestamp  // 이력이 저장되는 순간의 날짜/시간을 자동으로 기록
-	@Column(nullable=false, updatable=false)
-	private LocalDateTime createdAt;
-	// LocalDateTime -> 로컬의 날짜와 시간을 동시에 저장하는 타입
+	@Column(name="rec_point", nullable=false)
+	private Integer recPoint;  // 점수, 변동 포인트 
+	// 적립은 +, 사용은 -
+	
+	
+	@Column(name="created_at", updatable=false)
+	@CreationTimestamp
+	private LocalDateTime createdAt; // 기록 시간
+	
 	
 	
 }

@@ -1,0 +1,215 @@
+@charset "UTF-8";
+
+/* ==========================================================================
+   [1] 레이아웃 및 컨테이너 설정 (모바일 퍼스트 앱 화면 기준)
+   ========================================================================== */
+
+/* 앱 전체를 감싸는 최상위 컨테이너 (와이즐리 앱 스타일 핵심) */
+.app-container {
+    /* 사이드 메뉴가 화면 밖(전체 모니터)이 아닌, 이 컨테이너 안에서만 움직이도록 기준점을 잡아줍니다. */
+    position: relative; 
+    /* 컨테이너 밖으로 튀어나가는 요소(숨겨진 사이드 메뉴 등)를 화면에서 안 보이게 잘라냅니다. */
+    overflow-x: hidden; 
+    
+    /* PC에서 볼 때 모바일 화면처럼 보이도록 가로 너비를 제한하고 가운데 정렬합니다. */
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #F1FFEA; /* 빈 공간(배경) 색상 통일 */
+    min-height: 100vh; /* 화면 세로 길이를 최소 브라우저 높이만큼 채웁니다. */
+    box-shadow: 0 0 20px rgba(0,0,0,0.1); /* PC 화면에서 앱 영역이 돋보이도록 그림자 부여 */
+}
+
+/* 사이드 메뉴 (햄버거 버튼 클릭 시 튀어나오는 메뉴) */
+.side-menu {
+    /* fixed(모니터 창 기준) 대신 absolute(app-container 기준)를 사용하여 앱 내부에 종속시킵니다. */
+    position: absolute; 
+    top: 0;
+    left: -280px; /* 처음에는 앱 화면 왼쪽 밖에 숨겨둡니다. */
+    width: 280px;
+    height: 100%;
+    background: white;
+    z-index: 2000; /* 메뉴가 다른 모든 요소들보다 무조건 위에 뜨도록 높은 숫자 부여 */
+    transition: 0.3s ease; /* 0.3초 동안 부드럽게 미끄러져 나오는 애니메이션 효과 */
+    padding-top: 60px;
+}
+
+/* 사이드 메뉴가 열렸을 때 (JavaScript로 'active' 클래스가 추가되면 동작) */
+.side-menu.active {
+    left: 0; /* 숨겨져 있던 메뉴를 화면 내부(0px 위치)로 당겨옵니다. */
+}
+
+/* 메뉴가 열렸을 때 뒤에 깔리는 어두운 반투명 배경 */
+.menu-overlay {
+    /* 컨테이너 내부에 맞추기 위해 fixed가 아닌 absolute 사용 */
+    position: absolute; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4); /* 검은색을 40% 투명도로 설정 */
+    display: none; /* 평소에는 숨겨둠 */
+    z-index: 1500; /* 메뉴(2000)보다는 밑에, 본문 내용보다는 위에 배치 */
+}
+
+/* 자바스크립트에 의해 active 클래스가 붙으면 배경을 화면에 보여줍니다 */
+.menu-overlay.active { 
+    display: block; 
+}
+
+
+/* ==========================================================================
+   [2] 스캔 결과 콘텐츠 영역
+   ========================================================================== */
+
+/* 전체 콘텐츠 영역의 여백 설정 */
+.result-content {
+    /* 위 10px, 좌우 20px, 하단 바에 내용이 가리지 않도록 아래쪽에 100px의 넉넉한 여백 부여 */
+    padding: 10px 20px 100px 20px; 
+    background-color: #F1FFEA; /* 메인 배경색(연두색)과 완벽히 통일 */
+    min-height: 100vh;
+}
+
+/* "스캔 결과" 텍스트와 돋보기 아이콘 정렬 */
+.scan-title-row {
+    display: flex; /* 요소들을 가로로 나란히 배치 */
+    align-items: center; /* 가로 배치된 요소들의 세로 중앙 정렬 */
+    gap: 8px; /* 아이콘과 텍스트 사이의 간격 */
+    margin-bottom: 20px;
+    color: #496D36;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.scan-title-row img {
+    width: 22px;
+}
+
+
+/* ==========================================================================
+   [3] 카드 UI (각 항목을 담고 있는 흰색 박스들)
+   ========================================================================== */
+
+/* 핵심! 카드 레이아웃 여백 및 모서리 설정 */
+.card {
+    background: white;
+    border-radius: 16px; /* 모서리를 둥글게 처리하여 최신 앱처럼 부드러운 UI 연출 */
+    padding: 24px 20px; /* 카드 안쪽 여백 (상하 24px, 좌우 20px) */
+    margin-bottom: 20px; /* 카드와 카드 사이의 바깥 여백 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06); /* 입체감을 주기 위한 아주 부드러운 그림자 */
+    position: relative; /* 자식 요소(포인트 뱃지 등)가 이 카드를 기준으로 위치를 잡을 수 있게 닻(Anchor) 역할 */
+}
+
+/* 카드 1 우측 상단: 포인트 지급 안내 뱃지 (+10 P) */
+.point-badge-pill {
+    position: absolute; /* 부모 요소인 card를 기준으로 우측 상단에 고정 */
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #D4AF37; /* 고급스러운 골드 색상 */
+    font-weight: 800;
+    font-size: 18px;
+    border-bottom: 2px solid #FFD700; /* 밑줄 포인트 */
+    padding-bottom: 3px;
+}
+
+.point-badge-pill img {
+    width: 20px;
+}
+
+/* 스캔된 실제 사진을 둥글게 보여주는 영역 */
+.item-circle {
+    width: 130px;
+    height: 130px;
+    background: #E8F5E9; /* 아주 연한 녹색 배경 */
+    border-radius: 50%; /* 50%를 주면 완전한 원형이 됩니다 */
+    margin: 10px auto 20px auto; /* 가로 중앙 정렬 (auto) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* ★중요: 업로드된 네모난 사진이 동그라미를 벗어나면 잘라냅니다 */
+}
+
+/* 동그라미 안에 들어가는 실제 유저 업로드 이미지 */
+.item-circle img {
+    width: 100%; /* 동그라미 크기에 맞춰 이미지를 100% 꽉 차게 늘립니다 */
+    height: 100%;
+    object-fit: cover; /* ★디테일 팁: 사진 비율이 깨지지 않으면서 동그란 영역을 꽉 채우도록 크롭(자르기)합니다 */
+}
+
+/* 스캔 결과 품목 이름 (예: 플라스틱 병 및 페트병) */
+.result-main h2 {
+    text-align: center;
+    color: #496D36;
+    margin: 0 0 15px 0;
+    font-size: 22px;
+}
+
+/* 재촬영 하기 버튼 스타일 */
+.rescan-btn-small {
+    display: block;
+    margin: 0 auto; /* 가로 중앙 정렬 */
+    background: #A5D6A7; 
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px; /* 알약 모양의 둥근 버튼 */
+    color: #2E7D32;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer; /* 마우스 오버 시 클릭할 수 있는 손가락 모양으로 변경 */
+}
+
+
+/* ==========================================================================
+   [4] 배출 가이드 및 기타 라벨 (수석 컨설턴트 리포트 영역)
+   ========================================================================== */
+
+/* 가이드 카드 상단의 "이렇게 배출하세요!" 등 둥근 라벨 뱃지 */
+.label-badge {
+    display: inline-block; /* 내용물 글자 크기만큼만 가로 길이를 차지하도록 설정 */
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+/* 라벨 색상 베리에이션 (필요 시 클래스명만 바꿔서 다양한 색상 사용 가능) */
+.label-badge.green {
+    background: #C8E6C9;
+    color: #2E7D32;
+}
+
+.label-badge.light-green {
+    background: #DCEDC8;
+    color: #558B2F;
+}
+
+/* 수석 컨설턴트(AI)가 적어주는 구체적인 배출 가이드 텍스트 */
+.guide-content {
+    line-height: 1.7; /* 글 줄 간격을 1.7배로 넓혀 모바일에서 가독성을 대폭 확보 */
+    font-size: 16px;
+    color: #444; /* 완전 검은색보다 눈이 편안한 짙은 회색 사용 */
+}
+
+/* 오염 시 하단에 뜨는 빨간색 경고창 */
+.warning-text {
+    color: #D32F2F; /* 경고, 위험을 뜻하는 붉은색 */
+    font-size: 14px;
+    margin-top: 15px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 6px; /* 경고 아이콘과 텍스트 사이 간격 */
+}
+
+/* 누적 포인트 리스트 하단 텍스트 */
+.summary-item {
+    display: flex;
+    justify-content: space-between; /* 양쪽 끝으로 밀어내어 정렬 (왼쪽:품목명, 오른쪽:포인트) */
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}

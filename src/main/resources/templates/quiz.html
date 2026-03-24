@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>오늘의 퀴즈</title>
+
+<link rel="stylesheet" th:href="@{/css/quiz.css}">
+<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+<link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
+
+<link th:href="@{https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap}" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+                <img class="menu-icon" th:src="@{/img/menu.png}">
+				<h1 class="logo-text">RecyQ</h1>
+				               
+				<img class="logo-icon" th:src="@{/img/icon.png}">
+
+            </header>
+     <div class="background">
+        
+        <div class="frame">
+            <div class="Quiz-bar">
+
+            </div>
+            <main class="white-card">
+                <div class="Quiz">
+                    <div class="Question-Num">Q1.</div>
+
+                    <div class="Question">문제</div>
+
+                    <div class="OX-Button">
+                        <button class="O-Button">
+                            <img th:src="@{/img/Obutton.png}">
+                        </button>
+                        <button class="X-Button">
+                            <img th:src="@{/img/Xbutton.png}">
+                        </button>
+                    </div>
+                </div>
+            </main>
+
+            
+
+            <nav class="nav-bar">
+                <a th:href="@{main}" class="nav-item">
+                    <img th:src="@{/img/home.png}">
+                    <span>홈</span>
+                </a>
+                <a th:href="@{#}" class="nav-item">
+                    <img th:src="@{/img/scan.png}">
+                    <span>스캔</span>
+                </a>
+                <a th:href="@{#}" class="nav-item">
+                    <img th:src="@{/img/paper.png}">
+                    <span>게시판</span>
+                </a>
+                <a th:href="@{#}" class="nav-item">
+                    <img th:src="@{/img/shop.png}">
+                    <span>상점</span>
+                </a>
+                <a th:href="@{mypage}" class="nav-item">
+                    <img th:src="@{/img/profile.png}">
+                    <span>마이페이지</span>
+                </a>
+            </nav>
+
+
+        </div>
+    </div>
+ 
+
+</body>
+</html>

@@ -1,0 +1,200 @@
+@charset "UTF-8";
+
+
+* {
+	box-sizing: border-box;
+}
+
+
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    color: #496D36;
+}
+
+body{
+    margin:0;
+    font-family:'Inter', sans-serif;
+    font-weight:bold
+}
+
+
+/* 1. 전체 배경 */
+.background {
+    background-color: #FFFFFF; 
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+/* 2. 모바일 프레임 */
+.frame {
+width: 100%;
+    max-width: 430px; 
+    height: 100vh;      
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #F1FFEA;  
+    /* 추가: 프레임 전체가 스크롤 되도록 설정 */
+    overflow-y: auto; 
+   
+     
+}
+
+
+/* 상단 헤더 스타일 */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    color: #496D36;
+    height: 70px;    
+    top: 0; 
+ 	position: fixed; /* 위치에 고정 */
+    left: 50%; /* 화면 중앙 정렬을 위한 설정 */
+    transform: translateX(-50%); /* 화면 중앙 정렬 */
+    width: 100%;
+    max-width: 430px; /* 프레임 크기와 동일하게 제한 */   
+    background-color: #F1FFEA;   
+    z-index: 1000; /* 최상단에 보이도록 설정 */
+}
+.logo-text {
+	font-size: 32px;
+	font-weight: bold;
+	margin: 0;
+	margin-left: 15px;
+   	margin-bottom: 10px;
+}
+
+/* 메뉴 아이콘 */
+.menu-icon{ 
+    width: 28px;
+     margin-left: 5px;
+}
+
+/* 로고 아이콘 */
+.logo-icon{
+	width: 68px;
+    margin-left: auto;
+}
+
+/* 3. 흰색 카드 영역 */
+.white-card {
+    background-color: #ffffff;
+    border-radius: 10px;    
+    padding: 20px;
+    margin-top: 150px;
+    box-shadow:4px 4px 4px rgba(0,0,0,0.25);
+    border-radius: 20px;
+    margin-bottom: 90px;
+}
+
+.Quiz{
+    display: block;
+}
+
+/* 퀴즈 번호 */
+.Question-Num{
+    height: 50px;
+    align-items: center;
+    display: flex;
+    font-size: 35px;
+    justify-content: center;
+}
+
+/* 문제 */
+.Question{
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    word-break: break-all; 
+    white-space: pre-wrap;
+}
+
+/* OX 전체 묶음 */
+.OX-Button{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+/* O 버튼 */
+.O-Button{
+    border: none;
+    cursor: pointer;
+    background: none;
+}
+
+.O-Button > img{
+    width: 150px;
+    height: 150px;
+}
+
+/* X 버튼 */
+.X-Button{
+    border: none;
+    cursor: pointer;
+    background: none;
+}
+
+.X-Button > img{
+    width: 150px;
+    height: 150px;
+}
+
+/* 네비바 */
+.nav-bar{
+    position: fixed; /* fixed로 변경 */
+    bottom: 0;
+    left: 50%; /* 화면 중앙 정렬을 위한 설정 */
+    transform: translateX(-50%); /* 화면 중앙 정렬 */
+    width: 100%;
+    max-width: 430px; /* 프레임 크기와 동일하게 제한 */
+    height: 80px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* 최상단에 보이도록 설정 */
+}
+
+.nav-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    gap: 5px;
+    color: #496D36;
+	flex: 1;
+	margin-right: 15px;
+    height: 100%; /* 네비바 전체 높이(80px)를 다 사용 */
+    
+}
+
+.nav-item > img{
+    width: 30px;
+    height: 30px; 
+    object-fit: contain; /* 이미지 비율 유지 */
+    margin-bottom: 6px;  /* 아이콘과 글자 사이의 간격 고정 */
+    display: block;
+    
+}
+
+.nav-item span {
+    font-size: 12px;
+    line-height: 1; /* 줄 간격을 일정하게 유지 */
+    white-space: nowrap; /* 글자가 옆으로 퍼지게 */
+}
