@@ -67,7 +67,7 @@ public class CommentController {
             comment.setLikeCount(currentLike + 1);
             commentRepository.save(comment);
         }
-
+//
         // 추천 완료 후 보고 있던 게시글 상세 페이지로 리다이렉트
         return "redirect:/post/" + boardId;
     }
