@@ -1,200 +1,198 @@
 @charset "UTF-8";
 
-
-* {
-	box-sizing: border-box;
+/* ==========================================================================
+   [1] 웹 전체 배경 (모바일 화면 밖의 PC 여백 부분)
+   ========================================================================== */
+body {
+    /* PC에서 볼 때 앱 화면을 돋보이게 하기 위해 바깥쪽 전체 배경은 옅은 회색으로 둡니다. */
+    background-color: #f5f6f8; 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
-
-
-body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    color: #496D36;
+/* ==========================================================================
+   [2] 모바일 퍼스트 핵심 앱 컨테이너 (정확히 500px로 고정!)
+   ========================================================================== */
+.app-container {
+    max-width: 500px; /* 피그마 디자인에 맞춘 최대 너비 500px 제한 (가장 중요) */
+    margin: 0 auto; /* PC 화면에서 컨테이너를 한가운데로 정렬 */
+    background-color: #f2fde4; /* RecyQ 메인 연두색 배경 (앱 화면 안쪽만 적용) */
+    min-height: 100vh; /* 화면 높이를 모니터 끝까지 꽉 채움 */
+    position: relative; /* 내부 요소들의 위치 기준점이 되도록 설정 */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); /* 앱 바깥의 회색 배경과 구분되도록 옅은 그림자 추가 */
+    padding-bottom: 80px; /* 하단 네비게이션 바가 내용을 가리지 않도록 80px 여유 공간 확보 */
+    overflow-x: hidden; /* 가로로 내용이 삐져나와도 스크롤이 생기지 않도록 숨김 */
 }
 
-body{
-    margin:0;
-    font-family:'Inter', sans-serif;
-    font-weight:bold
+/* ==========================================================================
+   [3] 상단 퀴즈 진행 바 (초록색 3등분 바)
+   ========================================================================== */
+.quiz-progress-container {
+    display: flex; /* 가로로 나란히 배치 */
+    gap: 10px; /* 막대기 사이의 간격 */
+    padding: 20px 20px 10px 20px; /* 위 20px, 오른쪽 20px, 아래 10px, 왼쪽 20px 여백 */
 }
 
-
-/* 1. 전체 배경 */
-.background {
-    background-color: #FFFFFF; 
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center; 
+.progress-segment {
+    flex: 1; /* 3개의 막대기가 동일한 너비를 가지도록 분배 */
+    height: 8px; /* 막대기 두께 */
+    background: #d0e8b8; /* 진행되지 않은 상태의 옅은 연두색 */
+    border-radius: 4px; /* 막대기 양끝을 둥글게 */
+    transition: background-color 0.3s ease; /* 색이 변할 때 0.3초 동안 부드럽게 바뀌는 애니메이션 */
 }
 
-/* 2. 모바일 프레임 */
-.frame {
-width: 100%;
-    max-width: 430px; 
-    height: 100vh;      
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    background-color: #F1FFEA;  
-    /* 추가: 프레임 전체가 스크롤 되도록 설정 */
-    overflow-y: auto; 
-   
-     
+/* 현재 풀고 있는 문제의 위치를 표시하는 클래스 (JS에서 제어) */
+.progress-segment.active {
+    background: #7cb359; /* 현재 위치 진한 초록색으로 불 켜기 */
 }
 
-
-/* 상단 헤더 스타일 */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px;
-    color: #496D36;
-    height: 70px;    
-    top: 0; 
- 	position: fixed; /* 위치에 고정 */
-    left: 50%; /* 화면 중앙 정렬을 위한 설정 */
-    transform: translateX(-50%); /* 화면 중앙 정렬 */
-    width: 100%;
-    max-width: 430px; /* 프레임 크기와 동일하게 제한 */   
-    background-color: #F1FFEA;   
-    z-index: 1000; /* 최상단에 보이도록 설정 */
-}
-.logo-text {
-	font-size: 32px;
-	font-weight: bold;
-	margin: 0;
-	margin-left: 15px;
-   	margin-bottom: 10px;
+/* ==========================================================================
+   [4] 퀴즈 카드 영역 (흰색 배경)
+   ========================================================================== */
+.quiz-wrap {
+    padding: 0 20px; /* 카드 좌우 여백 */
 }
 
-/* 메뉴 아이콘 */
-.menu-icon{ 
-    width: 28px;
-     margin-left: 5px;
-}
-
-/* 로고 아이콘 */
-.logo-icon{
-	width: 68px;
-    margin-left: auto;
-}
-
-/* 3. 흰색 카드 영역 */
 .white-card {
-    background-color: #ffffff;
-    border-radius: 10px;    
-    padding: 20px;
-    margin-top: 150px;
-    box-shadow:4px 4px 4px rgba(0,0,0,0.25);
-    border-radius: 20px;
-    margin-bottom: 90px;
+    background: #ffffff; /* 카드 배경 흰색 */
+    border-radius: 20px; /* 모서리 둥글게 */
+    padding: 40px 20px; /* 안쪽 상하 40px, 좌우 20px 여백 */
+    text-align: center; /* 안의 텍스트들을 모두 가운데 정렬 */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* 카드에 입체감을 주는 옅은 그림자 */
+    min-height: 400px; /* 카드의 최소 높이를 보장하여 버튼 위치가 들쭉날쭉하지 않게 방어 */
+    display: flex; /* 안의 요소들을 유연하게 배치 */
+    flex-direction: column; /* 위에서 아래로 세로 배치 */
+    justify-content: space-between; /* 요소들 사이에 여백을 균등하게 분배 (버튼을 아래로 밀어냄) */
 }
 
-.Quiz{
-    display: block;
+.question-num { 
+    font-size: 24px; /* Q1, Q2 글자 크기 */
+    font-weight: 900; /* 글자 아주 두껍게 */
+    color: #2E501C; /* 짙은 초록색 */
+    margin-bottom: 20px; /* 아래쪽 여백 */
 }
 
-/* 퀴즈 번호 */
-.Question-Num{
-    height: 50px;
-    align-items: center;
-    display: flex;
-    font-size: 35px;
-    justify-content: center;
+.question-text { 
+    font-size: 18px; /* 실제 퀴즈 문제 텍스트 크기 */
+    line-height: 1.5; /* 줄 간격을 넓혀 가독성 향상 */
+    color: #333; /* 텍스트 색상을 부드러운 검은색으로 */
+    word-break: keep-all; /* 단어 단위로 줄바꿈을 하여 글씨가 예쁘게 떨어지도록 함 */
+    flex-grow: 1; /* 남은 빈 공간을 텍스트 영역이 모두 차지하도록 늘림 */
+    display: flex; /* 텍스트 자체를 정렬하기 위해 사용 */
+    align-items: center; /* 텍스트를 세로 중앙에 배치 */
+    justify-content: center; /* 텍스트를 가로 중앙에 배치 */
+    margin-bottom: 40px; /* 버튼과의 간격 확보 */
+    font-weight: 600; /* 살짝 두꺼운 글씨체 */
 }
 
-/* 문제 */
-.Question{
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-    word-break: break-all; 
-    white-space: pre-wrap;
+/* ==========================================================================
+   [5] O / X 선택 버튼 디자인
+   ========================================================================== */
+.ox-button-group {
+    display: flex; /* O버튼과 X버튼을 가로로 나란히 배치 */
+    gap: 15px; /* 버튼 사이의 간격 */
+    justify-content: center; /* 가로 중앙 정렬 */
 }
 
-/* OX 전체 묶음 */
-.OX-Button{
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    justify-content: center;
-    margin-top: 100px;
+.answer-btn {
+    flex: 1; /* 두 버튼이 동일한 크기를 가지도록 1:1 비율 분배 */
+    border: none; /* 버튼의 기본 테두리 제거 */
+    background: transparent; /* 버튼의 기본 배경색 투명하게 */
+    cursor: pointer; /* 마우스 올렸을 때 손가락 모양으로 변경 */
+    padding: 0; /* 내부 여백 제거 */
+    transition: transform 0.2s; /* 눌렀을 때 크기가 변하는 애니메이션 설정 (0.2초) */
 }
 
-/* O 버튼 */
-.O-Button{
-    border: none;
-    cursor: pointer;
-    background: none;
+.answer-btn img {
+    width: 100%; /* 이미지가 버튼 너비에 꽉 차도록 100% 설정 */
+    border-radius: 15px; /* 이미지 모서리 둥글게 */
 }
 
-.O-Button > img{
-    width: 150px;
-    height: 150px;
+.answer-btn:active { 
+    transform: scale(0.95); /* 터치하거나 클릭했을 때 버튼 크기가 95%로 작아지며 눌리는 효과 */
 }
 
-/* X 버튼 */
-.X-Button{
-    border: none;
-    cursor: pointer;
-    background: none;
+/* ==========================================================================
+   [🌟 6] 커스텀 모달 팝업 (모바일 퍼스트에 맞게 너비 제한 방어벽 추가!)
+   ========================================================================== */
+.custom-modal-overlay {
+    position: fixed; /* 화면 스크롤에 상관없이 고정 */
+    top: 0; 
+    left: 50%; /* 화면의 정중앙에서 시작하도록 기준점 설정 */
+    transform: translateX(-50%); /* 기준점을 잡고 다시 왼쪽으로 50% 당겨와서 완벽한 중앙 정렬 완성 */
+    width: 100%; /* 너비는 꽉 채우되 */
+    max-width: 500px; /* 🌟 모바일 컨테이너 사이즈(500px)를 넘지 않도록 철벽 방어! (앱 화면 밖으로 안 삐져나감) */
+    height: 100%; /* 높이는 전체 화면 덮음 */
+    background: rgba(0, 0, 0, 0.6); /* 반투명한 검은색 배경으로 뒷배경 가림 */
+    display: none; /* 🌟 평소에는 자리를 차지하지 않고 완벽하게 숨김 처리 */
+    justify-content: center; /* 안쪽의 하얀 팝업 박스를 가로 중앙에 배치 */
+    align-items: center; /* 안쪽의 하얀 팝업 박스를 세로 중앙에 배치 */
+    z-index: 9999; /* 다른 모든 요소(헤더, 네비바 등)를 무시하고 가장 맨 위에 위치하도록 설정 */
 }
 
-.X-Button > img{
-    width: 150px;
-    height: 150px;
+/* JS에서 'active' 클래스를 붙이면 화면에 나타나게 하는 마법의 스위치 */
+.custom-modal-overlay.active {
+    display: flex; /* 숨김을 해제하고 flex 모드로 변경 */
+    animation: fadeIn 0.3s ease; /* 0.3초 동안 스르륵 나타나는 효과 적용 */
 }
 
-/* 네비바 */
-.nav-bar{
-    position: fixed; /* fixed로 변경 */
-    bottom: 0;
-    left: 50%; /* 화면 중앙 정렬을 위한 설정 */
-    transform: translateX(-50%); /* 화면 중앙 정렬 */
-    width: 100%;
-    max-width: 430px; /* 프레임 크기와 동일하게 제한 */
-    height: 80px;
-    background-color: #ffffff;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000; /* 최상단에 보이도록 설정 */
+/* 하얀색 실제 팝업 박스 디자인 */
+.custom-modal {
+    background: #fff; /* 배경 흰색 */
+    width: 85%; /* 500px의 85% 크기만 차지하도록 하여 좌우 여백 생성 */
+    max-width: 350px; /* 아무리 커져도 350px은 넘지 않게 제한 */
+    border-radius: 20px; /* 모서리 둥글게 */
+    padding: 30px 20px; /* 안쪽 여백 넉넉히 */
+    text-align: center; /* 글씨 가운데 정렬 */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2); /* 팝업창 특유의 진한 그림자 */
+    transform: translateY(20px); /* 시작할 때 살짝 아래에 위치해 있다가 */
+    animation: slideUp 0.3s ease forwards; /* 위로 스윽 올라오는 애니메이션 실행 */
 }
 
-.nav-item{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    gap: 5px;
-    color: #496D36;
-	flex: 1;
-	margin-right: 15px;
-    height: 100%; /* 네비바 전체 높이(80px)를 다 사용 */
-    
+.custom-modal h2 {
+    margin: 0 0 15px 0; /* 제목 아래쪽 여백 */
+    font-size: 24px; /* 제목 크기 */
+    color: #2E501C; /* 제목 초록색 */
 }
 
-.nav-item > img{
-    width: 30px;
-    height: 30px; 
-    object-fit: contain; /* 이미지 비율 유지 */
-    margin-bottom: 6px;  /* 아이콘과 글자 사이의 간격 고정 */
-    display: block;
-    
+.custom-modal p {
+    font-size: 15px; /* 해설 텍스트 크기 */
+    color: #555; /* 너무 새까맣지 않은 진회색 */
+    line-height: 1.6; /* 줄 간격 넉넉하게 */
+    margin-bottom: 25px; /* 해설과 버튼 사이의 간격 */
+    word-break: keep-all; /* 단어 단위 줄바꿈 */
 }
 
-.nav-item span {
-    font-size: 12px;
-    line-height: 1; /* 줄 간격을 일정하게 유지 */
-    white-space: nowrap; /* 글자가 옆으로 퍼지게 */
+/* 팝업 안의 '다음 문제' 버튼 */
+.modal-btn {
+    width: 100%; /* 버튼이 팝업창 가로에 꽉 차도록 */
+    height: 50px; /* 터치하기 편한 높이 50px */
+    background: #A0CD88; /* 버튼 배경 연두색 */
+    color: #2E501C; /* 글씨 짙은 초록색 */
+    border: none; /* 테두리 없음 */
+    border-radius: 12px; /* 모서리 살짝 둥글게 */
+    font-size: 18px; /* 글씨 크기 */
+    font-weight: bold; /* 굵게 */
+    cursor: pointer; /* 마우스 손가락 모양 */
+    transition: background-color 0.2s, transform 0.2s; /* 색상과 크기 변화 애니메이션 */
+}
+
+.modal-btn:hover {
+    background: #8ebd74; /* 마우스 올리면 살짝 더 진해짐 */
+}
+
+.modal-btn:active {
+    transform: scale(0.95); /* 누르면 살짝 작아지는 효과 */
+}
+
+/* 팝업 등장 애니메이션 키프레임 (점점 선명해짐) */
+@keyframes fadeIn { 
+    from { opacity: 0; } 
+    to { opacity: 1; } 
+}
+
+/* 팝업 등장 애니메이션 키프레임 (아래에서 제자리로 올라옴) */
+@keyframes slideUp { 
+    to { transform: translateY(0); } 
 }
