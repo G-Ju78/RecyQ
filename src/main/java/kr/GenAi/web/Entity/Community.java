@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 // 작성 시간 자동 기록용
 
 @Entity
-@Table(name="TB_COMMUNITY")
+@Table(name="tb_community")
 public class Community {
 
 	

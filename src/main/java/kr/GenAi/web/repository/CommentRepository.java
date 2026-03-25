@@ -8,9 +8,16 @@ import kr.GenAi.web.Entity.Comment;
 
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
-    /* 게시글 번호로 댓글 조회 */
-    List<Comment> findByBoardIdOrderByCreatedAtAsc(Integer boardId);
+    /* 
+     * [중요]
+     * Comment 엔티티에는 boardIdx가 직접 없음!
+     * -> Comment 안에 있는 community 객체를 타고 들어가야 함
+     * -> community.boardIdx 기준으로 조회
+     */
 
-    /* 게시글 번호로 댓글 개수 조회 */
-    int countByBoardId(Integer boardId);
+    // 특정 게시글(boardIdx)에 달린 댓글 목록 조회 (작성순)
+    List<Comment> findByCommunity_BoardIdxOrderByCreatedAtAsc(Integer boardIdx);
+
+    // 특정 게시글(boardIdx)의 댓글 개수 조회
+    int countByCommunity_BoardIdx(Integer boardIdx);
 }

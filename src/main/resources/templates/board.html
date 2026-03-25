@@ -75,20 +75,20 @@
             <div class="post-content-wrap">
 
                 <!-- 썸네일 -->
-                <div class="post-thumb-box"
-                     th:if="${post.imageUrl != null and !#strings.isEmpty(post.imageUrl)}">
-                    <img th:src="${post.imageUrl}" alt="게시글 이미지" class="post-thumb">
-                </div>
+				<div class="post-thumb-box"
+				     th:if="${post.imageUrl != null and !#strings.isEmpty(post.imageUrl)}">
+				    <img th:src="@{${post.imageUrl}}" alt="게시글 이미지" class="post-thumb">
+				</div>
 
                 <!-- 글 정보 -->
                 <div class="post-text-box">
                     <div class="post-title" th:text="${post.title}"></div>
 
                     <div class="post-info">
-                        <span th:text="${post.user != null and #strings.length(post.user.Id) > 4 
-                            ? #strings.substring(post.user.Id, 0, #strings.length(post.user.Id) - 4) + '****' 
-                            : '****'}"></span>
-                        ·
+						<span th:text="${post.user != null and post.user.id != null and #strings.length(post.user.id) > 4 
+						    ? #strings.substring(post.user.id, 0, #strings.length(post.user.id) - 4) + '****' 
+						    : '****'}"></span>
+                        
                         <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}"></span>
                         · 조회 <span th:text="${post.viewCount}"></span>
                         · 추천 <span th:text="${post.likeCount}"></span>

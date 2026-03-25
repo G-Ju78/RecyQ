@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="TB_POINT_LOG")
+@Table(name="tb_point_log")
 public class PointLog {
 	
 	@Id

@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="TB_LOCATION")
+@Table(name="tb_location")
 public class Location {
 
 	@Id

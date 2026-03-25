@@ -50,18 +50,25 @@ public class WriteController {
 
             // 폴더가 없으면 생성
             File dir = new File(uploadDir);
-            if (!dir.exists()) dir.mkdirs();
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
 
             // 파일명 중복 방지를 위해 UUID 생성 및 확장자 추출
             String originalName = imageFile.getOriginalFilename();
-            String ext = originalName.substring(originalName.lastIndexOf("."));
+            String ext = "";
+
+            if (originalName != null && originalName.contains(".")) {
+                ext = originalName.substring(originalName.lastIndexOf("."));
+            }
+            
+            // 설정한 경로에 실제 파일 저장
             String savedName = UUID.randomUUID().toString() + ext;
 
-            // 설정한 경로에 실제 파일 저장
-            File saveFile = new File(uploadDir + savedName);
+            File saveFile = new File(uploadDir, savedName);
             imageFile.transferTo(saveFile);
 
-            // DB에는 실제 경로 대신 브라우저에서 접근 가능한 가상 경로(/upload/...) 저장
+         // DB에는 /upload/파일명 형태로 저장
             community.setImageUrl("/upload/" + savedName);
         }
         /* --- 이미지 업로드 처리 종료 --- */
