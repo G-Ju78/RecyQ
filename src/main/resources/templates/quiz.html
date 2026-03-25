@@ -1,76 +1,182 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>오늘의 퀴즈</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RecyQ - 오늘의 퀴즈</title>
 
-<link rel="stylesheet" th:href="@{/css/quiz.css}">
-<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
-<link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
-
-<link th:href="@{https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/nav.css}">
+    <link rel="stylesheet" th:href="@{/css/quiz.css?v=3.0}">
 </head>
 <body>
-    <header class="header">
-                <img class="menu-icon" th:src="@{/img/menu.png}">
-				<h1 class="logo-text">RecyQ</h1>
-				               
-				<img class="logo-icon" th:src="@{/img/icon.png}">
-
-            </header>
-     <div class="background">
+    
+    <div class="app-container">
         
-        <div class="frame">
-            <div class="Quiz-bar">
+        <div th:replace="~{header :: headerFragment}"></div>
 
-            </div>
-            <main class="white-card">
-                <div class="Quiz">
-                    <div class="Question-Num">Q1.</div>
-
-                    <div class="Question">문제</div>
-
-                    <div class="OX-Button">
-                        <button class="O-Button">
-                            <img th:src="@{/img/Obutton.png}">
-                        </button>
-                        <button class="X-Button">
-                            <img th:src="@{/img/Xbutton.png}">
-                        </button>
-                    </div>
-                </div>
-            </main>
-
+        <div class="quiz-wrap">
             
+            <div class="quiz-progress-container">
+                <div class="progress-segment active"></div> <div class="progress-segment"></div>        <div class="progress-segment"></div>        </div>
 
-            <nav class="nav-bar">
-                <a th:href="@{main}" class="nav-item">
-                    <img th:src="@{/img/home.png}">
-                    <span>홈</span>
-                </a>
-                <a th:href="@{#}" class="nav-item">
-                    <img th:src="@{/img/scan.png}">
-                    <span>스캔</span>
-                </a>
-                <a th:href="@{#}" class="nav-item">
-                    <img th:src="@{/img/paper.png}">
-                    <span>게시판</span>
-                </a>
-                <a th:href="@{#}" class="nav-item">
-                    <img th:src="@{/img/shop.png}">
-                    <span>상점</span>
-                </a>
-                <a th:href="@{mypage}" class="nav-item">
-                    <img th:src="@{/img/profile.png}">
-                    <span>마이페이지</span>
-                </a>
-            </nav>
-
-
+            <div class="white-card">
+                <div class="question-num">Q1.</div> <div class="question-text">문제를 불러오는 중입니다...</div> <div class="ox-button-group">
+                    <button class="answer-btn o-btn" onclick="submitAnswer('O')">
+                        <img th:src="@{/img/Obutton.png}" alt="O 선택">
+                    </button>
+                    <button class="answer-btn x-btn" onclick="submitAnswer('X')">
+                        <img th:src="@{/img/Xbutton.png}" alt="X 선택">
+                    </button>
+                </div>
+            </div>
+            
         </div>
-    </div>
- 
 
+        <div th:replace="~{nav :: navFragment}"></div>
+
+    </div> <div id="quizModal" class="custom-modal-overlay">
+        <div class="custom-modal">
+            <h2 id="modalTitle">정답입니다! 🎉</h2> <p id="modalExplanation">여기에 해설이 들어갑니다.</p> <button class="modal-btn" onclick="closeModal()">다음 문제</button> </div>
+    </div>
+
+    <div id="finalResultModal" class="custom-modal-overlay">
+        <div class="custom-modal">
+            <h2 style="color: #2E501C;">퀴즈 완료! 🎁</h2> <p id="finalMessage" style="font-size: 18px; font-weight: bold; margin-bottom: 30px;">총 X문제를 맞혀 YP를 획득했습니다!</p>
+            <button class="modal-btn" onclick="goToMain()">메인으로 이동</button> </div>
+    </div>
+
+    <script>
+        // 사이드 햄버거 메뉴 열기/닫기 로직
+        function openMenu() {
+            document.getElementById("sideMenu").classList.add("active");
+            document.getElementById("menuOverlay").classList.add("active");
+        }
+        function closeMenu() {
+            document.getElementById("sideMenu").classList.remove("active");
+            document.getElementById("menuOverlay").classList.remove("active");
+        }
+
+        /* --- 퀴즈 시스템 전역 변수 세팅 --- */
+        let quizList = [];       // 파이썬에서 가져온 3개의 퀴즈를 담아둘 바구니
+        let currentIndex = 0;    // 현재 유저가 풀고 있는 문제 번호 (0, 1, 2)
+        let correctCount = 0;    // 유저가 정답을 맞힌 횟수
+
+        // [기능 1] 페이지가 열리자마자 백엔드에서 퀴즈 가져오기
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch('/recyq/api/quiz/get')
+                .then(response => response.json())
+                .then(data => {
+                    if(data && data.length > 0) {
+                        quizList = data; // 가져온 데이터를 바구니에 저장
+                        renderQuestion(); // 첫 번째 문제를 화면에 그림
+                    } else {
+                        alert("퀴즈를 불러오는 데 실패했습니다."); // 파이썬 통신 실패 시
+                    }
+                })
+                .catch(error => {
+                    console.error("통신 에러:", error);
+                    alert("서버와 연결할 수 없습니다.");
+                });
+        });
+
+        // [기능 2] 퀴즈 데이터를 화면(HTML)에 꽂아 넣는 함수
+        function renderQuestion() {
+            // 3문제를 모두 풀었다면 포인트 지급 함수로 넘어감
+            if(currentIndex >= quizList.length) {
+                finishQuiz();
+                return;
+            }
+
+            // 상단 진행 바의 초록색 불 켜기/끄기
+            const segments = document.querySelectorAll('.progress-segment');
+            segments.forEach((seg, idx) => {
+                if(idx === currentIndex) seg.classList.add('active'); // 내 위치에 불 켜기
+                else seg.classList.remove('active'); // 나머진 불 끄기
+            });
+
+            // 화면의 Q1 텍스트와 실제 문제 텍스트를 최신화
+            document.querySelector('.question-num').innerText = `Q${currentIndex + 1}.`; 
+            document.querySelector('.question-text').innerText = quizList[currentIndex].question; 
+        }
+
+        // [기능 3] 유저가 O/X 버튼을 눌렀을 때 채점하고 해설 팝업 띄우기
+        function submitAnswer(userAnswer) {
+            const currentQuiz = quizList[currentIndex]; // 현재 문제 데이터 꺼내기
+            const isCorrect = (userAnswer === currentQuiz.answer); // 내 답과 AI 정답이 같은지 비교
+            
+            // 해설 팝업의 텍스트 요소들 가져오기
+            const modalTitle = document.getElementById("modalTitle");
+            const modalExplanation = document.getElementById("modalExplanation");
+            const modalBtn = document.querySelector(".modal-btn");
+
+            // 정답 여부에 따라 팝업 제목과 색상 변경
+            if(isCorrect) {
+                correctCount++; // 정답 개수 +1
+                modalTitle.innerText = "정답입니다! 🎉";
+                modalTitle.style.color = "#2E501C"; // 초록색
+            } else {
+                modalTitle.innerText = "오답입니다! 🥲";
+                modalTitle.style.color = "#E53E3E"; // 빨간색
+            }
+
+            // AI가 적어준 해설 텍스트 넣기
+            modalExplanation.innerText = currentQuiz.explanation;
+
+            // 🌟 만약 마지막 문제라면 버튼 글씨를 '결과 확인하기'로 바꿈
+            if(currentIndex === quizList.length - 1) {
+                modalBtn.innerText = "결과 확인하기";
+            } else {
+                modalBtn.innerText = "다음 문제";
+            }
+
+            // 해설 팝업 화면에 짠! 하고 나타나게 하기
+            document.getElementById("quizModal").classList.add("active");
+        }
+
+        // [기능 4] 해설 팝업의 '다음 문제' 버튼을 눌렀을 때 작동하는 함수
+        function closeModal() {
+            document.getElementById("quizModal").classList.remove("active"); // 해설 팝업 숨기기
+            
+            currentIndex++; // 다음 문제 번호로 세팅
+            
+            if(currentIndex >= quizList.length) {
+                finishQuiz(); // 3문제 다 풀었으면 포인트 지급으로
+            } else {
+                renderQuestion(); // 아니면 다음 문제 화면에 그리기
+            }
+        }
+
+        // [기능 5] 3문제 모두 풀었을 때 백엔드에 포인트 요청하고 '최종 팝업' 띄우기
+        function finishQuiz() {
+            const formData = new URLSearchParams();
+            formData.append('correctCount', correctCount); // 내가 몇 개 맞혔는지 자바 서버에 보냄
+
+            fetch('/recyq/api/quiz/reward', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            })
+            .then(response => response.text())
+            .then(result => {
+                if(result.startsWith("success")) {
+                    let earnedPoint = result.split("_")[1]; // 자바가 준 포인트 추출
+                    
+                    // 🌟 투박한 alert 대신 '최종 결과 팝업'에 데이터 넣고 띄우기!
+                    document.getElementById("finalMessage").innerText = `총 ${correctCount}문제를 맞혀\n${earnedPoint}P를 획득했습니다!`;
+                    document.getElementById("finalResultModal").classList.add("active");
+                    
+                } else {
+                    alert("로그인이 풀렸거나 오류가 발생했습니다.");
+                    location.href = '/recyq/login';
+                }
+            });
+        }
+
+        // [기능 6] 최종 팝업에서 '메인으로 이동' 버튼 눌렀을 때
+        function goToMain() {
+            location.href = '/recyq/main'; // 메인 홈 화면으로 이동!
+        }
+    </script>
 </body>
 </html>

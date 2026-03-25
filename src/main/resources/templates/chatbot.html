@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RecyQ - AI 환경 컨설턴트</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/nav.css}">
+    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+</head>
+<body>
+    <div class="app-container">
+        
+        <div th:replace="~{header :: headerFragment}"></div>
+
+        <main class="chat-wrap" id="chatWrap">
+            
+            <div class="chat-message bot">
+                <div class="msg-box">안녕하세요! RecyQ AI 환경 컨설턴트입니다. 🌱<br>분리수거 방법이나 환경 보호에 대해 무엇이든 물어보세요!</div>
+            </div>
+            
+        </main>
+
+        <div class="chat-input-area">
+            <input type="text" id="userInput" placeholder="메시지를 입력하세요..." onkeypress="handleEnter(event)">
+            <button onclick="sendMessage()">전송</button>
+        </div>
+
+        <div th:replace="~{nav :: navFragment}"></div>
+
+    </div>
+
+    <script>
+        // 헤더 햄버거 메뉴용
+        function openMenu() {
+            document.getElementById("sideMenu").classList.add("active");
+            document.getElementById("menuOverlay").classList.add("active");
+        }
+        function closeMenu() {
+            document.getElementById("sideMenu").classList.remove("active");
+            document.getElementById("menuOverlay").classList.remove("active");
+        }
+
+        // 엔터키 입력 감지 함수
+        function handleEnter(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // 🌟 메시지 전송 및 AI 답변 수신 로직
+        function sendMessage() {
+            const inputField = document.getElementById("userInput");
+            const message = inputField.value.trim();
+            if (message === "") return; // 빈 칸이면 무시
+
+            const chatWrap = document.getElementById("chatWrap");
+
+            // 1. 내가 보낸 메시지를 화면에 추가 (오른쪽 말풍선)
+            chatWrap.innerHTML += `
+                <div class="chat-message user">
+                    <div class="msg-box">${message}</div>
+                </div>
+            `;
+            
+            // 2. 입력창 비우고, 스크롤을 맨 아래로 내리기
+            inputField.value = "";
+            chatWrap.scrollTop = chatWrap.scrollHeight;
+
+            // 3. AI 로딩 중(기다리는 중) 메시지 표시
+            const loadingId = "loading-" + Date.now();
+            chatWrap.innerHTML += `
+                <div class="chat-message bot" id="${loadingId}">
+                    <div class="msg-box" style="color:#999;">입력중...</div>
+                </div>
+            `;
+            chatWrap.scrollTop = chatWrap.scrollHeight;
+
+         // 4. 자바(Spring Boot) 서버로 데이터 전송 (🌟 /recyq 경로 명시!)
+            fetch('/recyq/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question: message }) // JSON 형태로 질문 포장
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 5. 로딩 메시지 지우고 AI 답변 화면에 추가
+                document.getElementById(loadingId).remove();
+                chatWrap.innerHTML += `
+                    <div class="chat-message bot">
+                        <div class="msg-box">${data.answer}</div>
+                    </div>
+                `;
+                chatWrap.scrollTop = chatWrap.scrollHeight;
+            })
+            .catch(error => {
+                // 에러 발생 시 처리
+                document.getElementById(loadingId).remove();
+                chatWrap.innerHTML += `
+                    <div class="chat-message bot">
+                        <div class="msg-box" style="color:red;">네트워크 오류가 발생했습니다. 다시 시도해주세요.</div>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>

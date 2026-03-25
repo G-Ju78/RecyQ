@@ -1,61 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>마이페이지</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RecyQ - 퀴즈 시작</title>
 
-<link rel="stylesheet" th:href="@{/css/quizStart.css}">
-<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
-<link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
-
-<link th:href="@{https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/nav.css}">
+    <link rel="stylesheet" th:href="@{/css/quizStart.css}">
 </head>
 <body>
-	<header class="header">
-                
-                <img class="menu-icon" th:src="@{/img/menu.png}">
-                <h1 class="logo-text">RecyQ</h1>
-               
-                <img class="logo-icon" th:src="@{/img/icon.png}">
-                
-            </header>
-     <div class="background">
-        
-        <div class="frame">
-            
-            <main class="white-card">
-                
-                <img class="ox" src="./img/ox.png">
-               
-                <div class="Quiz-text">하루 3문제 재활용 OX 퀴즈 풀고 포인트 받기!</div>
-            </main>
-            <a th:href="@{quiz}" class="Quiz-start">퀴즈 풀기</a>
-            
 
-            <nav class="nav-bar">
-                <a th:href="@{/main}" class="nav-item">
-                    <img th:src="@{/img/home.png}">
-                    <span>홈</span>
-                </a>
-                <a th:href="@{#}" class="nav-item">
-                    <img th:src="@{/img/scan.png}">
-                    <span>스캔</span>
-                </a>
-                <a th:href="@{/board}" class="nav-item">
-                    <img th:src="@{/img/paper.png}">
-                    <span>게시판</span>
-                </a>
-                <a th:href="@{#}" class="nav-item">
-                    <img th:src="@{/img/shop.png}">
-                    <span>상점</span>
-                </a>
-                <a th:href="@{mypage}" class="nav-item">
-                    <img th:src="@{/img/profile.png}">
-                    <span>마이페이지</span>
-                </a>
-            </nav>
+    <div class="app-container">
+        
+        <div th:replace="~{header :: headerFragment}"></div>
+
+        <div class="quiz-start-wrap">
+            
+            <div class="white-card">
+                <img class="ox-img" th:src="@{/img/ox.png}" alt="OX 퀴즈 로고">
+                <div class="quiz-text">하루 3문제 재활용 OX 퀴즈 풀고<br>포인트 받기!</div>
+            </div>
+
+            <a th:href="@{/quiz}" class="quiz-start-btn">퀴즈 풀기</a>
+            
         </div>
+
+        <div th:replace="~{nav :: navFragment}"></div>
+
     </div>
+
+    <script>
+        function openMenu() {
+            document.getElementById("sideMenu").classList.add("active");
+            document.getElementById("menuOverlay").classList.add("active");
+        }
+        function closeMenu() {
+            document.getElementById("sideMenu").classList.remove("active");
+            document.getElementById("menuOverlay").classList.remove("active");
+        }
+    </script>
 </body>
 </html>
