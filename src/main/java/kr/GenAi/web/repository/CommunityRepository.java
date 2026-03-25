@@ -13,4 +13,7 @@ public interface CommunityRepository extends JpaRepository<Community, Integer> {
 
     /* 제목 검색 + 최신순 */
     List<Community> findByTitleContainingOrderByCreatedAtDesc(String keyword);
+
+    /* 좋아요 높은 순 상위 3개 */
+    List<Community> findTop3ByOrderByLikeCountDescCreatedAtDesc();
 }

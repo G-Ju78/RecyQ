@@ -13,34 +13,36 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link
-	href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900;&display=swap"
 	rel="stylesheet">
 
 </head>
+
 <script>
 function goChatbot() {
-	  window.location.href = "/chatbot";
-	}
+	window.location.href = "/chatbot";
+}
 </script>
+
 <body>
 
 	<div class="app-container">
 
 		<div class="page">
-		
-		<!-- 사이드 메뉴(햄버거 버튼) -->
-		<div class="side-menu" id="sideMenu">
-			
-			<a th:href="@{/main}">홈으로</a>
-			<a th:href="@{/board}">환경보호 게시판</a>
-			<a th:href="@{/mypage}">마이페이지</a>
-			<a th:href="@{/pointList}">내 포인트</a>
-			<a th:href="@{/quiz}">퀴즈 풀고 포인트 받기</a>
-			<a th:href="@{/map}">분리수거장 위치 찾기</a>
-		</div>
-		
-		<!-- 메뉴 배경 -->
-		<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+			<!-- 사이드 메뉴(햄버거 버튼) -->
+			<div class="side-menu" id="sideMenu">
+
+				<a th:href="@{/main}">홈으로</a>
+				<a th:href="@{/board}">환경보호 게시판</a>
+				<a th:href="@{/mypage}">마이페이지</a>
+				<a th:href="@{/pointList}">내 포인트</a>
+				<a th:href="@{/quiz}">퀴즈 풀고 포인트 받기</a>
+				<a th:href="@{/map}">분리수거장 위치 찾기</a>
+			</div>
+
+			<!-- 메뉴 배경 -->
+			<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
 
 			<!-- 헤더 -->
 			<div class="header">
@@ -53,47 +55,78 @@ function goChatbot() {
 
 			</div>
 
-
 			<!-- 로그인한 아이디 불러옴 -->
 			<div class="id-text" th:if="${session.loginMem != null}">
-				<a th:href="@{/mypage}" th:text="${session.loginMem.id}"></a> <span
-					class="hello-text">님 안녕하세요.</span>
-
+				<a th:href="@{/mypage}" th:text="${session.loginMem.id}"></a>
+				<span class="hello-text">님 안녕하세요.</span>
 			</div>
-
 
 			<!-- 메인 카드 (나무이미지, 내 포인트, 스캔버튼 들어있는) -->
 			<div class="main-card">
 
 				<img th:src="@{/img/tree.png}" class="tree-img">
 
-
 				<div class="point-box" th:if="${session.loginMem!=null}">
-					<img th:src="@{/img/point-coin.png}" class="point-icon"> 
-					<span class="point-text">내 포인트</span> 
-					<a th:href="@{/pointList}" class="point-value" 
-						th:text="${#numbers.formatInteger(session.loginMem.totalPoint, 0, 'COMMA')} + ' P'"></a>
-						<!-- COMMA-> 천 단위 1,000 --> 
+					<img th:src="@{/img/point-coin.png}" class="point-icon">
+					<span class="point-text">내 포인트</span>
+					<a th:href="@{/pointList}" class="point-value"
+					   th:text="${#numbers.formatInteger(session.loginMem.totalPoint, 0, 'COMMA')} + ' P'"></a>
 				</div>
 
-
 				<button class="scan-btn" onclick="openCamera()">
-
-					<img th:src="@{/img/scan.png}"> 스캔하여 분리배출 하기
-
+					<img th:src="@{/img/scan_main.png}"> 스캔하여 분리배출 하기
 				</button>
 
 			</div>
 
-
 			<!-- 퀴즈 -->
-			<a th:href="@{/quizStart}" class="quiz-banner"> <img
-				th:src="@{/img/gift.png}"> 
-				<span class="quiz-text">오늘의 퀴즈 풀고 포인트 받기!</span> 
+			<a th:href="@{/quizStart}" class="quiz-banner">
+				<img th:src="@{/img/gift.png}">
+				<span class="quiz-text">오늘의 퀴즈 풀고 포인트 받기!</span>
 				<img th:src="@{/img/gift2.png}">
-
 			</a>
 
+			<!-- 인기글 배너 -->
+			<div class="hot-post-section" th:if="${hotPosts != null and !#lists.isEmpty(hotPosts)}">
+			
+			    <div class="hot-post-header">
+			        <div class="hot-post-title">환경게시판 인기글</div>
+			        <a th:href="@{/board}" class="hot-post-more">더보기 &gt;</a>
+			    </div>
+			
+			    <!-- 👇 추가: wrapper -->
+			    <div class="hot-post-wrapper">
+			
+			        <!-- 왼쪽 버튼 -->
+			        <button class="slide-btn left" onclick="slideLeft()">‹</button>
+			
+			        <div class="hot-post-slider" id="hotPostSlider">
+			            <div class="hot-post-track">
+			                <a th:each="post : ${hotPosts}"
+			                   th:href="@{/post/{id}(id=${post.boardIdx})}"
+			                   class="hot-post-card">
+			
+			                    <span class="hot-post-badge">BEST</span>
+			
+			                    <span class="hot-post-card-title" th:text="${post.title}">
+			                        게시글 제목
+			                    </span>
+			
+			                    <span class="hot-post-meta">
+			                        <span th:text="|추천 ${post.likeCount}|">추천 0</span>
+			                        <span th:text="|댓글 ${post.replyCount}|">댓글 0</span>
+			                    </span>
+			
+			                </a>
+			            </div>
+			        </div>
+			
+			        <!-- 오른쪽 버튼 -->
+			        <button class="slide-btn right" onclick="slideRight()">›</button>
+			
+			    </div>
+			
+			</div>
 
 			<!-- 지도 -->
 			<div class="map-section">
@@ -103,55 +136,65 @@ function goChatbot() {
 				<img th:src="@{/img/map.png}" class="map-img">
 
 			</div>
-			
+
 			<!-- 챗봇 버튼 -->
 			<button class="chatbot-btn" onclick="goChatbot()">
-			  <img th:src="@{/img/111.png}" alt="챗봇">
+				<img th:src="@{/img/111.png}" alt="챗봇">
 			</button>
-			
-			
-			
-			            <!--네비바-->
+
+			<!-- 네비바 -->
 			<nav class="nav-bar">
-                <a th:href="@{/main}" class="nav-item">
-                    <img th:src="@{/img/home.png}">
-                    <span>홈</span>
-                </a> 
-                <a th:href="@{/board}" class="nav-item">
-                    <img th:src="@{/img/board-icon.png}">
-                    <span>게시판</span>
-                </a>
-                <a th:href="@{#}" class="nav-item">
-                    <img th:src="@{/img/scan.png}">
-                    <span>스캔</span>
-                </a>
-                <a th:href="@{#}" class="nav-item">
-                    <img th:src="@{/img/shop.png}">
-                    <span>상점</span>
-                </a>
-                <a th:href="@{/mypage}" class="nav-item">
-                    <img th:src="@{/img/profile.png}">
-                    <span>마이페이지</span>
-                </a>
-            </nav>
+				<a th:href="@{/main}" class="nav-item">
+					<img th:src="@{/img/home.png}">
+					<span>홈</span>
+				</a>
+				<a th:href="@{/board}" class="nav-item">
+					<img th:src="@{/img/board-icon.png}">
+					<span>게시판</span>
+				</a>
+				<a th:href="@{#}" class="nav-item">
+					<img th:src="@{/img/scan.png}">
+					<span>스캔</span>
+				</a>
+				<a th:href="@{#}" class="nav-item">
+					<img th:src="@{/img/shop.png}">
+					<span>상점</span>
+				</a>
+				<a th:href="@{/mypage}" class="nav-item">
+					<img th:src="@{/img/profile.png}">
+					<span>마이페이지</span>
+				</a>
+			</nav>
+
 		</div>
 	</div>
 
 	<script>
-		// 스캔 버튼 눌렀을때 카메라 오픈
 		function openCamera() {
 			window.location.href = "/camera";
 		}
-		
-		// 햄버거 버튼 눌렀을때 필요한 것
-		function openMenu(){
+
+		function openMenu() {
 			document.getElementById("sideMenu").classList.add("active");
 			document.getElementById("menuOverlay").classList.add("active");
 		}
-		// 열렸을때 화면 밖 누르면 자동으로 다시 닫힘
-		function closeMenu(){
+
+		function closeMenu() {
 			document.getElementById("sideMenu").classList.remove("active");
 			document.getElementById("menuOverlay").classList.remove("active");
+		}
+		function slideLeft() {
+		    document.getElementById("hotPostSlider").scrollBy({
+		        left: -300,
+		        behavior: "smooth"
+		    });
+		}
+
+		function slideRight() {
+		    document.getElementById("hotPostSlider").scrollBy({
+		        left: 300,
+		        behavior: "smooth"
+		    });
 		}
 	</script>
 

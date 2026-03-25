@@ -39,10 +39,13 @@
 
     <!-- 게시글 상세 전체 영역 -->
     <div class="post-detail-wrap">
+    
+        <!-- 제목 -->
+        <div class="detail-title" th:text="${post.title}"></div>
 
         <!-- 작성자 / 작성일 / 조회수 -->
         <div class="post-top-row">
-            <!-- 작성자 아이디 마스킹 처리 -->
+            <!-- 작성자 아이디 뒷자리 4개 마스킹 처리 -->
             <!-- post.user.id 기준으로 출력해야 함 -->
             <div class="writer-id"
                  th:text="${post.user != null and post.user.id != null and #strings.length(post.user.id) > 4
@@ -55,8 +58,6 @@
             </div>
         </div>
 
-        <!-- 제목 -->
-        <div class="detail-title" th:text="${post.title}"></div>
 
         <!-- 내용 -->
         <div class="detail-content" th:text="${post.content}"></div>

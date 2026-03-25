@@ -4,16 +4,25 @@ body {
 	background: #fff;
 	display: flex;
 	justify-content: center;
+	align-items: flex-start;
 }
 
 /* 앱 */
 .app-container {
-  	position: relative;
+	position: relative;
 	width: 100%;
 	max-width: 500px;
 	min-height: 100vh;
 	background: #F1FFEA;
 	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+	overflow-x: hidden;
+}
+
+.page {
+	position: relative;
+	min-height: 100vh;
+	padding-bottom: 120px;
+	box-sizing: border-box;
 }
 
 /* 헤더 */
@@ -26,7 +35,7 @@ body {
 
 .title {
 	font-size: 32px;
-	font-weight: bold;
+	font-weight: 800;
 	color: #496D36;
 }
 
@@ -37,12 +46,13 @@ body {
 
 .menu-btn {
 	width: 28px;
-	margin-left:5px;
+	margin-left: 5px;
+	cursor: pointer;
 }
 
 /* 아이디 부분 */
 .id-text {
-	font-size:18px;
+	font-size: 18px;
 	margin-left: 20px;
 	margin-bottom: 10px;
 }
@@ -52,6 +62,7 @@ body {
 	font-weight: bold;
 	text-decoration: underline;
 }
+
 .hello-text {
 	color: #496D36;
 	font-weight: bold;
@@ -61,7 +72,7 @@ body {
 .main-card {
 	background: white;
 	margin: 20px;
-	padding: 30px 20px;
+	padding: 20px 20px;
 	border-radius: 12px;
 	text-align: center;
 	box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
@@ -92,45 +103,42 @@ body {
 	margin: 20px 80px;
 	justify-content: center;
 }
+
 .point-icon {
 	width: 24px;
-	margin-right:5px;
+	margin-right: 5px;
 }
+
 .point-text {
-	font-weight: 600;
 	color: #496D36;
 	margin-right: auto;
-	white-space: nowrap;  /* 줄바뀜 방지 */
-    font-weight:bold;
+	white-space: nowrap;
+	font-weight: bold;
 }
-.point-value{
-	margin-left:30px;
+
+.point-value {
+	margin-left: 30px;
 	color: #496D36;
-	text-decoration:underline;
-	font-weight:bold;
+	text-decoration: underline;
+	font-weight: bold;
 	white-space: nowrap;
 }
 
 /* 스캔 버튼 */
-.scan-btn{
-	display:flex;
-	align-items:center;
-	justify-content:center;
-
-	width:calc(80% - 66px);
-
-	margin:0 30px;
-	margin-left:75px;
-
-	border:1px solid #496D36;
-	background:#F1FFEA;
-
-	border-radius:10px;
-	font-size:16px;
-	font-weight:bold;
-	color:#496D36;
-
-	cursor:pointer;
+.scan-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: calc(80% - 66px);
+	margin: 0 30px;
+	margin-left: 75px;
+	border: 1px solid #496D36;
+	background: #F1FFEA;
+	border-radius: 10px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #496D36;
+	cursor: pointer;
 }
 
 .scan-btn img {
@@ -147,7 +155,6 @@ body {
 	color: #496D36;
 	text-decoration: none;
 	box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-	
 }
 
 .quiz-text {
@@ -159,6 +166,127 @@ body {
 	width: 60px;
 }
 
+/* 인기글 배너 */
+.hot-post-section {
+	margin: 18px 0 10px;
+}
+
+.hot-post-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 20px;
+	margin-bottom: 12px;
+}
+
+.hot-post-title {
+	font-size: 18px;
+	font-weight: bold;
+	color: #496D36;
+	margin: 0;
+}
+
+.hot-post-more {
+	font-size: 15px;
+	color: #888;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.hot-post-slider {
+	overflow-x: auto;
+	overflow-y: hidden;
+	width: 100%;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.hot-post-slider::-webkit-scrollbar {
+	display: none;
+}
+
+.hot-post-track {
+	display: flex;
+	gap: 12px;
+	padding: 0 20px;
+}
+
+.hot-post-card {
+	min-width: 78%;
+	flex-shrink: 0;
+	box-sizing: border-box;
+	display: block;
+	background: white;
+	border-radius: 14px;
+	padding: 18px 20px;
+	text-decoration: none;
+	color: #496D36;
+	box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.hot-post-badge {
+	display: inline-block;
+	font-size: 12px;
+	font-weight: bold;
+	background: #496D36;
+	color: #F1FFEA;
+	padding: 4px 10px;
+	border-radius: 999px;
+	margin-bottom: 10px;
+}
+
+.hot-post-card-title {
+	display: block;
+	font-size: 17px;
+	font-weight: bold;
+	margin-bottom: 12px;
+	line-height: 1.4;
+}
+
+.hot-post-meta {
+	display: flex;
+	gap: 16px;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+/* 슬라이드 버튼 영역 */
+.hot-post-wrapper {
+    position: relative;
+}
+
+/* 화살표 버튼 */
+.slide-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: none;
+    font-size: 26px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* 왼쪽 */
+.slide-btn.left {
+    left: 5px;
+}
+
+/* 오른쪽 */
+.slide-btn.right {
+    right: 5px;
+}
+
+/* hover 효과 */
+.slide-btn:hover {
+    background: #F1FFEA;
+}
+
+
 /* 지도 */
 .map-section {
 	padding: 20px;
@@ -166,6 +294,7 @@ body {
 
 .map-title {
 	font-weight: bold;
+	font-size: 18px;
 	color: #496D36;
 	margin-bottom: 10px;
 }
@@ -174,135 +303,123 @@ body {
 	width: 100%;
 	border-radius: 10px;
 }
+
+/* 챗봇 버튼 */
 .chatbot-btn {
-  position: absolute;
-  right: 10px;
-  bottom: 88px;
-
-  width: 70px;
-  height: 70px;
-
-  border: none;
-  padding: 0;
-  background: transparent;
-  appearance: none;       
-  -webkit-appearance: none;
-
-  cursor: pointer;
-  z-index: 9999;
+	position: absolute;
+	right: 10px;
+	bottom: 88px;
+	width: 70px;
+	height: 70px;
+	border: none;
+	padding: 0;
+	background: transparent;
+	appearance: none;
+	-webkit-appearance: none;
+	cursor: pointer;
+	z-index: 9999;
 }
 
 .chatbot-btn img {
-  display: block; 
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
 }
 
 .chatbot-btn:hover {
-  transform: scale(1.1);
-  transition: 0.2s;
+	transform: scale(1.1);
+	transition: 0.2s;
 }
-
-
 
 /* 햄버거 버튼 메뉴 */
-.side-menu{
-	position:fixed;
-	top:0;
-	left:-250px; /*왼쪽에 숨김*/
-
-	width:250px;
-	height:100%;
-
-	background:white;
-	box-shadow:2px 0 10px rgba(0,0,0,0.2);
-
-	display:flex;
-	flex-direction:column;
-	padding-top:80px;
-
-	transition:0.3s;
-	z-index:1000;
+.side-menu {
+	position: fixed;
+	top: 0;
+	left: -250px;
+	width: 250px;
+	height: 100%;
+	background: white;
+	box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+	display: flex;
+	flex-direction: column;
+	padding-top: 80px;
+	transition: 0.3s;
+	z-index: 1000;
 }
 
-.side-menu a{
-	padding:15px 25px;
-	text-decoration:none;
-	color:#496D36;
-	font-weight:bold;
-	border-bottom:1px solid #eee;
+.side-menu a {
+	padding: 15px 25px;
+	text-decoration: none;
+	color: #496D36;
+	font-weight: bold;
+	border-bottom: 1px solid #eee;
 }
 
-.side-menu a:hover{
-	background:#F1FFEA;
+.side-menu a:hover {
+	background: #F1FFEA;
 }
 
-/* 메뉴 열렸을 때 */
-.side-menu.active{
-	left:0;
+.side-menu.active {
+	left: 0;
 }
 
 /* 배경 어둡게 */
-.menu-overlay{
-	position:fixed;
-	top:0;
-	left:0;
-	width:100%;
-	height:100%;
-
-	background:rgba(0,0,0,0.3);
-
-	display:none;
-	z-index:900;
+.menu-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.3);
+	display: none;
+	z-index: 900;
 }
 
-.menu-overlay.active{
-	display:block;
+.menu-overlay.active {
+	display: block;
 }
 
 /* 네비바 */
-.nav-bar{
-    position: fixed; /* fixed로 변경 */
-    bottom: 0;
-    left: 50%; /* 화면 중앙 정렬을 위한 설정 */
-    transform: translateX(-50%); /* 화면 중앙 정렬 */
-    width: 100%;
-    max-width: 500px; /* 프레임 크기와 동일하게 제한 */
-    height: 80px;
-    background-color: #ffffff;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 999; /* 최상단에 보이도록 설정 */
+.nav-bar {
+	position: fixed;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 100%;
+	max-width: 500px;
+	height: 80px;
+	background-color: #ffffff;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+	z-index: 999;
 }
 
-.nav-item{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    gap: 5px;
-    color: #496D36;
-   flex: 1;
-   margin-right: 15px;
-    height: 100%; /* 네비바 전체 높이(80px)를 다 사용 */
-    
+.nav-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	gap: 5px;
+	color: #496D36;
+	flex: 1;
+	margin-right: 15px;
+	height: 100%;
 }
 
-.nav-item > img{
-    width: 30px;
-    height: 30px; 
-    object-fit: contain; /* 이미지 비율 유지 */
-    margin-bottom: 6px;  /* 아이콘과 글자 사이의 간격 고정 */
-    display: block;
-    
+.nav-item > img {
+	width: 30px;
+	height: 30px;
+	object-fit: contain;
+	margin-bottom: 6px;
+	display: block;
 }
 
 .nav-item span {
-    font-size: 12px;
-    line-height: 1; /* 줄 간격을 일정하게 유지 */
-    white-space: nowrap; /* 글자가 옆으로 퍼지게 */
+	font-size: 12px;
+	line-height: 1;
+	white-space: nowrap;
 }

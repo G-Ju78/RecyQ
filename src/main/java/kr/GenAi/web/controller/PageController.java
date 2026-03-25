@@ -5,6 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;         
 import jakarta.servlet.http.HttpSession;
 import kr.GenAi.web.dto.TrashResponseDto;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import kr.GenAi.web.Entity.Community;
+import kr.GenAi.web.repository.CommunityRepository;
 
 /**
  * [PageController]
@@ -19,15 +23,18 @@ public class PageController {
    // [1] 기본 페이지 이동 라우팅
    // ====================================================================
 
+	@Autowired
+	private CommunityRepository communityRepository;
    /**
     * 메인(홈) 페이지 이동
     * 주소창에 /main 이라고 치면 templates 폴더 안의 main.html을 열어줍니다.
     */
-   @GetMapping("/main")
-   public String main() {
-      return "main"; // 확장자(.html)는 스프링 부트가 알아서 붙여줍니다.
-   }
-   
+	@GetMapping("/main")
+	public String main(Model model) {
+	    List<Community> hotPosts = communityRepository.findTop3ByOrderByLikeCountDescCreatedAtDesc();
+	    model.addAttribute("hotPosts", hotPosts);
+	    return "main";
+	}
    /**
     * 로그인 페이지 이동
     */
