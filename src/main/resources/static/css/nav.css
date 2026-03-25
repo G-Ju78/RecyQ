@@ -1,0 +1,73 @@
+@charset "UTF-8";
+
+/* ==========================================================================
+   [RecyQ 하단 네비게이션 바 공통 스타일]
+   앱 하단에 고정되어 페이지 이동을 돕는 통합 메뉴바입니다.
+   ========================================================================== */
+
+.nav-bar {
+    /* 🌟 고정 레이아웃: 화면 스크롤을 내려도 항상 하단에 붙어있도록 설정 */
+    position: fixed;
+    bottom: 0;
+    
+    /* 화면 중앙 정렬: 앱 컨테이너(500px)에 딱 맞춰 가운데로 정렬하는 공식입니다 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 500px;
+    height: 80px;
+    
+    /* 🌟 고급 UI 효과 (Glassmorphism): 
+       완전한 흰색이 아니라 78% 투명한 흰색을 깔고, 뒤쪽 배경을 흐리게(blur) 만듭니다. 
+       최신 아이폰이나 갤럭시 앱에서 자주 쓰는 고급스러운 효과입니다. */
+    background-color: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    /* 내부 요소 가로 정렬 및 간격 균등 분배 */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    
+    /* 상단에 아주 연한 그림자를 주어 본문과 구분합니다 */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+    
+    /* 다른 모든 컨텐츠보다 위에 떠 있도록 높은 z-index 부여 */
+    z-index: 999;
+}
+
+/* 개별 메뉴 버튼 (아이콘 + 글씨 묶음) */
+.nav-item {
+    display: flex;
+    flex-direction: column; /* 아이콘을 위에, 글자를 아래에 수직 배치 */
+    align-items: center;
+    justify-content: center;
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: #496D36; /* RecyQ 메인 컬러 */
+    flex: 1; /* 5개의 버튼이 1:1:1:1:1 비율로 똑같은 공간을 나눠 가집니다 */
+    height: 100%; 
+}
+
+/* 메뉴 아이콘 (이미지) */
+.nav-item > img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain; /* 이미지 비율이 깨지지 않게 보호 */
+    margin-bottom: 6px; /* 아이콘과 글자 사이 간격 */
+    display: block;
+}
+
+/* 메뉴 텍스트 (글씨) */
+.nav-item span {
+    font-size: 12px; /* 모바일 하단바에 알맞은 작은 폰트 */
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap; /* 글씨가 길어도 두 줄로 꺾이지 않게 방어 */
+}
+
+/* (선택) 현재 있는 페이지를 강조하고 싶을 때 쓰는 클래스 */
+.nav-item.active {
+    color: #2f6b2f; /* 글자색을 더 진하게 */
+    transform: scale(1.05); /* 버튼을 살짝 키워주는 효과 */
+    transition: 0.2s;
+}
