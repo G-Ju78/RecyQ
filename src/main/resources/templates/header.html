@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="headerFragment">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+    <header class="header">
+        <img th:src="@{/img/menu-btn.png}" class="menu-btn" onclick="openMenu()" alt="메뉴 버튼">
+        <div class="title">RecyQ</div>
+        <img th:src="@{/img/logo.png}" class="logo" alt="RecyQ 로고">
+    </header>
+
+    <div class="side-menu" id="sideMenu">
+        <a th:href="@{/main}">홈으로</a>
+        <a th:href="@{/board}">환경보호 게시판</a>
+        <a th:href="@{/mypage}">마이페이지</a>
+        <a th:href="@{/pointList}">내 포인트</a>
+        <a th:href="@{/quiz}">퀴즈 풀고 포인트 받기</a>
+        <a th:href="@{/map}">분리수거장 위치 찾기</a>
+    </div>
+
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+</div>
+</html>

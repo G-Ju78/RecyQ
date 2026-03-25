@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<nav class="nav-bar" th:fragment="navFragment">
+    
+    <a th:href="@{/main}" class="nav-item">
+        <img th:src="@{/img/home.png}" alt="홈">
+        <span>홈</span>
+    </a>
+    
+    <a th:href="@{/board}" class="nav-item">
+        <img th:src="@{/img/paper.png}" alt="게시판">
+        <span>게시판</span>
+    </a>
+    
+    <a th:href="@{/scan}" class="nav-item">
+        <img th:src="@{/img/scan.png}" alt="스캔">
+        <span>스캔</span>
+    </a>
+    
+    <a th:href="@{/shop}" class="nav-item">
+        <img th:src="@{/img/shop.png}" alt="상점">
+        <span>상점</span>
+    </a>
+    
+    <a th:href="@{/mypage}" class="nav-item">
+        <img th:src="@{/img/profile.png}" alt="마이페이지">
+        <span>마이페이지</span>
+    </a>
+
+</nav>
+</html>
