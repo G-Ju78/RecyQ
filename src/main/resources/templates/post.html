@@ -1,194 +1,172 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>게시글 상세</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>게시글 상세</title>
 
-    <!-- 게시글 상세페이지 CSS -->
-    <link rel="stylesheet" href="/recyq/css/post.css">
+<!-- 게시글 상세페이지 CSS -->
+<link rel="stylesheet" href="/recyq/css/post.css">
+<link rel="stylesheet" th:href="@{/css/header.css?v=5}">
+<link rel="stylesheet" th:href="@{/css/nav.css?v=5}">
+<style>
+::-webkit-scrollbar {
+	display: none !important;
+}
 
-    <!-- Inter 폰트 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+html, body, .app-container {
+	-ms-overflow-style: none !important;
+	scrollbar-width: none !important;
+}
+</style>
+
+<!-- Inter 폰트 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+	rel="stylesheet">
 </head>
 <body>
 
-<div class="app-container">
+	<div class="app-container">
 
-    <!-- 햄버거 메뉴 -->
-    <div class="side-menu" id="sideMenu">
-        <a th:href="@{/main}">홈으로</a>
-        <a th:href="@{/board}">환경보호 게시판</a>
-        <a th:href="@{/mypage}">마이페이지</a>
-        <a th:href="@{/pointList}">내 포인트</a>
-        <a th:href="@{/quiz}">퀴즈 풀고 포인트 받기</a>
-        <a th:href="@{/map}">분리수거장 위치 찾기</a>
-    </div>
+		<div th:replace="~{header :: headerFragment}"></div>
 
-    <!-- 메뉴 열렸을 때 배경 어둡게 -->
-    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+		<!-- 게시글 상세 전체 영역 -->
+		<div class="post-detail-wrap">
 
-    <!-- 헤더 -->
-    <div class="header">
-        <img src="/recyq/img/menu-btn.png" class="menu-btn" onclick="openMenu()">
-        <div class="title">RecyQ</div>
-        <img src="/recyq/img/logo.png" class="logo">
-    </div>
+			<!-- 제목 -->
+			<div class="detail-title" th:text="${post.title}"></div>
 
-    <!-- 게시글 상세 전체 영역 -->
-    <div class="post-detail-wrap">
-    
-        <!-- 제목 -->
-        <div class="detail-title" th:text="${post.title}"></div>
-
-        <!-- 작성자 / 작성일 / 조회수 -->
-        <div class="post-top-row">
-            <!-- 작성자 아이디 뒷자리 4개 마스킹 처리 -->
-            <!-- post.user.id 기준으로 출력해야 함 -->
-            <div class="writer-id"
-                 th:text="${post.user != null and post.user.id != null and #strings.length(post.user.id) > 4
+			<!-- 작성자 / 작성일 / 조회수 -->
+			<div class="post-top-row">
+				<!-- 작성자 아이디 뒷자리 4개 마스킹 처리 -->
+				<!-- post.user.id 기준으로 출력해야 함 -->
+				<div class="writer-id"
+					th:text="${post.user != null and post.user.id != null and #strings.length(post.user.id) > 4
                  ? #strings.substring(post.user.id, 0, #strings.length(post.user.id) - 4) + '****'
                  : '****'}"></div>
 
-            <div class="writer-meta">
-                <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}"></span>
-                · 조회 <span th:text="${post.viewCount}"></span>
-            </div>
-        </div>
+				<div class="writer-meta">
+					<span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}"></span>
+					· 조회 <span th:text="${post.viewCount}"></span>
+				</div>
+			</div>
 
 
-        <!-- 내용 -->
-        <div class="detail-content" th:text="${post.content}"></div>
+			<!-- 내용 -->
+			<div class="detail-content" th:text="${post.content}"></div>
 
-        <!-- 첨부 이미지 -->
-        <!-- context-path(/recyq) 적용 위해 @{${post.imageUrl}} 사용 -->
-        <div class="detail-image-box"
-             th:if="${post.imageUrl != null and !#strings.isEmpty(post.imageUrl)}">
-            <img th:src="@{${post.imageUrl}}" alt="게시글 이미지" class="detail-image">
-        </div>
+			<!-- 첨부 이미지 -->
+			<!-- context-path(/recyq) 적용 위해 @{${post.imageUrl}} 사용 -->
+			<div class="detail-image-box"
+				th:if="${post.imageUrl != null and !#strings.isEmpty(post.imageUrl)}">
+				<img th:src="@{${post.imageUrl}}" alt="게시글 이미지" class="detail-image">
+			</div>
 
-        <!-- 게시글 좋아요 / 댓글 수 -->
-        <div class="reaction-row">
-            <div class="reaction-left">
+			<!-- 게시글 좋아요 / 댓글 수 -->
+			<div class="reaction-row">
+				<div class="reaction-left">
 
-                <!-- 게시글 좋아요 -->
-                <form th:action="@{/post/like}" method="post" class="inline-form">
-                    <!-- 게시글 번호 전달 -->
-                    <input type="hidden" name="boardId" th:value="${post.boardIdx}">
+					<!-- 게시글 좋아요 -->
+					<form th:action="@{/post/like}" method="post" class="inline-form">
+						<!-- 게시글 번호 전달 -->
+						<input type="hidden" name="boardId" th:value="${post.boardIdx}">
 
-                    <button type="submit"
-                            class="icon-btn recommend-btn"
-                            th:classappend="${liked} ? ' liked' : ''">
-                        💚
-                    </button>
-                </form>
+						<button type="submit" class="icon-btn recommend-btn"
+							th:classappend="${liked} ? ' liked' : ''">💚</button>
+					</form>
 
-                <!-- 게시글 좋아요 수 -->
-                <span class="reaction-count" th:text="${post.likeCount}"></span>
+					<!-- 게시글 좋아요 수 -->
+					<span class="reaction-count" th:text="${post.likeCount}"></span>
 
-                <!-- 댓글 수 -->
-                <button type="button" class="icon-btn comment-btn">💬</button>
-                <span class="reaction-count" th:text="${post.replyCount}"></span>
-            </div>
-        </div>
+					<!-- 댓글 수 -->
+					<button type="button" class="icon-btn comment-btn">💬</button>
+					<span class="reaction-count" th:text="${post.replyCount}"></span>
+				</div>
+			</div>
 
-        <!-- 댓글 영역 -->
-        <div class="comment-section">
-            <div class="comment-title">
-                댓글 <span th:text="${post.replyCount}"></span>개
-            </div>
+			<!-- 댓글 영역 -->
+			<div class="comment-section">
+				<div class="comment-title">
+					댓글 <span th:text="${post.replyCount}"></span>개
+				</div>
 
-            <!-- 댓글 목록 반복 -->
-            <div class="comment-item" th:each="comment : ${commentList}">
-                <div class="comment-body">
+				<!-- 댓글 목록 반복 -->
+				<div class="comment-item" th:each="comment : ${commentList}">
+					<div class="comment-body">
 
-                    <!-- 댓글 작성자 / 시간 -->
-                    <div class="comment-top">
+						<!-- 댓글 작성자 / 시간 -->
+						<div class="comment-top">
 
-                        <!-- 중요 -->
-                        <!-- 예전 comment.userId 가 아니라 -->
-                        <!-- 지금은 comment.user.id 로 출력해야 함 -->
-                        <span class="comment-id"
-                              th:text="${comment.user != null and comment.user.id != null and #strings.length(comment.user.id) > 4
+							<!-- 중요 -->
+							<!-- 예전 comment.userId 가 아니라 -->
+							<!-- 지금은 comment.user.id 로 출력해야 함 -->
+							<span class="comment-id"
+								th:text="${comment.user != null and comment.user.id != null and #strings.length(comment.user.id) > 4
                               ? #strings.substring(comment.user.id, 0, #strings.length(comment.user.id) - 4) + '****'
                               : '****'}"></span>
 
-                        <span class="comment-time"
-                              th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
-                    </div>
+							<span class="comment-time"
+								th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+						</div>
 
-                    <!-- 댓글 내용 -->
-                    <div class="comment-text" th:text="${comment.content}"></div>
+						<!-- 댓글 내용 -->
+						<div class="comment-text" th:text="${comment.content}"></div>
 
-                    <!-- 댓글 좋아요 -->
-                    <div class="comment-bottom">
-                        <form th:action="@{/comment/like}" method="post" class="inline-form">
-                            <!-- 어떤 댓글에 좋아요 눌렀는지 -->
-                            <input type="hidden" name="commentId" th:value="${comment.commentId}">
+						<!-- 댓글 좋아요 -->
+						<div class="comment-bottom">
+							<form th:action="@{/comment/like}" method="post"
+								class="inline-form">
+								<!-- 어떤 댓글에 좋아요 눌렀는지 -->
+								<input type="hidden" name="commentId"
+									th:value="${comment.commentId}">
 
-                            <!-- 다시 돌아올 게시글 번호 -->
-                            <input type="hidden" name="boardId" th:value="${post.boardIdx}">
+								<!-- 다시 돌아올 게시글 번호 -->
+								<input type="hidden" name="boardId" th:value="${post.boardIdx}">
 
-                            <button type="submit" class="comment-like-btn">추천</button>
-                        </form>
+								<button type="submit" class="comment-like-btn">추천</button>
+							</form>
 
-                        <!-- 댓글 좋아요 수 -->
-                        <span th:text="${comment.likeCount}"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
+							<!-- 댓글 좋아요 수 -->
+							<span th:text="${comment.likeCount}"></span>
+						</div>
+					</div>
+				</div>
+			</div>
 
-        <!-- 댓글 입력 폼 -->
-        <!-- 이 폼은 지금 구조에서 이미 맞음 -->
-        <form class="comment-input-box" th:action="@{/comment/write}" method="post">
-            <!-- 댓글이 달릴 게시글 번호 -->
-            <input type="hidden" name="boardId" th:value="${post.boardIdx}">
+			<!-- 댓글 입력 폼 -->
+			<!-- 이 폼은 지금 구조에서 이미 맞음 -->
+			<form class="comment-input-box" th:action="@{/comment/write}"
+				method="post">
+				<!-- 댓글이 달릴 게시글 번호 -->
+				<input type="hidden" name="boardId" th:value="${post.boardIdx}">
 
-            <!-- 댓글 내용 -->
-            <input type="text" name="content" placeholder="댓글을 입력하세요...">
+				<!-- 댓글 내용 -->
+				<input type="text" name="content" placeholder="댓글을 입력하세요...">
 
-            <button type="submit">등록</button>
-        </form>
+				<button type="submit">등록</button>
+			</form>
 
-    </div>
+		</div>
 
-    <!-- 하단 네비바 -->
-    <nav class="nav-bar">
-        <a th:href="@{/main}" class="nav-item">
-            <img th:src="@{/img/home.png}" alt="홈">
-            <span>홈</span>
-        </a>
-        <a th:href="@{/scan}" class="nav-item">
-            <img th:src="@{/img/scan.png}" alt="스캔">
-            <span>스캔</span>
-        </a>
-        <a th:href="@{/shop}" class="nav-item">
-            <img th:src="@{/img/shop.png}" alt="상점">
-            <span>상점</span>
-        </a>
-        <a th:href="@{/mypage}" class="nav-item">
-            <img th:src="@{/img/profile.png}" alt="마이페이지">
-            <span>마이페이지</span>
-        </a>
-    </nav>
-</div>
+		<div th:replace="~{nav :: navFragment}"></div>
+	</div>
 
-<script>
-    // 햄버거 메뉴 열기
-    function openMenu() {
-        document.getElementById("sideMenu").classList.add("active");
-        document.getElementById("menuOverlay").classList.add("active");
-    }
+	<script>
+		// 햄버거 메뉴 열기
+		function openMenu() {
+			document.getElementById("sideMenu").classList.add("active");
+			document.getElementById("menuOverlay").classList.add("active");
+		}
 
-    // 햄버거 메뉴 닫기
-    function closeMenu() {
-        document.getElementById("sideMenu").classList.remove("active");
-        document.getElementById("menuOverlay").classList.remove("active");
-    }
-</script>
+		// 햄버거 메뉴 닫기
+		function closeMenu() {
+			document.getElementById("sideMenu").classList.remove("active");
+			document.getElementById("menuOverlay").classList.remove("active");
+		}
+	</script>
 
 </body>
 </html>

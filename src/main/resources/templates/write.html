@@ -1,149 +1,107 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>게시글 작성</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>게시글 작성</title>
 
-    <link rel="stylesheet" href="/recyq/css/write.css">
+<link rel="stylesheet" href="/recyq/css/write.css">
+<link rel="stylesheet" th:href="@{/css/header.css?v=6}">
+<link rel="stylesheet" th:href="@{/css/nav.css?v=6}">
+<style>
+::-webkit-scrollbar {
+	display: none !important;
+}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+html, body, .app-container {
+	-ms-overflow-style: none !important;
+	scrollbar-width: none !important;
+}
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+	rel="stylesheet">
 </head>
 <body>
 
-<div class="app-container">
+	<div class="app-container">
 
-    <!-- 햄버거 메뉴 -->
-    <div class="side-menu" id="sideMenu">
-        <a th:href="@{/main}">홈으로</a>
-        <a th:href="@{/board}">환경보호 게시판</a>
-        <a th:href="@{/mypage}">마이페이지</a>
-        <a th:href="@{/pointList}">내 포인트</a>
-        <a th:href="@{/quiz}">퀴즈 풀고 포인트 받기</a>
-        <a th:href="@{/map}">분리수거장 위치 찾기</a>
-    </div>
+		<div th:replace="~{header :: headerFragment}"></div>
 
-    <!-- 메뉴 배경 -->
-    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+		<!-- 작성 영역 -->
+		<div class="write-wrap">
 
-    <!-- 헤더 -->
-    <div class="header">
-        <img src="/recyq/img/menu-btn.png" class="menu-btn" onclick="openMenu()">
-        <div class="title">RecyQ</div>
-        <img src="/recyq/img/logo.png" class="logo">
-    </div>
+			<!-- 페이지 제목 -->
+			<div class="write-page-title">게시글 작성</div>
 
-    <!-- 작성 영역 -->
-    <div class="write-wrap">
+			<!-- 작성 폼 -->
+			<form class="write-form" th:action="@{/write}" method="post"
+				enctype="multipart/form-data">
 
-        <!-- 페이지 제목 -->
-        <div class="write-page-title">게시글 작성</div>
+				<!-- 제목 입력 -->
+				<div class="form-group">
+					<label class="form-label">제목</label> <input type="text"
+						name="title" class="form-input" placeholder="제목을 입력하세요" required>
+				</div>
 
-        <!-- 작성 폼 -->
-        <form class="write-form"
-              th:action="@{/write}"
-              method="post"
-              enctype="multipart/form-data">
+				<!-- 내용 입력 -->
+				<div class="form-group">
+					<label class="form-label">내용</label>
+					<textarea name="content" class="form-textarea"
+						placeholder="내용을 입력하세요" required></textarea>
+				</div>
 
-            <!-- 제목 입력 -->
-            <div class="form-group">
-                <label class="form-label">제목</label>
-                <input type="text"
-                       name="title"
-                       class="form-input"
-                       placeholder="제목을 입력하세요"
-                       required>
-            </div>
+				<!-- 이미지 업로드 -->
+				<div class="form-group">
+					<label class="form-label">이미지 첨부</label> <label for="imageFile"
+						class="file-upload-box"> <span class="file-upload-text">이미지
+							선택</span> <span class="file-upload-desc">jpg, png 파일 업로드</span>
+					</label> <input type="file" id="imageFile" name="imageFile"
+						accept="image/*" class="file-input">
 
-            <!-- 내용 입력 -->
-            <div class="form-group">
-                <label class="form-label">내용</label>
-                <textarea name="content"
-                          class="form-textarea"
-                          placeholder="내용을 입력하세요"
-                          required></textarea>
-            </div>
+					<div id="fileName" class="file-name">선택된 파일 없음</div>
+				</div>
 
-            <!-- 이미지 업로드 -->
-            <div class="form-group">
-                <label class="form-label">이미지 첨부</label>
+				<!-- 버튼 영역 -->
+				<div class="button-row">
+					<button type="button" class="cancel-btn"
+						onclick="location.href='/recyq/board'">취소</button>
 
-                <label for="imageFile" class="file-upload-box">
-                    <span class="file-upload-text">이미지 선택</span>
-                    <span class="file-upload-desc">jpg, png 파일 업로드</span>
-                </label>
+					<button type="submit" class="submit-btn">등록</button>
+				</div>
 
-                <input type="file"
-                       id="imageFile"
-                       name="imageFile"
-                       accept="image/*"
-                       class="file-input">
+			</form>
+		</div>
 
-                <div id="fileName" class="file-name">선택된 파일 없음</div>
-            </div>
+		<div th:replace="~{nav :: navFragment}"></div>
 
-            <!-- 버튼 영역 -->
-            <div class="button-row">
-                <button type="button"
-                        class="cancel-btn"
-                        onclick="location.href='/recyq/board'">
-                    취소
-                </button>
+	</div>
 
-                <button type="submit" class="submit-btn">
-                    등록
-                </button>
-            </div>
+	<script>
+		function openMenu() {
+			document.getElementById("sideMenu").classList.add("active");
+			document.getElementById("menuOverlay").classList.add("active");
+		}
 
-        </form>
-    </div>
+		function closeMenu() {
+			document.getElementById("sideMenu").classList.remove("active");
+			document.getElementById("menuOverlay").classList.remove("active");
+		}
 
-    <!-- 하단 네비바 -->
-    <nav class="nav-bar">
-        <a th:href="@{/main}" class="nav-item">
-            <img th:src="@{/img/home.png}" alt="홈">
-            <span>홈</span>
-        </a>
-        <a th:href="@{/scan}" class="nav-item">
-            <img th:src="@{/img/scan.png}" alt="스캔">
-            <span>스캔</span>
-        </a>
-        <a th:href="@{/shop}" class="nav-item">
-            <img th:src="@{/img/shop.png}" alt="상점">
-            <span>상점</span>
-        </a>
-        <a th:href="@{/mypage}" class="nav-item">
-            <img th:src="@{/img/profile.png}" alt="마이페이지">
-            <span>마이페이지</span>
-        </a>
-    </nav>
+		const imageFile = document.getElementById("imageFile");
+		const fileName = document.getElementById("fileName");
 
-</div>
-
-<script>
-    function openMenu() {
-        document.getElementById("sideMenu").classList.add("active");
-        document.getElementById("menuOverlay").classList.add("active");
-    }
-
-    function closeMenu() {
-        document.getElementById("sideMenu").classList.remove("active");
-        document.getElementById("menuOverlay").classList.remove("active");
-    }
-
-    const imageFile = document.getElementById("imageFile");
-    const fileName = document.getElementById("fileName");
-
-    imageFile.addEventListener("change", function() {
-        if (imageFile.files.length > 0) {
-            fileName.textContent = imageFile.files[0].name;
-        } else {
-            fileName.textContent = "선택된 파일 없음";
-        }
-    });
-</script>
+		imageFile.addEventListener("change", function() {
+			if (imageFile.files.length > 0) {
+				fileName.textContent = imageFile.files[0].name;
+			} else {
+				fileName.textContent = "선택된 파일 없음";
+			}
+		});
+	</script>
 
 </body>
 </html>
