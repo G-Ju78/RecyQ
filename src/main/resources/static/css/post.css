@@ -17,7 +17,9 @@ body {
 	box-sizing: border-box;
 }
 
-/* 헤더 */
+/* ========================= */
+/* 헤더 영역 */
+/* ========================= */
 .header {
 	display: flex;
 	align-items: center;
@@ -42,12 +44,14 @@ body {
 	cursor: pointer;
 }
 
-/* 게시글 상세 전체 */
+/* ========================= */
+/* 게시글 상세 전체 영역 */
+/* ========================= */
 .post-detail-wrap {
 	padding: 10px 12px 20px 12px;
 }
 
-/* 작성자/작성일/조회수 */
+/* 작성자 / 작성일 / 조회수 */
 .post-top-row {
 	display: flex;
 	justify-content: space-between;
@@ -55,12 +59,7 @@ body {
 	margin-left: 5px;
 	margin-bottom: 16px;
 	border-bottom: 1px solid #e7efe1;
-}
-
-.writer-info {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
+	padding-bottom: 10px;
 }
 
 .writer-id {
@@ -85,6 +84,40 @@ body {
 	padding: 5px;
 }
 
+/* ========================= */
+/* 게시글 수정/삭제 버튼 영역 */
+/* ========================= */
+.owner-action-row {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin: 4px 4px 14px 4px;
+}
+
+.owner-delete-form {
+	margin: 0;
+}
+
+.owner-btn {
+	border: 1px solid #496D36;
+	background: #fff;
+	color: #496D36;
+	border-radius: 18px;
+	padding: 7px 14px;
+	font-size: 13px;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.owner-btn:hover {
+	opacity: 0.9;
+}
+
+.delete-btn {
+	border-color: #c85b5b;
+	color: #c85b5b;
+}
+
 /* 게시글 내용 */
 .detail-content {
 	font-size: 16px;
@@ -102,7 +135,7 @@ body {
 	border-radius: 18px;
 	overflow: hidden;
 	background: #fff;
-	box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 	margin-bottom: 12px;
 }
 
@@ -112,7 +145,9 @@ body {
 	object-fit: cover;
 }
 
-/* 추천/댓글 수 */
+/* ========================= */
+/* 반응 영역 (좋아요/댓글 수) */
+/* ========================= */
 .reaction-row {
 	display: flex;
 	align-items: center;
@@ -149,16 +184,11 @@ body {
 	color: #5D8736;
 }
 
-/* 튀는 효과 */
 .recommend-btn:active {
 	color: #2f6b2f;
 	transform: scale(1.25);
 }
-/* 추천한 상태 유지 */
-.recommend-btn.liked {
-	color: #5D8736;
-	transform: scale(1.08);
-}
+
 .reaction-count {
 	font-size: 16px;
 	font-weight: 700;
@@ -166,7 +196,9 @@ body {
 	margin-right: 12px;
 }
 
-/* 댓글 기능 */
+/* ========================= */
+/* 댓글 영역 */
+/* ========================= */
 .comment-section {
 	margin-bottom: 16px;
 }
@@ -178,7 +210,7 @@ body {
 	margin-bottom: 14px;
 	margin-left: 5px;
 }
-/*댓글 전체 적용 코드*/
+
 .comment-item {
 	padding: 12px 0;
 	border-bottom: 1px solid #e7efe1;
@@ -216,12 +248,14 @@ body {
 	word-break: keep-all;
 }
 
+/* 댓글 하단 */
 .comment-bottom {
 	font-size: 14px;
 	color: #666;
 	display: flex;
 	align-items: center;
-	gap: 6px;
+	gap: 8px;
+	flex-wrap: wrap;
 }
 
 .comment-like-btn {
@@ -233,7 +267,32 @@ body {
 	padding: 0;
 }
 
-/* 댓글 입력 */
+/* 댓글 삭제 버튼 */
+.comment-delete-btn {
+	border: none;
+	background: transparent;
+	color: #c85b5b;
+	font-weight: 700;
+	cursor: pointer;
+	padding: 0;
+}
+
+/* 인라인 폼 */
+.inline-form {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+
+.inline-form button {
+	border: none;
+	background: transparent;
+	padding: 0;
+}
+
+/* ========================= */
+/* 댓글 입력창 */
+/* ========================= */
 .comment-input-box {
 	position: sticky;
 	bottom: 90px;
@@ -269,19 +328,10 @@ body {
 	cursor: pointer;
 	flex-shrink: 0;
 }
-/* 인라인 폼 */
-.inline-form{
-	display:inline;
-	margin:0;
-	padding:0;
-}
 
-.inline-form button{
-	border:none;
-	background:transparent;
-	padding:0;
-}
-/* 햄버거 메뉴 */
+/* ========================= */
+/* 사이드 메뉴 */
+/* ========================= */
 .side-menu {
 	position: fixed;
 	top: 0;
@@ -289,7 +339,7 @@ body {
 	width: 250px;
 	height: 100%;
 	background: white;
-	box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+	box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
 	display: flex;
 	flex-direction: column;
 	padding-top: 80px;
@@ -320,7 +370,7 @@ body {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0,0,0,0.3);
+	background: rgba(0, 0, 0, 0.3);
 	display: none;
 	z-index: 900;
 }
@@ -329,7 +379,9 @@ body {
 	display: block;
 }
 
-/* 네비바 */
+/* ========================= */
+/* 하단 네비게이션 */
+/* ========================= */
 .nav-bar {
 	position: fixed;
 	bottom: 0;
@@ -359,6 +411,6 @@ body {
 	font-size: 13px;
 }
 
-.nav-item > img {
+.nav-item>img {
 	width: 30px;
 }

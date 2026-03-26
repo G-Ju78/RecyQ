@@ -17,7 +17,9 @@ body {
 	box-sizing: border-box;
 }
 
+/* ========================= */
 /* 헤더 */
+/* ========================= */
 .header {
 	display: flex;
 	align-items: center;
@@ -42,7 +44,9 @@ body {
 	cursor: pointer;
 }
 
-/* 작성 전체 */
+/* ========================= */
+/* 작성/수정 영역 */
+/* ========================= */
 .write-wrap {
 	padding: 10px 14px 20px 14px;
 }
@@ -54,7 +58,7 @@ body {
 	margin-bottom: 18px;
 }
 
-/* 폼 */
+/* 폼 전체 */
 .write-form {
 	display: flex;
 	flex-direction: column;
@@ -73,8 +77,8 @@ body {
 	color: #496D36;
 }
 
-.form-input,
-.form-textarea {
+/* 제목 / 내용 입력 */
+.form-input, .form-textarea {
 	width: 100%;
 	border: 1px solid #d8e6ce;
 	border-radius: 14px;
@@ -87,8 +91,7 @@ body {
 	outline: none;
 }
 
-.form-input:focus,
-.form-textarea:focus {
+.form-input:focus, .form-textarea:focus {
 	border-color: #7fb05f;
 	box-shadow: 0 0 0 3px rgba(127, 176, 95, 0.12);
 }
@@ -99,7 +102,30 @@ body {
 	line-height: 1.6;
 }
 
+/* ========================= */
+/* 현재 이미지 표시 */
+/* ========================= */
+.current-image-box {
+	margin-bottom: 12px;
+}
+
+.current-image-label {
+	font-size: 13px;
+	font-weight: 600;
+	color: #496D36;
+	margin-bottom: 8px;
+}
+
+.current-image {
+	width: 100%;
+	border-radius: 16px;
+	display: block;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ========================= */
 /* 파일 업로드 */
+/* ========================= */
 .file-input {
 	display: none;
 }
@@ -136,15 +162,16 @@ body {
 	padding-left: 2px;
 }
 
-/* 버튼 */
+/* ========================= */
+/* 버튼 영역 */
+/* ========================= */
 .button-row {
 	display: flex;
 	gap: 10px;
 	margin-top: 6px;
 }
 
-.cancel-btn,
-.submit-btn {
+.cancel-btn, .submit-btn {
 	flex: 1;
 	height: 48px;
 	border: none;
@@ -165,7 +192,9 @@ body {
 	box-shadow: 0 4px 10px rgba(93, 135, 54, 0.2);
 }
 
-/* 햄버거 메뉴 */
+/* ========================= */
+/* 사이드 메뉴 */
+/* ========================= */
 .side-menu {
 	position: fixed;
 	top: 0;
@@ -173,7 +202,7 @@ body {
 	width: 250px;
 	height: 100%;
 	background: white;
-	box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+	box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
 	display: flex;
 	flex-direction: column;
 	padding-top: 80px;
@@ -204,7 +233,7 @@ body {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0,0,0,0.3);
+	background: rgba(0, 0, 0, 0.3);
 	display: none;
 	z-index: 900;
 }
@@ -213,7 +242,9 @@ body {
 	display: block;
 }
 
-/* 네비바 */
+/* ========================= */
+/* 하단 네비게이션 */
+/* ========================= */
 .nav-bar {
 	position: fixed;
 	bottom: 0;
@@ -243,6 +274,6 @@ body {
 	font-size: 13px;
 }
 
-.nav-item > img {
+.nav-item>img {
 	width: 30px;
 }
