@@ -5,162 +5,246 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>게시글 작성</title>
 
-<!-- 글쓰기/수정 페이지 CSS -->
+<!-- 
+   write 페이지 전용 CSS
+   기존 팀원 코드의 연결 방식 그대로 유지
+-->
 <link rel="stylesheet" href="/recyq/css/write.css">
+
+<!-- 
+   공통 헤더 / 하단 네비 CSS
+   팀원 코드 유지
+-->
+<link rel="stylesheet" th:href="@{/css/header.css?v=6}">
+<link rel="stylesheet" th:href="@{/css/nav.css?v=6}">
+
+<style>
+/* 
+   스크롤바 숨김 처리
+   팀원 코드 유지
+*/
+::-webkit-scrollbar {
+   display: none !important;
+}
+
+html, body, .app-container {
+   -ms-overflow-style: none !important;
+   scrollbar-width: none !important;
+}
+</style>
 
 <!-- Inter 폰트 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
-	href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
-	rel="stylesheet">
+   href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+   rel="stylesheet">
 </head>
 <body>
 
-	<div class="app-container">
+   <div class="app-container">
 
-		<!-- 사이드 메뉴 -->
-		<div class="side-menu" id="sideMenu">
-			<a th:href="@{/main}">홈으로</a> <a th:href="@{/board}">환경보호 게시판</a> <a
-				th:href="@{/mypage}">마이페이지</a> <a th:href="@{/pointList}">내 포인트</a>
-			<a th:href="@{/quiz}">퀴즈 풀고 포인트 받기</a> <a th:href="@{/map}">분리수거장
-				위치 찾기</a>
-		</div>
+      <!-- 
+         공통 헤더 fragment
+         팀원 코드 구조 그대로 유지
+      -->
+      <div th:replace="~{header :: headerFragment}"></div>
 
-		<!-- 메뉴 배경 -->
-		<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+      <!-- ========================= -->
+      <!-- 작성 / 수정 전체 영역 -->
+      <!-- ========================= -->
+      <div class="write-wrap">
 
-		<!-- 헤더 -->
-		<div class="header">
-			<img src="/recyq/img/menu-btn.png" class="menu-btn"
-				onclick="openMenu()">
-			<div class="title">RecyQ</div>
-			<img src="/recyq/img/logo.png" class="logo">
-		</div>
+         <!-- 
+            페이지 제목
+            editMode가 true면 '게시글 수정'
+            아니면 '게시글 작성'
+         -->
+         <div class="write-page-title"
+              th:text="${editMode} ? '게시글 수정' : '게시글 작성'">
+         </div>
 
-		<!-- 작성/수정 전체 영역 -->
-		<div class="write-wrap">
+         <!-- 
+            작성/수정 공용 form
+            - 작성 모드: /write 로 전송
+            - 수정 모드: /post/update 로 전송
+         -->
+         <form class="write-form"
+               th:action="${editMode} ? @{/post/update} : @{/write}"
+               method="post"
+               enctype="multipart/form-data">
 
-			<!-- 수정 모드인지 작성 모드인지 제목 분기 -->
-			<div class="write-page-title"
-				th:text="${editMode} ? '게시글 수정' : '게시글 작성'"></div>
+            <!-- 
+               수정 모드일 때만 게시글 번호(boardIdx) 같이 전송
+               어떤 글을 수정하는지 서버가 알아야 해서 필요
+            -->
+            <input type="hidden"
+                   name="boardIdx"
+                   th:if="${editMode}"
+                   th:value="${postData.boardIdx}">
 
-			<!--
-            editMode 가 true면 수정용 URL(/post/update)로 전송
-            editMode 가 없으면 새 글 작성 URL(/write)로 전송
-        -->
-			<form class="write-form"
-				th:action="${editMode} ? @{/post/update} : @{/write}" method="post"
-				enctype="multipart/form-data">
+            <!-- 
+               수정 모드일 때 기존 이미지 경로도 같이 전송
+               새 이미지 업로드 안 하면 기존 이미지 유지용
+            -->
+            <input type="hidden"
+                   name="existingImageUrl"
+                   th:if="${editMode}"
+                   th:value="${postData.imageUrl}">
 
-				<!-- 수정 모드일 때 게시글 번호 전달 -->
-				<input type="hidden" name="boardIdx" th:if="${editMode}"
-					th:value="${postData.boardIdx}">
+            <!-- ========================= -->
+            <!-- 제목 입력 -->
+            <!-- ========================= -->
+            <div class="form-group">
+               <label class="form-label">제목</label>
 
-				<!-- 수정 모드일 때 기존 이미지 경로 전달 -->
-				<input type="hidden" name="existingImageUrl" th:if="${editMode}"
-					th:value="${postData.imageUrl}">
+               <!-- 
+                  수정 모드면 기존 제목이 input에 자동으로 들어감
+                  작성 모드면 빈칸
+               -->
+               <input type="text"
+                      name="title"
+                      class="form-input"
+                      placeholder="제목을 입력하세요"
+                      th:value="${editMode ? postData.title : ''}"
+                      required>
+            </div>
 
-				<!-- 제목 입력 -->
-				<div class="form-group">
-					<label class="form-label">제목</label> <input type="text"
-						name="title" class="form-input" placeholder="제목을 입력하세요"
-						th:value="${editMode ? postData.title : ''}" required>
-				</div>
+            <!-- ========================= -->
+            <!-- 내용 입력 -->
+            <!-- ========================= -->
+            <div class="form-group">
+               <label class="form-label">내용</label>
 
-				<!-- 내용 입력 -->
-				<div class="form-group">
-					<label class="form-label">내용</label>
-					<textarea name="content" class="form-textarea"
-						placeholder="내용을 입력하세요" required
-						th:text="${editMode ? postData.content : ''}"></textarea>
-				</div>
+               <!-- 
+                  수정 모드면 기존 내용 자동 표시
+                  작성 모드면 빈칸
+               -->
+               <textarea name="content"
+                         class="form-textarea"
+                         placeholder="내용을 입력하세요"
+                         required
+                         th:text="${editMode ? postData.content : ''}"></textarea>
+            </div>
 
-				<!-- 이미지 첨부 -->
-				<div class="form-group">
-					<label class="form-label">이미지 첨부</label>
+            <!-- ========================= -->
+            <!-- 이미지 업로드 -->
+            <!-- ========================= -->
+            <div class="form-group">
+               <label class="form-label">이미지 첨부</label>
 
-					<!-- 수정 모드이고 기존 이미지가 있으면 현재 이미지 보여주기 -->
-					<div class="current-image-box"
-						th:if="${editMode and postData.imageUrl != null and !#strings.isEmpty(postData.imageUrl)}">
-						<div class="current-image-label">현재 등록된 이미지</div>
-						<img th:src="@{${postData.imageUrl}}" class="current-image"
-							alt="현재 게시글 이미지">
-					</div>
+               <!-- 
+                  수정 모드이고, 기존 이미지가 있으면
+                  현재 등록된 이미지를 화면에 보여줌
+               -->
+               <div class="current-image-box"
+                    th:if="${editMode and postData.imageUrl != null and !#strings.isEmpty(postData.imageUrl)}">
 
-					<!-- 커스텀 파일 업로드 박스 -->
-					<label for="imageFile" class="file-upload-box"> <span
-						class="file-upload-text"
-						th:text="${editMode} ? '새 이미지 선택' : '이미지 선택'"></span> <span
-						class="file-upload-desc">jpg, png 파일 업로드</span>
-					</label>
+                  <div class="current-image-label">현재 등록된 이미지</div>
 
-					<!-- 실제 파일 input -->
-					<input type="file" id="imageFile" name="imageFile" accept="image/*"
-						class="file-input">
+                  <img th:src="@{${postData.imageUrl}}"
+                       class="current-image"
+                       alt="현재 게시글 이미지">
+               </div>
 
-					<!-- 선택된 파일명 표시 영역 -->
-					<div id="fileName" class="file-name">선택된 파일 없음</div>
-				</div>
+               <!-- 
+                  업로드 안내 박스
+                  수정 모드면 '새 이미지 선택'
+                  작성 모드면 '이미지 선택'
+               -->
+               <label for="imageFile" class="file-upload-box">
+                  <span class="file-upload-text"
+                        th:text="${editMode} ? '새 이미지 선택' : '이미지 선택'">
+                  </span>
+                  <span class="file-upload-desc">jpg, png 파일 업로드</span>
+               </label>
 
-				<!-- 버튼 영역 -->
-				<div class="button-row">
+               <!-- 실제 파일 input -->
+               <input type="file"
+                      id="imageFile"
+                      name="imageFile"
+                      accept="image/*"
+                      class="file-input">
 
-					<!-- 취소 버튼 -->
-					<button type="button" class="cancel-btn" th:if="${editMode}"
-						th:onclick="|location.href='/recyq/post/${postData.boardIdx}'|">
-						취소</button>
+               <!-- 선택된 파일명 표시 -->
+               <div id="fileName" class="file-name">선택된 파일 없음</div>
+            </div>
 
-					<button type="button" class="cancel-btn" th:unless="${editMode}"
-						onclick="location.href='/recyq/board'">취소</button>
+            <!-- ========================= -->
+            <!-- 버튼 영역 -->
+            <!-- ========================= -->
+            <div class="button-row">
 
-					<!-- 등록/수정 완료 버튼 -->
-					<button type="submit" class="submit-btn"
-						th:text="${editMode} ? '수정 완료' : '등록'"></button>
-				</div>
+               <!-- 
+                  취소 버튼
+                  - 수정 모드면: 현재 수정 중인 게시글 상세페이지로 이동
+                  - 작성 모드면: 게시판 목록으로 이동
+               -->
+               <button type="button"
+                       class="cancel-btn"
+                       th:if="${editMode}"
+                       th:onclick="|location.href='/recyq/post/${postData.boardIdx}'|">
+                  취소
+               </button>
 
-			</form>
-		</div>
+               <button type="button"
+                       class="cancel-btn"
+                       th:unless="${editMode}"
+                       onclick="location.href='/recyq/board'">
+                  취소
+               </button>
 
-		<!-- 하단 네비바 -->
-		<nav class="nav-bar">
-			<a th:href="@{/main}" class="nav-item"> <img
-				th:src="@{/img/home.png}" alt="홈"> <span>홈</span>
-			</a> <a th:href="@{/scan}" class="nav-item"> <img
-				th:src="@{/img/scan.png}" alt="스캔"> <span>스캔</span>
-			</a> <a th:href="@{/shop}" class="nav-item"> <img
-				th:src="@{/img/shop.png}" alt="상점"> <span>상점</span>
-			</a> <a th:href="@{/mypage}" class="nav-item"> <img
-				th:src="@{/img/profile.png}" alt="마이페이지"> <span>마이페이지</span>
-			</a>
-		</nav>
-	</div>
+               <!-- 
+                  제출 버튼
+                  - 수정 모드면 '수정 완료'
+                  - 작성 모드면 '등록'
+               -->
+               <button type="submit"
+                       class="submit-btn"
+                       th:text="${editMode} ? '수정 완료' : '등록'">
+               </button>
+            </div>
 
-	<script>
-		// 사이드 메뉴 열기
-		function openMenu() {
-			document.getElementById("sideMenu").classList.add("active");
-			document.getElementById("menuOverlay").classList.add("active");
-		}
+         </form>
+      </div>
 
-		// 사이드 메뉴 닫기
-		function closeMenu() {
-			document.getElementById("sideMenu").classList.remove("active");
-			document.getElementById("menuOverlay").classList.remove("active");
-		}
+      <!-- 
+         공통 하단 네비 fragment
+         팀원 코드 구조 유지
+      -->
+      <div th:replace="~{nav :: navFragment}"></div>
 
-		// 파일 선택 시 파일명 화면에 출력
-		const imageFile = document.getElementById("imageFile");
-		const fileName = document.getElementById("fileName");
+   </div>
 
-		imageFile.addEventListener("change", function() {
-			if (imageFile.files.length > 0) {
-				fileName.textContent = imageFile.files[0].name;
-			} else {
-				fileName.textContent = "선택된 파일 없음";
-			}
-		});
-	</script>
+   <script>
+      /*
+         헤더 fragment 안에서 햄버거 메뉴를 사용할 경우를 대비한 함수
+         기존 팀원 코드 유지
+      */
+      function openMenu() {
+         document.getElementById("sideMenu").classList.add("active");
+         document.getElementById("menuOverlay").classList.add("active");
+      }
+
+      function closeMenu() {
+         document.getElementById("sideMenu").classList.remove("active");
+         document.getElementById("menuOverlay").classList.remove("active");
+      }
+
+      /*
+         파일 선택 시 파일명을 화면에 표시
+      */
+      const imageFile = document.getElementById("imageFile");
+      const fileName = document.getElementById("fileName");
+
+      imageFile.addEventListener("change", function() {
+         if (imageFile.files.length > 0) {
+            fileName.textContent = imageFile.files[0].name;
+         } else {
+            fileName.textContent = "선택된 파일 없음";
+         }
+      });
+   </script>
 
 </body>
 </html>

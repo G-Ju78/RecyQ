@@ -1,279 +1,186 @@
 body {
-	margin: 0;
-	font-family: 'Inter', sans-serif;
-	background: #fff;
-	display: flex;
-	justify-content: center;
+   margin: 0;
+   font-family: 'Inter', sans-serif;
+   background: #fff;
+   display: flex;
+   justify-content: center;
 }
 
 .app-container {
-	position: relative;
-	width: 100%;
-	max-width: 500px;
-	min-height: 100vh;
-	background: #F1FFEA;
-	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-	padding-bottom: 95px;
-	box-sizing: border-box;
+   position: relative;
+   width: 100%;
+   max-width: 500px;
+   min-height: 100vh;
+   background: #F1FFEA;
+   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+   padding-bottom: 95px;
+   box-sizing: border-box;
+   overflow-x: hidden; /* 사이드 메뉴 숨김용 */
 }
 
 /* ========================= */
-/* 헤더 */
-/* ========================= */
-.header {
-	display: flex;
-	align-items: center;
-	padding: 15px;
-	gap: 15px;
-}
-
-.title {
-	font-size: 32px;
-	font-weight: bold;
-	color: #496D36;
-}
-
-.logo {
-	width: 68px;
-	margin-left: auto;
-}
-
-.menu-btn {
-	width: 28px;
-	margin-left: 5px;
-	cursor: pointer;
-}
-
-/* ========================= */
-/* 작성/수정 영역 */
+/* 작성 / 수정 전체 영역 */
 /* ========================= */
 .write-wrap {
-	padding: 10px 14px 20px 14px;
+   padding: 10px 14px 20px 14px;
 }
 
+/* 페이지 제목 */
 .write-page-title {
-	font-size: 22px;
-	font-weight: 800;
-	color: #355723;
-	margin-bottom: 18px;
-}
-
-/* 폼 전체 */
-.write-form {
-	display: flex;
-	flex-direction: column;
-	gap: 18px;
-}
-
-.form-group {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-}
-
-.form-label {
-	font-size: 15px;
-	font-weight: 700;
-	color: #496D36;
-}
-
-/* 제목 / 내용 입력 */
-.form-input, .form-textarea {
-	width: 100%;
-	border: 1px solid #d8e6ce;
-	border-radius: 14px;
-	background: #fff;
-	padding: 14px 16px;
-	font-size: 14px;
-	font-family: 'Inter', sans-serif;
-	color: #333;
-	box-sizing: border-box;
-	outline: none;
-}
-
-.form-input:focus, .form-textarea:focus {
-	border-color: #7fb05f;
-	box-shadow: 0 0 0 3px rgba(127, 176, 95, 0.12);
-}
-
-.form-textarea {
-	min-height: 220px;
-	resize: none;
-	line-height: 1.6;
+   font-size: 22px;
+   font-weight: 800;
+   color: #355723;
+   margin-bottom: 18px;
 }
 
 /* ========================= */
-/* 현재 이미지 표시 */
+/* 폼 전체 */
+/* ========================= */
+.write-form {
+   display: flex;
+   flex-direction: column;
+   gap: 18px;
+}
+
+/* 각 입력 블록 */
+.form-group {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+}
+
+/* 라벨 */
+.form-label {
+   font-size: 15px;
+   font-weight: 700;
+   color: #496D36;
+}
+
+/* 제목 input / 내용 textarea 공통 */
+.form-input,
+.form-textarea {
+   width: 100%;
+   border: 1px solid #d8e6ce;
+   border-radius: 14px;
+   background: #fff;
+   padding: 14px 16px;
+   font-size: 14px;
+   font-family: 'Inter', sans-serif;
+   color: #333;
+   box-sizing: border-box;
+   outline: none;
+}
+
+/* 포커스 시 테두리 강조 */
+.form-input:focus,
+.form-textarea:focus {
+   border-color: #7fb05f;
+   box-shadow: 0 0 0 3px rgba(127, 176, 95, 0.12);
+}
+
+/* textarea 세부 설정 */
+.form-textarea {
+   min-height: 220px;
+   resize: none;
+   line-height: 1.6;
+}
+
+/* ========================= */
+/* 수정 모드에서 현재 이미지 표시 */
 /* ========================= */
 .current-image-box {
-	margin-bottom: 12px;
+   margin-bottom: 12px;
 }
 
 .current-image-label {
-	font-size: 13px;
-	font-weight: 600;
-	color: #496D36;
-	margin-bottom: 8px;
+   font-size: 13px;
+   font-weight: 600;
+   color: #496D36;
+   margin-bottom: 8px;
 }
 
 .current-image {
-	width: 100%;
-	border-radius: 16px;
-	display: block;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+   width: 100%;
+   border-radius: 16px;
+   display: block;
+   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 /* ========================= */
 /* 파일 업로드 */
 /* ========================= */
+
+/* 기본 파일 input 숨김 */
 .file-input {
-	display: none;
+   display: none;
 }
 
+/* 커스텀 업로드 박스 */
 .file-upload-box {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	height: 110px;
-	border: 2px dashed #b8d2a6;
-	border-radius: 16px;
-	background: #f8fff4;
-	cursor: pointer;
-	text-align: center;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   height: 110px;
+   border: 2px dashed #b8d2a6;
+   border-radius: 16px;
+   background: #f8fff4;
+   cursor: pointer;
+   text-align: center;
 }
 
+/* 업로드 박스 안 메인 텍스트 */
 .file-upload-text {
-	font-size: 15px;
-	font-weight: 700;
-	color: #496D36;
-	margin-bottom: 6px;
+   font-size: 15px;
+   font-weight: 700;
+   color: #496D36;
+   margin-bottom: 6px;
 }
 
+/* 업로드 박스 안 서브 텍스트 */
 .file-upload-desc {
-	font-size: 12px;
-	color: #8a9b80;
+   font-size: 12px;
+   color: #8a9b80;
 }
 
+/* 선택된 파일명 */
 .file-name {
-	font-size: 13px;
-	color: #666;
-	margin-top: 6px;
-	padding-left: 2px;
+   font-size: 13px;
+   color: #666;
+   margin-top: 6px;
+   padding-left: 2px;
 }
 
 /* ========================= */
 /* 버튼 영역 */
 /* ========================= */
 .button-row {
-	display: flex;
-	gap: 10px;
-	margin-top: 6px;
+   display: flex;
+   gap: 10px;
+   margin-top: 6px;
 }
 
-.cancel-btn, .submit-btn {
-	flex: 1;
-	height: 48px;
-	border: none;
-	border-radius: 14px;
-	font-size: 15px;
-	font-weight: 700;
-	cursor: pointer;
-}
-
-.cancel-btn {
-	background: #e7efe1;
-	color: #496D36;
-}
-
+/* 취소 / 등록 버튼 공통 */
+.cancel-btn,
 .submit-btn {
-	background: #5D8736;
-	color: #fff;
-	box-shadow: 0 4px 10px rgba(93, 135, 54, 0.2);
+   flex: 1;
+   height: 48px;
+   border: none;
+   border-radius: 14px;
+   font-size: 15px;
+   font-weight: 700;
+   cursor: pointer;
 }
 
-/* ========================= */
-/* 사이드 메뉴 */
-/* ========================= */
-.side-menu {
-	position: fixed;
-	top: 0;
-	left: -250px;
-	width: 250px;
-	height: 100%;
-	background: white;
-	box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
-	display: flex;
-	flex-direction: column;
-	padding-top: 80px;
-	transition: 0.3s;
-	z-index: 1000;
+/* 취소 버튼 */
+.cancel-btn {
+   background: #e7efe1;
+   color: #496D36;
 }
 
-.side-menu a {
-	padding: 15px 25px;
-	text-decoration: none;
-	color: #496D36;
-	font-weight: bold;
-	border-bottom: 1px solid #eee;
-}
-
-.side-menu a:hover {
-	background: #F1FFEA;
-}
-
-.side-menu.active {
-	left: 0;
-}
-
-/* 메뉴 배경 */
-.menu-overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.3);
-	display: none;
-	z-index: 900;
-}
-
-.menu-overlay.active {
-	display: block;
-}
-
-/* ========================= */
-/* 하단 네비게이션 */
-/* ========================= */
-.nav-bar {
-	position: fixed;
-	bottom: 0;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 100%;
-	max-width: 500px;
-	height: 80px;
-	background-color: rgba(255, 255, 255, 0.78);
-	backdrop-filter: blur(10px);
-	-webkit-backdrop-filter: blur(10px);
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
-	z-index: 999;
-}
-
-.nav-item {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	text-decoration: none;
-	gap: 5px;
-	color: #496D36;
-	font-size: 13px;
-}
-
-.nav-item>img {
-	width: 30px;
+/* 등록 / 수정완료 버튼 */
+.submit-btn {
+   background: #5D8736;
+   color: #fff;
+   box-shadow: 0 4px 10px rgba(93, 135, 54, 0.2);
 }
