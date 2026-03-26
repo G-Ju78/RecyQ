@@ -173,6 +173,13 @@ public class PageController {
         return "write";
     }
     
+    // 분리수거장 위치 찾기 페이지 (로그인 필요)
+    @GetMapping("/recycleplace")
+    public String recycleplace(HttpSession session) {
+        if(session.getAttribute("loginMem") == null) return "redirect:/login";
+        return "recycleplace";
+    }
+    
     
     
 }
