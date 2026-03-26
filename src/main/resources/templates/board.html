@@ -1,128 +1,111 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>환경보호 게시판</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>환경보호 게시판</title>
 
-    <link rel="stylesheet" href="/recyq/css/board.css">
+<link rel="stylesheet" href="/recyq/css/board.css">
+<link rel="stylesheet" th:href="@{/css/header.css?v=4}">
+<link rel="stylesheet" th:href="@{/css/nav.css?v=4}">
+<style>
+::-webkit-scrollbar {
+	display: none !important;
+}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+html, body, .app-container {
+	-ms-overflow-style: none !important;
+	scrollbar-width: none !important;
+}
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+	rel="stylesheet">
 </head>
 <body>
 
-<div class="app-container">
+	<div class="app-container">
 
-    <!-- 사이드 메뉴 -->
-    <div class="side-menu" id="sideMenu">
-        <a th:href="@{/main}">홈으로</a>
-        <a th:href="@{/board}">환경보호 게시판</a>
-        <a th:href="@{/mypage}">마이페이지</a>
-        <a th:href="@{/pointList}">내 포인트</a>
-        <a th:href="@{/quiz}">퀴즈 풀고 포인트 받기</a>
-        <a th:href="@{/map}">분리수거장 위치 찾기</a>
-    </div>
+		<div th:replace="~{header :: headerFragment}"></div>
 
-    <!-- 메뉴 오버레이 -->
-    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+		
+		
+		
 
-    <!-- 헤더 -->
-    <div class="header">
-        <img src="/recyq/img/menu-btn.png" class="menu-btn" onclick="openMenu()">
-        <div class="title">RecyQ</div>
-        <img src="/recyq/img/logo.png" class="logo">
-    </div>
+		<!-- 배너 -->
+		<div class="banner">
+			<a href="#" class="banner-slide active"><img
+				src="/recyq/img/banner1.png" alt="배너1"></a> <a href="#"
+				class="banner-slide"><img src="/recyq/img/banner2.png" alt="배너2"></a>
+			<a href="#" class="banner-slide"><img
+				src="/recyq/img/banner3.png" alt="배너3"></a>
+		</div>
 
-    <!-- 배너 -->
-    <div class="banner">
-        <a href="#" class="banner-slide active"><img src="/recyq/img/banner1.png" alt="배너1"></a>
-        <a href="#" class="banner-slide"><img src="/recyq/img/banner2.png" alt="배너2"></a>
-        <a href="#" class="banner-slide"><img src="/recyq/img/banner3.png" alt="배너3"></a>
-    </div>
-
-    <!-- 검색창 + 글쓰기 -->
-    <div class="board-top-bar">
-        <form th:action="@{/board}" method="get" class="search-form">
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text"
-                       name="keyword"
-                       th:value="${keyword}"
-                       placeholder="검색어를 입력하세요">
-            </div>
-        </form>
-
-        <button class="write-btn" type="button" onclick="location.href='/recyq/write'">
-            글쓰기
-        </button>
-    </div>
-
-    <!-- 검색 결과 없을 때 -->
-    <div th:if="${keyword != null and !#strings.isEmpty(keyword) and #lists.isEmpty(list)}"
-         class="empty-box">
-        <p class="empty-text">검색어와 일치하는 게시글이 없습니다.</p>
-    </div>
-
-    <!-- 게시글 목록 -->
-    <div class="board-list" th:if="${list != null and !#lists.isEmpty(list)}">
-
-        <div class="post"
-             th:each="post : ${list}"
-             th:onclick="|location.href='/recyq/post/${post.boardIdx}'|">
-
-            <div class="post-content-wrap">
-
-                <!-- 썸네일 -->
-				<div class="post-thumb-box"
-				     th:if="${post.imageUrl != null and !#strings.isEmpty(post.imageUrl)}">
-				    <img th:src="@{${post.imageUrl}}" alt="게시글 이미지" class="post-thumb">
+		<!-- 검색창 + 글쓰기 -->
+		<div class="board-top-bar">
+			<form th:action="@{/board}" method="get" class="search-form">
+				<div class="search-box">
+					<span class="search-icon">🔍</span> <input type="text"
+						name="keyword" th:value="${keyword}" placeholder="검색어를 입력하세요">
 				</div>
+			</form>
 
-                <!-- 글 정보 -->
-                <div class="post-text-box">
-                    <div class="post-title" th:text="${post.title}"></div>
+			<button class="write-btn" type="button"
+				onclick="location.href='/recyq/write'">글쓰기</button>
+		</div>
 
-                    <div class="post-info">
-						<span th:text="${post.user != null and post.user.id != null and #strings.length(post.user.id) > 4 
+		<!-- 검색 결과 없을 때 -->
+		<div
+			th:if="${keyword != null and !#strings.isEmpty(keyword) and #lists.isEmpty(list)}"
+			class="empty-box">
+			<p class="empty-text">검색어와 일치하는 게시글이 없습니다.</p>
+		</div>
+
+		<!-- 게시글 목록 -->
+		<div class="board-list"
+			th:if="${list != null and !#lists.isEmpty(list)}">
+
+			<div class="post" th:each="post : ${list}"
+				th:onclick="|location.href='/recyq/post/${post.boardIdx}'|">
+
+				<div class="post-content-wrap">
+
+					<!-- 썸네일 -->
+					<div class="post-thumb-box"
+						th:if="${post.imageUrl != null and !#strings.isEmpty(post.imageUrl)}">
+						<img th:src="@{${post.imageUrl}}" alt="게시글 이미지" class="post-thumb">
+					</div>
+
+					<!-- 글 정보 -->
+					<div class="post-text-box">
+						<div class="post-title" th:text="${post.title}"></div>
+
+						<div class="post-info">
+							<span
+								th:text="${post.user != null and post.user.id != null and #strings.length(post.user.id) > 4 
 						    ? #strings.substring(post.user.id, 0, #strings.length(post.user.id) - 4) + '****' 
 						    : '****'}"></span>
-                        
-                        <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}"></span>
-                        · 조회 <span th:text="${post.viewCount}"></span>
-                        · 추천 <span th:text="${post.likeCount}"></span>
-                        · 댓글 <span th:text="${post.replyCount}"></span>개
-                    </div>
-                </div>
 
-            </div>
-        </div>
-    </div>
+							<span
+								th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}"></span>
+							· 조회 <span th:text="${post.viewCount}"></span> · 추천 <span
+								th:text="${post.likeCount}"></span> · 댓글 <span
+								th:text="${post.replyCount}"></span>개
+						</div>
+					</div>
 
-    <!-- 하단 네비바 -->
-    <nav class="nav-bar">
-        <a th:href="@{/main}" class="nav-item">
-            <img th:src="@{/img/home.png}" alt="홈">
-            <span>홈</span>
-        </a>
-        <a th:href="@{/scan}" class="nav-item">
-            <img th:src="@{/img/scan.png}" alt="스캔">
-            <span>스캔</span>
-        </a>
-        <a th:href="@{/shop}" class="nav-item">
-            <img th:src="@{/img/shop.png}" alt="상점">
-            <span>상점</span>
-        </a>
-        <a th:href="@{/mypage}" class="nav-item">
-            <img th:src="@{/img/profile.png}" alt="마이페이지">
-            <span>마이페이지</span>
-        </a>
-    </nav>
+				</div>
+			</div>
+		</div>
 
-</div>
+		<div th:replace="~{nav :: navFragment}"></div>
 
-<script>
+	</div>
+
+	<script>
     function openMenu() {
         document.getElementById("sideMenu").classList.add("active");
         document.getElementById("menuOverlay").classList.add("active");
