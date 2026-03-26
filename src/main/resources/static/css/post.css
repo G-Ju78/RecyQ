@@ -20,7 +20,7 @@ body {
 
 /* 게시글 상세 전체 */
 .post-detail-wrap {
-   padding: 10px 12px 20px 12px;
+   padding: 10px 12px 140px 12px;
 }
 
 /* 작성자/작성일/조회수 */
@@ -263,15 +263,21 @@ body {
 
 /* 댓글 입력 */
 .comment-input-box {
-   position: sticky;
-   bottom: 90px;
+   position: fixed;
+   bottom: 80px;              /* 하단 nav 바로 위 */
+   left: 50%;
+   transform: translateX(-50%);
+   width: calc(100% - 24px);  /* 좌우 여백 */
+   max-width: 476px;          /* 500px 앱 프레임 안쪽 너비 */
    display: flex;
    align-items: center;
    gap: 8px;
-   background: rgba(241, 255, 234, 0.92);
+   background: rgba(241, 255, 234, 0.96);
    backdrop-filter: blur(8px);
    -webkit-backdrop-filter: blur(8px);
-   padding: 10px 0 0 0;
+   padding: 10px 0 10px 0;
+   z-index: 998;
+   box-sizing: border-box;
 }
 
 .comment-input-box input {
