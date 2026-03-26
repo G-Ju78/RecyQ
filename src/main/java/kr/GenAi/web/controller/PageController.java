@@ -69,8 +69,8 @@ public class PageController {
       // 🌟 핵심: session.invalidate()는 서버에 저장된 해당 유저의 모든 기록(로그인 상태 등)을 파기(삭제)합니다.
       session.invalidate();
       
-      // redirect:/ 경로 : 로그아웃 후 화면을 렌더링하는 대신, /main 주소로 아예 새로 접속하라고 브라우저에 명령합니다.
-      return "redirect:/main";
+      // redirect:/ 경로 : 로그아웃 후 화면을 렌더링하는 대신, /start 주소로 아예 새로 접속하라고 브라우저에 명령합니다.
+      return "redirect:/start";
    }
    
    /**
