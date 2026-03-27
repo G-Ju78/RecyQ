@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" th:href="@{/css/map.css?v=2}">
+    <link rel="stylesheet" th:href="@{/css/map.css?v=3}">
     <link rel="stylesheet" th:href="@{/css/header.css?v=9}">
     <link rel="stylesheet" th:href="@{/css/nav.css?v=9}">
 
@@ -29,53 +29,87 @@
 
     <div th:replace="~{header :: headerFragment}"></div>
 
-    <main>
-        <section class="search-section">
-            <h2 class="page-title">배출장소 전체보기</h2>
+   <main>
+    <section class="search-section">
+        <h2 class="page-title">배출장소 전체보기</h2>
 
-            <div class="search-bar">
-                <input type="text" id="addressInput" placeholder="주소를 입력해주세요"
-                       onkeypress="if(event.keyCode==13) {searchLocation();}">
-                <button class="search-btn" onclick="searchLocation()">검 색</button>
+        <div class="search-bar">
+            <input type="text" id="addressInput" placeholder="주소를 입력해주세요"
+                   onkeypress="if(event.keyCode==13) {searchLocation();}">
+            <button class="search-btn" onclick="searchLocation()">검 색</button>
+        </div>
+
+        <!-- ✅ 카테고리 슬라이드 -->
+        <div class="category-wrapper">
+            <div class="category-viewport">
+                <div class="category-slider" id="categorySlider">
+
+                    <!-- 1페이지 -->
+                    <div class="category-page">
+                        <div class="category-item active" onclick="filterMarkers('all', this)">
+                            <div class="icon-circle all">ALL</div>
+                            <span>배출장소<br>전체보기</span>
+                        </div>
+
+                        <div class="category-item" onclick="filterMarkers('bottle', this)">
+                            <div class="icon-circle bottle">
+                                <img th:src="@{/img/bottle.png}">
+                            </div>
+                            <span>재활용품<br>분리배출장소</span>
+                        </div>
+
+                        <div class="category-item" onclick="filterMarkers('battery', this)">
+                            <div class="icon-circle battery">
+                                <img th:src="@{/img/battery.png}">
+                            </div>
+                            <span>전지<br>수거함</span>
+                        </div>
+
+                        <div class="category-item" onclick="filterMarkers('pill', this)">
+                            <div class="icon-circle pill">
+                                <img th:src="@{/img/pill.png}">
+                            </div>
+                            <span>폐의약품<br>수거함</span>
+                        </div>
+                    </div>
+
+                    <!-- 2페이지 -->
+                    <div class="category-page">
+    <div class="category-item" onclick="filterMarkers('clothes', this)">
+        <div class="icon-circle clothes">
+            <img th:src="@{/img/clothes.png}" alt="의류수거함">
+        </div>
+        <span>의류<br>수거함</span>
+    </div>
+
+    <div class="category-item" onclick="filterMarkers('appliance', this)">
+        <div class="icon-circle appliance">
+            <img th:src="@{/img/appliance.png}" alt="폐가전수거함">
+        </div>
+        <span>폐가전<br>수거함</span>
+    </div>
+                        <div class="category-item empty"></div>
+                        <div class="category-item empty"></div>
+                    </div>
+
+                </div>
             </div>
 
-            <div class="category-container">
-                <div class="category-item active" onclick="filterMarkers('all', this)">
-                    <div class="icon-circle all">ALL</div>
-                    <span>배출장소<br>전체보기</span>
-                </div>
-                <div class="category-item" onclick="filterMarkers('bottle', this)">
-                    <div class="icon-circle bottle">
-                        <img th:src="@{/img/bottle.png}">
-                    </div>
-                    <span>재활용품<br>분리배출장소</span>
-                </div>
-                <div class="category-item" onclick="filterMarkers('battery', this)">
-                    <div class="icon-circle battery">
-                        <img th:src="@{/img/battery.png}">
-                    </div>
-                    <span>전지<br>수거함</span>
-                </div>
-                <div class="category-item" onclick="filterMarkers('pill', this)">
-                    <div class="icon-circle pill">
-                        <img th:src="@{/img/pill.png}">
-                    </div>
-                    <span>폐의약품<br>수거함</span>
-                </div>
-                <div class="next-arrow">▶</div>
-            </div>
-        </section>
+            <!-- 화살표 -->
+            <button type="button" class="next-arrow" onclick="nextCategoryPage()">▶</button>
+        </div>
+    </section>
 
-        <section class="map-area">
-            <div class="map-filters">
-                <button class="current-loc-btn" onclick="getCurrentLocation()">현 위치</button>
-                <select><option>광주광역시</option></select>
-                <select><option>동구</option></select>
-            </div>
+    <section class="map-area">
+        <div class="map-filters">
+            <button class="current-loc-btn" onclick="getCurrentLocation()">현 위치</button>
+            <select><option>광주광역시</option></select>
+            <select><option>동구</option></select>
+        </div>
 
-            <div id="map"></div>
-        </section>
-    </main>
+        <div id="map"></div>
+    </section>
+</main>
 
     <div th:replace="~{nav :: navFragment}"></div>
 
@@ -84,6 +118,7 @@
 <script>
     var map;
     var markers = [];
+    var currentCategoryPage = 0;
 
     /* 지도 생성 */
     kakao.maps.load(function () {
@@ -95,7 +130,6 @@
 
         map = new kakao.maps.Map(mapContainer, mapOption);
 
-        // 화면 깨짐 방지
         setTimeout(function () {
             map.relayout();
         }, 200);
@@ -118,19 +152,43 @@
 
     /* 카테고리 선택 */
     function filterMarkers(type, element) {
-        document.querySelectorAll('.category-item')
-            .forEach(item => item.classList.remove('active'));
-        element.classList.add('active');
-        console.log(type);
+        document.querySelectorAll('.category-item').forEach(function(item) {
+            item.classList.remove('active');
+        });
+
+        if (element && !element.classList.contains('empty')) {
+            element.classList.add('active');
+        }
+
+        console.log("선택 카테고리:", type);
+
+        /* 나중에 마커 필터 연결하면 여기서 처리 */
+        /* 예: showMarkersByType(type); */
     }
 
-    /* 주소 검색 (추후 기능 확장 예정) */
+    /* 카테고리 페이지 이동 */
+    function nextCategoryPage() {
+        var slider = document.getElementById('categorySlider');
+        var arrow = document.querySelector('.next-arrow');
+
+        if (currentCategoryPage === 0) {
+            currentCategoryPage = 1;
+            slider.style.transform = 'translateX(-50%)';
+            arrow.textContent = '◀';
+        } else {
+            currentCategoryPage = 0;
+            slider.style.transform = 'translateX(0)';
+            arrow.textContent = '▶';
+        }
+    }
+
+    /* 주소 검색 */
     function searchLocation() {
         var input = document.getElementById('addressInput').value;
         console.log("검색:", input);
     }
 
-    /* 🌟 3. 햄버거 메뉴 작동을 위한 스크립트 추가 */
+    /* 햄버거 메뉴 */
     function openMenu() {
         document.getElementById("sideMenu").classList.add("active");
         document.getElementById("menuOverlay").classList.add("active");
