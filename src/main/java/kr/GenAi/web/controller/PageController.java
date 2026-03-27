@@ -167,6 +167,12 @@ public class PageController {
         return "write";
     }
     
+ // 분리수거 배출 네비게이션 (로그인 필요)
+    @GetMapping("/map")
+    public String map(HttpSession session) {
+        if(session.getAttribute("loginMem") == null) return "redirect:/login";
+        return "map";
+    }
     
     
 }
