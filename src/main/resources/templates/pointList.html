@@ -2,199 +2,79 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>전체 내역</title>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>전체 내역</title>
+<link rel="stylesheet" th:href="@{/css/pointList.css?v=2}">
+<link rel="stylesheet" th:href="@{/css/header.css?v=11}">
+<link rel="stylesheet" th:href="@{/css/nav.css?v=11}">
 
-    <style>
+<style>
+::-webkit-scrollbar {
+    display: none !important;
+}
+html, body, .background, .frame {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+</style>
 
-
-    </style>
-<link rel="stylesheet" th:href="@{/css/pointList.css}">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
-
-
+<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+<link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
+<link th:href="@{https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap}" rel="stylesheet">
 </head>
 <body>
 
-   
     <div class="background">
-        
         <div class="frame">
-            <!-- 로고, 메뉴 버튼 -->
-            <header class="header">
-                <div class="menu-icon">
-                   <a th:href="@{#}"><img th:src="@{/img/Shape.png}"></a>
-                <h1 class="logo-text">RecyQ</h1></div>
-                <div class="logo-icon">
-                   <img th:src="@{/img/icon.png}">
-                </div>
-            </header>
-         <!-- 포인트 전체 내역 -->
+
+            <div th:replace="~{header :: headerFragment}"></div>
+
             <main class="white-card">
                 <div class="head">
                     <h3>전체 내역</h3>
-                    <!-- 보유 포인트 -->
                     <div class="mypoint">
                         <p>내 포인트</p>
-                        <p class="point">777P</p>
+                        <p class="point" th:text="${session.loginMem != null ? session.loginMem.totalPoint + 'P' : '0P'}">777P</p>
                     </div>     
                 </div>
             
-            
-                <div class="history">
-                   <!-- 날짜 -->
+                <div class="history" th:each="item, stat : ${pointList}">
                     <div class="date-list">
-                        <p class="date">26.02.27</p>
+                        <p class="date"
+                           th:if="${stat.first or #temporals.format(item.createdAt, 'yy.MM.dd') != #temporals.format(pointList[stat.index - 1].createdAt, 'yy.MM.dd')}"
+                           th:text="${#temporals.format(item.createdAt, 'yy.MM.dd')}"></p>
                         
                         <div class="point-item">
                             <div class="item-info">
-                               <!-- 변동 내용 -->
-                                <span class="item-title">재활용</span>
+                                <span class="item-title" th:text="${item.logDetail}">재활용</span>
                             </div>
                             <div class="point-info">
-                               <!-- 포인트 변동 -->
-                                <span class="point-change">+ 0P</span>
-                                <!-- 변동 이후 포인트 -->
-                                <span class="point-total">777P</span>
+                                <span class="point-change" th:text="${item.recPoint > 0 ? '+ ' + item.recPoint + 'P' : item.recPoint + 'P'}">+ 0P</span>
+                                <span class="point-total" th:text="${item.totalPoint + 'P'}">777P</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="history">
-                    <div class="date-list">
-                        <p class="date">26.02.26</p>  
-                        <div class="point-item">
-                            <div class="item-info">
-                                <span class="item-title">재활용</span>
-                            </div>
-                            <div class="point-info">
-                                <span class="point-change">+ 0P</span>
-                                <span class="point-total">777P</span>
-                            </div>  
-                        </div>
-                          <div class="point-item">
-                            <div class="item-info">
-                                <span class="item-title">재활용</span>
-                            </div>
-                            <div class="point-info">
-                                <span class="point-change">+ 0P</span>
-                                <span class="point-total">777P</span>
-                            </div>  
-                        </div>
-                    </div>
-                </div>
-                <div class="history">
-                    <div class="date-list">
-                        <p class="date">26.02.25</p>  
-                        <div class="point-item">
-                            <div class="item-info">
-                                <span class="item-title">재활용</span>
-                            </div>
-                            <div class="point-info">
-                                <span class="point-change">+ 0P</span>
-                                <span class="point-total">777P</span>
-                            </div>  
-                        </div>
-                          <div class="point-item">
-                            <div class="item-info">
-                                <span class="item-title">재활용</span>
-                            </div>
-                            <div class="point-info">
-                                <span class="point-change">+ 0P</span>
-                                <span class="point-total">777P</span>
-                            </div>  
-                        </div>
-                    </div>
-                </div>
-                <div class="history">
-                    <div class="date-list">
-                        <p class="date">26.02.24</p>  
-                        <div class="point-item">
-                            <div class="item-info">
-                                <span class="item-title">재활용</span>
-                            </div>
-                            <div class="point-info">
-                                <span class="point-change">+ 0P</span>
-                                <span class="point-total">777P</span>
-                            </div>  
-                        </div>
-                    </div>
-                </div>
-                <div class="history">
-                    <div class="date-list">
-                        <p class="date">26.02.23</p>  
-                        <div class="point-item">
-                            <div class="item-info">
-                                <span class="item-title">재활용</span>
-                            </div>
-                            <div class="point-info">
-                                <span class="point-change">+ 0P</span>
-                                <span class="point-total">777P</span>
-                            </div>  
-                        </div>
-                         <div class="point-item">
-                            <div class="item-info">
-                                <span class="item-title">재활용</span>
-                            </div>
-                            <div class="point-info">
-                                <span class="point-change">+ 0P</span>
-                                <span class="point-total">777P</span>
-                            </div>  
-                        </div>
-                    </div>
-                </div>
-                <div class="history">
-                    <div class="date-list">
-                        <p class="date">26.02.23</p>  
-                        <div class="point-item">
-                            <div class="item-info">
-                                <span class="item-title">재활용</span>
-                            </div>
-                            <div class="point-info">
-                                <span class="point-change">+ 0P</span>
-                                <span class="point-total">777P</span>
-                            </div>  
-                        </div>
-                         <div class="point-item">
-                            <div class="item-info">
-                                <span class="item-title">재활용</span>
-                            </div>
-                            <div class="point-info">
-                                <span class="point-change">+ 0P</span>
-                                <span class="point-total">777P</span>
-                            </div>  
-                        </div>
-                    </div>
+
+                <div th:if="${#lists.isEmpty(pointList)}" style="padding: 30px 0; text-align: center; color: #888; font-size: 14px;">
+                    포인트 적립 내역이 없습니다.
                 </div>
             </main>        
-            <!--네비바-->
-            <nav class="nav-bar">
-                <a th:href="@{/main}" class="nav-item">
-                    <img th:src="@{/img/home.png}">
-                    <span>홈</span>
-                </a>
-                <a th:href="@{#}" class="nav-item">
-                    <img th:src="@{/img/scan.png}">
-                    <span>스캔</span>
-                </a>
-                <a th:href="@{#}" class="nav-item">
-                    <img th:src="@{/img/shop.png}">
-                    <span>상점</span>
-                </a>
-                <a th:href="@{mypage}" class="nav-item">
-                    <img th:src="@{/img/profile.png}">
-                    <span>마이페이지</span>
-                </a>
-            </nav>
+
+            <div th:replace="~{nav :: navFragment}"></div>
         </div>
     </div>
+
+    <script>
+        function openMenu() {
+            document.getElementById("sideMenu").classList.add("active");
+            document.getElementById("menuOverlay").classList.add("active");
+        }
+        function closeMenu() {
+            document.getElementById("sideMenu").classList.remove("active");
+            document.getElementById("menuOverlay").classList.remove("active");
+        }
+    </script>
 </body>
 </html>

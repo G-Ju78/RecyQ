@@ -163,6 +163,16 @@ public class UserController {
         return "mypage";
     }
 	
-	
+	@GetMapping("/pointList")
+    public String pointList(HttpSession session, Model model) {
+        User loginUser = (User) session.getAttribute("loginMem");
+        if (loginUser == null) { return "redirect:/login"; }
+
+        // 🌟 이번엔 getAllPointList 를 호출해서 전체 내역을 가져옵니다.
+        List<PointDTO> pointList = pointService.getAllPointList(loginUser.getId(), loginUser.getTotalPoint());
+        
+        model.addAttribute("pointList", pointList);
+        return "pointList";
+    }
 	
 }
