@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>포인트 샵</title>
+
+<link rel="stylesheet" th:href="@{/css/shop.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/nav.css}">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900;&display=swap"
+	rel="stylesheet">
+
+<style>
+::-webkit-scrollbar {
+    display: none !important;
+}
+html, body, .app-container {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <div class="page">
+
+        <!-- ✅ 공통 헤더 -->
+        <div th:replace="~{header :: headerFragment}"></div>
+
+        <!-- ✅ 페이지 제목 + 필터 -->
+        <div class="head">
+            <h3>포인트 샵</h3>
+            <div class="filter-list">
+                <button class="filter-btn" onclick="sortProducts('new', this)">최신순</button>
+                <button class="filter-btn" onclick="sortProducts('high', this)">높은 가격순</button>
+                <button class="filter-btn" onclick="sortProducts('low', this)">낮은 가격순</button>
+            </div>
+        </div>
+
+        <!-- ✅ 상품 리스트 -->
+        <div id="product-container" class="card-line">
+
+            <a th:href="@{#}" class="product-item" data-price="5000"
+					data-date="2026.03.26">
+					<main class="white-card">
+						<div class="shop-list">
+							<img class="item-img" src="./img/socks.jpg"> <span
+								class="item-title">페트병 재활용 양말</span> <span class="item-info">알록달록
+								고래 포인트</span> <span class="cost">5,000원</span>
+						</div>
+					</main>
+				</a> <a th:href="@{#}" class="product-item" data-price="3500"
+					data-date="2026.03.26">
+					<main class="white-card">
+						<div class="shop-list">
+							<img class="item-img" src="./img/keyring.jpg"> <span
+								class="item-title">병뚜껑 재활용 키링</span> <span class="item-info">멸종위기
+								귀신고래 모티브 제작</span> <span class="cost">3,500원</span>
+						</div>
+					</main>
+				</a> <a th:href="@{#}" class="product-item" data-price="10000"
+					data-date="2026.03.25">
+					<main class="white-card">
+						<div class="shop-list">
+							<img class="item-img" src="./img/jangbaguni.png"> <span
+								class="item-title">페트병 재활용 장바구니</span> <span class="item-info">무지
+								장바구니</span> <span class="cost">10,000원</span>
+						</div>
+					</main>
+				</a> <a th:href="@{#}" class="product-item" data-price="25000"
+					data-date="2026.03.24">
+					<main class="white-card">
+						<div class="shop-list">
+							<img class="item-img" src="./img/umbrella.jpg"> <span
+								class="item-title">페트병 재활용 3단우산</span> <span class="item-info">사랑을
+								이뤄주는 의미가 담긴 디자인</span> <span class="cost">25,000원</span>
+						</div>
+					</main>
+				</a> <a th:href="@{#}" class="product-item" data-price="9000"
+					data-date="2026.03.26">
+					<main class="white-card">
+						<div class="shop-list">
+							<img class="item-img" src="./img/towel.jpg"> <span
+								class="item-title">페트병 재활용 극세사 타올</span> <span class="item-info">업사이클
+								NP복합사를 활용해 제작</span> <span class="cost">9,000원</span>
+						</div>
+					</main>
+				</a> <a th:href="@{#}" class="product-item" data-price="7000"
+					data-date="2026.03.23">
+					<main class="white-card">
+						<div class="shop-list">
+							<img class="item-img" src="./img/ecobag.jpg"> <span
+								class="item-title">페트병 재활용 에코백</span> <span class="item-info">바다보호
+								메세지가 담긴 프린팅</span> <span class="cost">7,000원</span>
+						</div>
+					</main>
+				</a> <a th:href="@{#}" class="product-item" data-price="6000"
+					data-date="2026.03.23">
+					<main class="white-card">
+						<div class="shop-list">
+							<img class="item-img" src="./img/handtowel.jpg"> <span
+								class="item-title">페트병 재활용 극세사 핸드타올</span> <span
+								class="item-info">업사이클 NP복합사를 활용해 제작</span> <span class="cost">6,000원</span>
+						</div>
+					</main>
+				</a> <a th:href="@{#}" class="product-item" data-price="9000"
+					data-date="2026.03.22">
+					<main class="white-card">
+						<div class="shop-list">
+							<img class="item-img" src="./img/lifebox.jpg"> <span
+								class="item-title">다회용컵 재활용 라이프박스</span> <span class="item-info">쓰임을
+								다한 다회용컵 활용</span> <span class="cost">9,000원</span>
+						</div>
+					</main>
+				</a>
+
+            <!-- 나머지 상품 그대로 복붙하면 됨 -->
+
+        </div>
+
+    </div>
+
+    <!-- ✅ 공통 네비 -->
+    <div th:replace="~{nav :: navFragment}"></div>
+
+</div>
+
+<script>
+function sortProducts(type, element) {
+
+    const buttons = document.querySelectorAll('.filter-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    element.classList.add('active');
+
+    const container = document.getElementById('product-container');
+    const products = Array.from(container.querySelectorAll('.product-item'));
+
+    products.sort((a, b) => {
+        const priceA = parseInt(a.dataset.price);
+        const priceB = parseInt(b.dataset.price);
+        const dateA = new Date(a.dataset.date);
+        const dateB = new Date(b.dataset.date);
+
+        if (type === 'high') return priceB - priceA;
+        if (type === 'low') return priceA - priceB;
+        if (type === 'new') return dateB - dateA;
+    });
+
+    container.append(...products);
+}
+
+/* 햄버거 메뉴용 */
+function openMenu() {
+    document.getElementById("sideMenu").classList.add("active");
+    document.getElementById("menuOverlay").classList.add("active");
+}
+
+function closeMenu() {
+    document.getElementById("sideMenu").classList.remove("active");
+    document.getElementById("menuOverlay").classList.remove("active");
+}
+</script>
+
+</body>
+</html>

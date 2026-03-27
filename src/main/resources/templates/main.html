@@ -96,7 +96,7 @@
 								<span class="hot-post-card-title" th:text="${post.title}">
 									게시글 제목 </span> <span class="hot-post-meta"> <span
 									th:text="|❤️ ${post.likeCount}|">❤️ 0</span> <span
-									th:text="|💬 ${post.replyCount}|">👀 0</span>
+									th:text="|💬 ${post.replyCount}|">💬 0</span>
 							</span>
 
 							</a>
@@ -150,6 +150,14 @@
 				behavior : "smooth"
 			});
 		}
+		
+		// 기존 코드: window.location.href = "/camera";
+		// 🌟 수정할 코드:
+		function openCamera() {
+		    window.location.href = "/recyq/camera"; // 우리 프로젝트 기본 경로 추가!
+		}
+		
+		
 	</script>
 
 </body>

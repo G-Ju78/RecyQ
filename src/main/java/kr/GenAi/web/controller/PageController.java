@@ -147,17 +147,18 @@ public class PageController {
         return "write";
     }
 
-    /**
-     * 분리수거 배출 네비게이션 페이지
-     * 로그인 체크 + 카카오맵 키 전달
-     */
-//    @GetMapping("/map")
-//    public String map(HttpSession session, Model model) {
-//        if (session.getAttribute("loginMem") == null) {
-//            return "redirect:/login";
-//        }
-//
-//        model.addAttribute("kakaoMapKey", kakaoMapKey);
-//        return "map";
-//    }
+    
+ // 분리수거 배출 네비게이션 (로그인 필요)
+    @GetMapping("/map")
+    public String map(HttpSession session) {
+        if(session.getAttribute("loginMem") == null) return "redirect:/login";
+        return "map";
+    }
+    
+ // 분리수거 배출 네비게이션 (로그인 필요)
+    @GetMapping("/shop")
+    public String shop(HttpSession session) {
+        if(session.getAttribute("loginMem") == null) return "redirect:/login";
+        return "shop";
+    }
 }

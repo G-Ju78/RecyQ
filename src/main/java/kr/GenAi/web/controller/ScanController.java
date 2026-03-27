@@ -28,18 +28,28 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class ScanController {
 
-	
 	// final을 붙이면 이 객체는 필수, 절대 바꿀수 없다는 뜻(불변성/안정성)
 	private final PointLogRepository pointLogRepository;
 	private final UserRepository userRepository;
 	
-	
-	
+	/**
+	 * 🌟 [추가된 부분: 카메라 화면 띄우기]
+	 * 메인 페이지에서 '스캔하여 분리배출 하기' 버튼을 누르면 이쪽으로 와서 camera.html을 엽니다.
+	 */
+	@GetMapping("/camera")
+	public String showCameraPage(HttpSession session) {
+		// 보안 체크: 로그인하지 않은 유저가 강제로 접근하면 로그인 페이지로 쫓아냅니다.
+		User loginMem = (User) session.getAttribute("loginMem");
+		if (loginMem == null) {
+			return "redirect:/login";
+		}
+		// templates/camera.html 화면을 렌더링해서 보여줌
+		return "camera"; 
+	}
 	
 	/**
 	 * [doScan 메서드: 스캔 및 AI 분석 요청 처리]
-	 * 
-	 * @param file    사용자가 업로드/촬영한 이미지 파일
+	 * * @param file    사용자가 업로드/촬영한 이미지 파일
 	 * @param lat     위도 (현재 위치)
 	 * @param lon     경도 (현재 위치)
 	 * @param session 현재 로그인한 유저의 세션 정보
