@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecyQ - AI 스캔</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #000; color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; }
+        
+        /* 카메라 영상을 화면에 꽉 차게 */
+        #camera-stream { width: 100%; height: 100vh; object-fit: cover; }
+        
+        /* 닫기 (뒤로가기) 버튼 */
+        .close-btn { position: absolute; top: 20px; left: 20px; color: white; font-size: 24px; font-weight: bold; text-decoration: none; z-index: 10; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        
+        /* 스캔 UI (가운데 네모칸) */
+        .scan-guide { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250px; height: 250px; border: 2px dashed #9BC48B; border-radius: 20px; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5); pointer-events: none; }
+        .scan-text { position: absolute; top: 20%; width: 100%; text-align: center; color: white; font-weight: bold; font-size: 16px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); z-index: 10; }
+        
+        /* 사진 찍기 버튼 */
+        .capture-btn-container { position: absolute; bottom: 40px; width: 100%; display: flex; justify-content: center; z-index: 10; }
+        .capture-btn { width: 70px; height: 70px; background-color: #F1FFEA; border: 5px solid #9BC48B; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.1s; }
+        .capture-btn:active { transform: scale(0.9); }
+        
+        /* 로딩 화면 (분석 중) */
+        #loading-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 20; }
+        .spinner { border: 5px solid #f3f3f3; border-top: 5px solid #9BC48B; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <a th:href="@{/main}" class="close-btn">✕</a>
+    <div class="scan-text">쓰레기를 네모 칸 안에 맞춰주세요</div>
+    
+    <video id="camera-stream" autoplay playsinline></video>
+    <div class="scan-guide"></div>
+
+    <canvas id="snapshot-canvas" style="display: none;"></canvas>
+
+    <div class="capture-btn-container">
+        <button class="capture-btn" id="capture-btn"></button>
+    </div>
+
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <h2>AI가 분석 중입니다...</h2>
+    </div>
+
+    <script>
+        const video = document.getElementById('camera-stream');
+        const canvas = document.getElementById('snapshot-canvas');
+        const captureBtn = document.getElementById('capture-btn');
+        const loadingScreen = document.getElementById('loading-screen');
+
+        // 1. 카메라 켜기 (모바일은 후면 카메라, PC는 기본 웹캠)
+        navigator.mediaDevices.getUserMedia({ 
+            video: { facingMode: "environment" }, 
+            audio: false 
+        })
+        .then(function(stream) {
+            video.srcObject = stream;
+        })
+        .catch(function(error) {
+            console.error("카메라를 켤 수 없습니다.", error);
+            alert("카메라 접근 권한을 허용해주세요!");
+        });
+
+        // 2. 찰칵! 촬영 버튼을 눌렀을 때
+        captureBtn.addEventListener('click', function() {
+            // 도화지(canvas) 크기를 비디오 크기랑 맞춤
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext('2d');
+            
+            // 비디오의 현재 화면을 도화지에 그림
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // 로딩 화면 띄우기 (이때부터 사용자는 대기)
+            loadingScreen.style.display = 'flex';
+
+            // 🌟 3. 현재 내 위치(GPS) 가져오기
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    // 위치 허용 시: 실제 내 위도, 경도
+                    sendToServer(position.coords.latitude, position.coords.longitude);
+                }, 
+                function(error) {
+                    // 위치 거부 시: 기본값 (예: 광주광역시청 좌표)
+                    sendToServer(35.1601, 126.8516); 
+                }
+            );
+        });
+
+        // 🌟 4. 사진과 좌표를 ScanController(/doScan)로 쏴주는 핵심 함수!
+        function sendToServer(lat, lon) {
+            canvas.toBlob(function(blob) {
+                // Blob(도화지에 그린 그림)을 File 객체로 예쁘게 포장
+                const file = new File([blob], "recyq_scan.jpg", { type: "image/jpeg" });
+
+                // 자바스크립트로 가짜 Form 만들기 (html의 <form> 태그 역할)
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = "/doScan"; // 🌟 기존 컨트롤러의 @PostMapping 주소!
+                form.enctype = "multipart/form-data"; // 파일 전송 필수 설정
+
+                // (1) 파일(file) 담기
+                const fileInput = document.createElement("input");
+                fileInput.type = "file";
+                fileInput.name = "file"; // @RequestParam("file")과 이름 일치
+                const dataTransfer = new DataTransfer(); // 자바스크립트로 파일을 input에 넣는 마법의 객체
+                dataTransfer.items.add(file);
+                fileInput.files = dataTransfer.files;
+                form.appendChild(fileInput);
+
+                // (2) 위도(lat) 담기
+                const latInput = document.createElement("input");
+                latInput.type = "hidden";
+                latInput.name = "lat";   // @RequestParam("lat")과 이름 일치
+                latInput.value = lat;
+                form.appendChild(latInput);
+
+                // (3) 경도(lon) 담기
+                const lonInput = document.createElement("input");
+                lonInput.type = "hidden";
+                lonInput.name = "lon";   // @RequestParam("lon")과 이름 일치
+                lonInput.value = lon;
+                form.appendChild(lonInput);
+
+                // 폼을 문서에 몰래 붙이고 강제로 서밋(전송)!
+                document.body.appendChild(form);
+                form.submit(); 
+                // 전송하고 나면, 컨트롤러가 알아서 분석 후 scanResult.html 로 화면을 바꿔줍니다!
+
+            }, 'image/jpeg', 0.9); // 화질 90%로 압축
+        }
+    </script>
+</body>
+</html>
