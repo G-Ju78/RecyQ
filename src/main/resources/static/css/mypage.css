@@ -1,5 +1,7 @@
+@charset "UTF-8";
+
 * { 
-   box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body, html {
@@ -8,14 +10,8 @@ body, html {
     width: 100%;
     height: 100%;
     color: #496D36;
-}
-
-body{
-    margin:0;
     font-family:'Inter', sans-serif;
-    font-weight:bold
 }
-
 
 /* 전체 배경 */
 .background {
@@ -24,85 +20,58 @@ body{
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;    
+    align-items: flex-start;  
 }
 
 /* 프레임 */
 .frame {
     width: 100%;
-    max-width: 430px; 
-    height: 100vh;      
+    max-width: 500px;
+    min-height: 100vh;      
     display: flex;
     flex-direction: column;
-    padding: 20px;
     background-color: #F1FFEA;
     position: relative;
-}
-
-/* 상단 헤더 스타일 */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px;
-    color: #496D36;
-}
-
-/* 로고 텍스트 */
-.logo-text {
-   font-size: 32px;
-   font-weight: bold;
-   margin: 0;
-   margin-left: 15px;
-      margin-bottom: 10px;
-}
-
-/* 메뉴 아이콘 */
-.menu-icon{
-    display: flex;
-    align-items: center;
-}
-
-.menu-icon > a > img{ 
-    width: 28px;
-     margin-left: 5px;
-}
-
-/* 로고 아이콘 */
-.logo-icon > img{
-    width: 68px;
-     margin-left: auto;
+    overflow-x: hidden;      
+    padding-bottom: 95px;    
 }
 
 /* 흰색 카드 영역 */
 .white-card {
     background-color: #ffffff;      
     padding: 0 20px;
-    box-shadow:4px 4px 4px rgba(0,0,0,0.25);
+    box-shadow: 4px 4px 4px rgba(0,0,0,0.25);
     border-radius: 20px;
-    margin-top: 30px;
-    margin-bottom: 15px;
+    /* 🌟 [수정] 위쪽 여백 25px로 늘리고, 양옆 여백 30px로 대폭 증가! */
+    margin: 25px 30px 15px 30px; 
     height: 60px;
     align-items: center;
     display: flex;
 }
 
-.white-card2{
+.white-card2 {
     background-color: #ffffff;
-    box-shadow:4px 4px 4px rgba(0,0,0,0.25);
+    box-shadow: 4px 4px 4px rgba(0,0,0,0.25);
     border-radius: 20px;
-    margin-bottom: 15px;
-    align-items: center;
+    margin: 0 30px 15px 30px;
+    align-items: stretch;
     display: flex;
-    padding: 20px;
+    padding: 0; /* 🌟 핵심: 20px 였던 패딩을 0으로 바꿔 여백을 없앱니다! */
+    
 }
 
+.allpoint {
+    width: 100%; /* 🌟 카드 안의 포인트 박스도 100% 꽉 채우기 */
+}
+
+/* 흰색 카드 영역 3 (최근 내역 부분) */
 .white-card3 {
     background-color: #ffffff;
-    border-radius: 10px;        
     padding: 20px;
-    box-shadow:4px 4px 4px rgba(0,0,0,0.25);
+    box-shadow: 4px 4px 4px rgba(0,0,0,0.25);
     border-radius: 20px;
+    /* 🌟 [수정] 양옆 여백 30px로 증가! */
+    margin: 0 30px 20px 30px; 
 }
 
 /* 프로필 */
@@ -128,12 +97,15 @@ body{
 /* 사용자 이름 */
 .name{
     margin-left: 10px;
+    font-weight: bold;
 }
 
 /* 회원 정보 수정 */
 .correct{
     color: #4A673B;
     font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 /* 이번달, 오늘 묶음 */
@@ -142,6 +114,7 @@ body{
     background-color: #F1FFEA;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+    padding: 10px 0; /* 여백 살짝 추가 */
 }
 
 /* 내 포인트 */
@@ -149,26 +122,28 @@ body{
     background-color: #A0CD88;
     display: flex;
     align-items: center;
-    width: 350px;
+    width: 100%; /* 고정픽셀(350px) 대신 100%로 변경하여 반응형 대응 */
+    height: 50px;
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
+    font-weight: bold;
 }
 
 /* 포인트 아이콘 */
 .mypoint > img{
-    width: 30px;
-    height: 30px;
-    margin-left: 5px;
-    margin-top: 5px;
+    width: 25px;
+    height: 25px;
+    margin-left: 15px;
 }
 
 .mypoint > p{
-    margin-left: 5px;
+    margin-left: 10px;
 }
 
 /* 현재 내 포인트 */
 .point{
-    margin-left: 195px;
+    margin-left: auto; /* 고정 픽셀(195px) 대신 auto로 밀어버림 */
+    margin-right: 20px;
 }
 
 /* 이번달 획득한 포인트 칸 */
@@ -176,16 +151,19 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 5px;
 }
 
 /* 이번달 텍스트 */
 .point-month p{
-    margin-left: 10px;
+    margin-left: 15px;
+    font-size: 14px;
 }
 
 /* 이번달 획득한 포인트 */
 .month-point{
-    margin-right: 10px;
+    margin-right: 20px;
+    font-weight: bold;
 }
 
 /* 오늘 획득한 포인트 칸 */
@@ -197,43 +175,45 @@ body{
 
 /* 오늘 텍스트 */
 .point-today p{
-    margin-left: 10px;
+    margin-left: 15px;
+    font-size: 14px;
 }
 
 /* 오늘 적립한 포인트 */
 .today-point{
-    margin-right: 10px;
+    margin-right: 20px;
+    font-weight: bold;
 }
 
 /* 최근 내역 텍스트, 화살표 묶음 */
 .head{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     border-bottom: #4A673B solid 1px;
-    
+    padding-bottom: 5px;
 }
 
 /* 전체 내역 화살표 */
 .arrow img{
-    width: 15px;
-    height: 25px;
+    width: 10px;
+    height: 18px;
     margin-right: 5px;
-    margin-top: 20px;
 }
 
 /* 내역 날짜 */
 .date {
     font-size: 14px;
     font-weight: 700;
-    color: #4A673B; /* 짙은 초록 */
-    margin: 25px 0 10px 5px;
+    color: #4A673B; 
+    margin: 20px 0 10px 5px;
 }
 
 /* 연두색 내역 박스 */
 .point-item{
     background-color: #F1F9E9;
     border-radius: 20px;
-    padding: 10px;
+    padding: 12px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -254,44 +234,15 @@ body{
 /* 포인트 변동 */
 .point-change {
     display: block;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
+    color: #496D36;
 }
 
 /* 변동 이후 포인트 */
 .point-total {
+    display: block;
     font-size: 12px;
     color: #999;
-    margin-top: 2px;
-}
-
-/* 네비바 */
-.nav-bar{
-    position: absolute; /* 프레임에 고정 */
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 80px;
-    background-color: #ffffff;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.nav-item{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    gap: 5px;
-    color: #496D36;
-
-}
-
-.nav-item > img{
-    width: 30px;
+    margin-top: 3px;
 }

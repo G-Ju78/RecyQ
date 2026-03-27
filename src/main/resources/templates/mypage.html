@@ -1,138 +1,109 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마이페이지</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이페이지</title>
 
-    <style>
+<link rel="stylesheet" th:href="@{/css/mypage.css?v=2}">
+<link rel="stylesheet" th:href="@{/css/header.css?v=11}">
+<link rel="stylesheet" th:href="@{/css/nav.css?v=11}">
 
-
+<style>
+::-webkit-scrollbar {
+    display: none !important;
+}
+html, body, .background, .frame {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
 </style>
 
-<link rel="stylesheet" th:href="@{/css/mypage.css}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
-
-
+<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+<link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
+<link th:href="@{https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap}" rel="stylesheet">
 </head>
 <body>
 
-
     <div class="background">
-        
         <div class="frame">
-            <!-- 로고, 메뉴 버튼 -->
-            <header class="header">
-                <div class="menu-icon">
-                    <a th:href="@{#}"><img th:src="@{/img/menu-btn.png}"></a>
-                <h1 class="logo-text">RecyQ</h1></div>
-                <div class="logo-icon">
-                    <img th:src="@{/img/logo.png}">
-                </div>
-            </header>
 
-         <!-- 프로필, 회원 정보 수정 -->
+            <div th:replace="~{header :: headerFragment}"></div>
+
             <main class="white-card">
                 <div class="profile">
                     <div class="profile-img">
                         <img th:src="@{/img/profile.png}">
-                        <div class="name">신권주 님</div>
-                    </div>                   
+                        <div class="name" th:text="${session.loginMem != null ? session.loginMem.id + ' 님' : '로그인 필요'}"></div>
+                    </div>
                     <a class="correct" th:href="@{/updateUser}">회원정보 수정</a>
                 </div>
             </main>
-         
-         <!-- 적립한 포인트 -->
+
             <main class="white-card2">
                 <div class="allpoint">
-                   <div class="mypoint">
+                    <div class="mypoint">
                         <img th:src="@{/img/point.png}">
                         <p>내 포인트</p>
-                        <div class="point">777P</div>
-                   </div>
-                   <div class="point-date">
-                    <div class="point-today">
-                        <p>오늘 적립한 포인트</p>
-                        <div class="today-point">777P</div>
+                        <div class="point" th:text="${session.loginMem != null ? #numbers.formatInteger(session.loginMem.totalPoint, 0, 'COMMA') + 'P' : '0P'}"></div>
                     </div>
-                    <div class="point-month">
-                        <p>이번달 적립한 포인트</p>
-                        <div class="month-point">777P</div>
+                    <div class="point-date">
+                        <div class="point-today">
+                            <p>오늘 적립한 포인트</p>
+                            <div class="today-point" th:text="${todayPoint != null ? todayPoint + 'P' : '0P'}"></div>
+                        </div>
+                        <div class="point-month">
+                            <p>이번달 적립한 포인트</p>
+                            <div class="month-point" th:text="${monthPoint != null ? monthPoint + 'P' : '0P'}"></div>
+                        </div>
                     </div>
-                   </div>
                 </div>
-
             </main>
-         <!-- 포인트 최근 내역 -->
+
             <main class="white-card3">
                 <div class="head">
                     <h3>최근 내역</h3>
                     <div class="arrow">
-                        <a th:href="@{pointList}"><img th:src="@{/img/Vector.png}"></a>
-                    </div>     
+                        <a th:href="@{/pointList}" style="text-decoration: none; color: #4A673B; font-size: 18px; font-weight: 900; padding-right: 5px;">❯</a>
+                    </div>
                 </div>
-                <div class="history">
+
+                <div th:if="${#lists.isEmpty(pointList)}" style="padding: 30px 0; text-align: center; color: #888; font-size: 14px;">
+                    최근 포인트 적립 내역이 없습니다.
+                </div>
+
+                <div class="history" th:each="item : ${pointList}">
                     <div class="date-list">
-                        <p class="date">26.02.27</p>
-                        
+                        <p class="date" th:text="${#temporals.format(item.createdAt, 'yy.MM.dd')}"></p>
+
                         <div class="point-item">
                             <div class="item-info">
-                                <span class="item-title">재활용</span>
+                                <span class="item-title" th:text="${item.logDetail}">재활용</span>
                             </div>
                             <div class="point-info">
-                                <span class="point-change">+ 0P</span>
-                                <span class="point-total">777P</span>
+                                <span class="point-change" 
+                                      th:text="${item.recPoint > 0 ? '+' + item.recPoint + 'P' : item.recPoint + 'P'}">
+                                </span> 
+                                <span class="point-total" th:text="${item.totalPoint + 'P'}">777P</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="history">
-                    <div class="date-list">
-                        <p class="date">26.02.26</p>  
-                        <div class="point-item">
-                            <div class="item-info">
-                                <span class="item-title">재활용</span>
-                            </div>
-                            <div class="point-info">
-                                <span class="point-change">+ 0P</span>
-                                <span class="point-total">777P</span>
-                            </div>  
-                        </div>
-                          <div class="point-item">
-                            <div class="item-info">
-                                <span class="item-title">재활용</span>
-                            </div>
-                            <div class="point-info">
-                                <span class="point-change">+ 0P</span>
-                                <span class="point-total">777P</span>
-                            </div>  
-                        </div>
-                    </div>
-                </div>           
             </main>
-            <!--네비바-->
-            <nav class="nav-bar">
-                <a th:href="@{/main}" class="nav-item">
-                    <img th:src="@{/img/home.png}">
-                    <span>홈</span>
-                </a>
-                <a th:href="@{/scan}" class="nav-item">
-                    <img th:src="@{/img/scan.png}">
-                    <span>스캔</span>
-                </a>
-                <a th:href="@{#}" class="nav-item">
-                    <img th:src="@{/img/shop.png}">
-                    <span>상점</span>
-                </a>
-                <a th:href="@{mypage}" class="nav-item">
-                    <img th:src="@{/img/profile.png}">
-                    <span>마이페이지</span>
-                </a>
-            </nav>
+
+            <div th:replace="~{nav :: navFragment}"></div>
         </div>
     </div>
+
+    <script>
+        function openMenu() {
+            document.getElementById("sideMenu").classList.add("active");
+            document.getElementById("menuOverlay").classList.add("active");
+        }
+        function closeMenu() {
+            document.getElementById("sideMenu").classList.remove("active");
+            document.getElementById("menuOverlay").classList.remove("active");
+        }
+    </script>
 </body>
 </html>

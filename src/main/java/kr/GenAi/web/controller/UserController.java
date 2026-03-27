@@ -1,17 +1,21 @@
 package kr.GenAi.web.controller;
 
+import java.lang.reflect.Member;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import org.springframework.ui.Model;
 import jakarta.servlet.http.HttpSession;
-
-import org.springframework.stereotype.Controller;
-
 import kr.GenAi.web.Entity.User;
+import kr.GenAi.web.dto.PointDTO;
 import kr.GenAi.web.repository.UserRepository;
+import kr.GenAi.web.service.PointService;
 
 @Controller
 public class UserController {
@@ -19,7 +23,8 @@ public class UserController {
 	@Autowired
 	UserRepository repository;
 
-	
+	@Autowired
+	private PointService pointService; // (팀에서 사용하는 서비스 이름에 맞게 수정하세요)
 	
 	// 회원가입 처리
 	@PostMapping("/joinProcess")
@@ -134,4 +139,30 @@ public class UserController {
 		return "redirect:/main";
 	}
 
+	// 마이페이지 컨트롤러 예시
+	@GetMapping("/mypage")
+    public String mypage(HttpSession session, Model model) {
+        // 🌟 2. Member 대신 우리 팀의 Entity인 User로 변경!
+        User loginUser = (User) session.getAttribute("loginMem");
+
+        // (안전장치) 로그인이 안 되어있으면 로그인 페이지로 튕겨내기
+        if (loginUser == null) {
+            return "redirect:/login"; // 팀의 로그인 페이지 경로에 맞게 수정하세요
+        }
+
+        // 🌟 3. 대문자 PointService를 소문자 pointService로 변경
+        int todayPoint = pointService.getTodayPoint(loginUser.getId());
+        int monthPoint = pointService.getMonthPoint(loginUser.getId());
+        List<PointDTO> pointList = pointService.getRecentPointList(loginUser.getId(), loginUser.getTotalPoint());
+
+        // 타임리프(HTML)로 데이터 넘기기
+        model.addAttribute("todayPoint", todayPoint);
+        model.addAttribute("monthPoint", monthPoint);
+        model.addAttribute("pointList", pointList);
+
+        return "mypage";
+    }
+	
+	
+	
 }

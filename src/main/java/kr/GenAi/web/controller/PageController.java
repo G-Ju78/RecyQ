@@ -130,12 +130,6 @@ public class PageController {
        return "scanResult"; 
    }
    
-   // 마이페이지 (로그인 필요)
-    @GetMapping("/mypage")
-    public String mypage(HttpSession session) {
-        if(session.getAttribute("loginMem") == null) return "redirect:/login";
-        return "mypage";
-    }
     
     // 포인트 내역 (로그인 필요)
     @GetMapping("/pointList")
