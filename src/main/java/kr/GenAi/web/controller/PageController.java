@@ -173,6 +173,11 @@ public class PageController {
         return "write";
     }
     
-    
+    // 상점 페이지 (로그인 필요)
+    @GetMapping("/shop")
+    public String shop(HttpSession session) {
+        if(session.getAttribute("loginMem") == null) return "redirect:/login";
+        return "shop";
+    }
     
 }
