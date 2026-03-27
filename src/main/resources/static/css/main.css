@@ -91,7 +91,7 @@ body {
 	margin: 0 auto 15px auto;
 }
 
-/* 포인트 */
+/* 포인트 (PC에서는 예쁜 고정 크기, 모바일에서는 깨짐 방지) */
 .point-box {
 	display: flex;
 	gap: 3px;
@@ -100,8 +100,11 @@ body {
 	color: #496D36;
 	padding: 10px 15px;
 	border-radius: 10px;
-	margin: 20px 80px;
+	width: 260px; /* 🌟 핵심: 오리지널 디자인의 예쁜 절대 크기로 고정! */
+	max-width: 90%; /* 🌟 방어막: 폰 화면이 260px보다 작을 때만 줄어듦 (절대 안 깨짐) */
+	margin: 20px auto; /* 무조건 가운데 정렬 */
 	justify-content: center;
+	box-sizing: border-box;
 }
 
 .point-icon {
@@ -124,14 +127,15 @@ body {
 	white-space: nowrap;
 }
 
-/* 스캔 버튼 */
+/* 스캔 버튼 (포인트 박스보다 길게 고정!) */
 .scan-btn {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: calc(80% - 66px);
-	margin: 0 30px;
-	margin-left: 75px;
+	width: 330px; /* 🌟 핵심: 포인트 박스(260px)보다 넓은 오리지널 크기로 고정! */
+	max-width: 95%; /* 🌟 방어막: 폰 화면이 330px보다 작을 때만 줄어듦 */
+	margin: 0 auto; /* 완벽한 가운데 정렬 */
+	padding: 12px 0;
 	border: 1px solid #496D36;
 	background: #F1FFEA;
 	border-radius: 10px;
@@ -139,10 +143,12 @@ body {
 	font-weight: bold;
 	color: #496D36;
 	cursor: pointer;
+	box-sizing: border-box;
 }
 
 .scan-btn img {
 	width: 40px;
+	margin-right: 10px;
 }
 
 /* 퀴즈 */
@@ -252,40 +258,39 @@ body {
 
 /* 슬라이드 버튼 영역 */
 .hot-post-wrapper {
-    position: relative;
+	position: relative;
 }
 
 /* 화살표 버튼 */
 .slide-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: white;
-    border: none;
-    font-size: 26px;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    cursor: pointer;
-    z-index: 10;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	background: white;
+	border: none;
+	font-size: 26px;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+	cursor: pointer;
+	z-index: 10;
 }
 
 /* 왼쪽 */
 .slide-btn.left {
-    left: 5px;
+	left: 5px;
 }
 
 /* 오른쪽 */
 .slide-btn.right {
-    right: 5px;
+	right: 5px;
 }
 
 /* hover 효과 */
 .slide-btn:hover {
-    background: #F1FFEA;
+	background: #F1FFEA;
 }
-
 
 /* 지도 */
 .map-section {
@@ -410,7 +415,7 @@ body {
 	height: 100%;
 }
 
-.nav-item > img {
+.nav-item>img {
 	width: 30px;
 	height: 30px;
 	object-fit: contain;
@@ -429,11 +434,10 @@ body {
    - 마우스 휠, 터치 스크롤 기능은 정상 작동하되 투박한 막대기만 숨깁니다.
    ========================================================================== */
 html, body {
-    -ms-overflow-style: none; /* 인터넷 익스플로러, 엣지(구형)용 */
-    scrollbar-width: none; /* 파이어폭스용 */
+	-ms-overflow-style: none; /* 인터넷 익스플로러, 엣지(구형)용 */
+	scrollbar-width: none; /* 파이어폭스용 */
 }
 
-html::-webkit-scrollbar, 
-body::-webkit-scrollbar {
-    display: none; /* 크롬, 사파리, 오페라, 엣지용 마법! */
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+	display: none; /* 크롬, 사파리, 오페라, 엣지용 마법! */
 }
