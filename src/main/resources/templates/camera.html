@@ -20,7 +20,7 @@
             <div th:replace="~{header :: headerFragment}"></div>
 
             <div class="camera-wrapper">
-                <video id="camera-stream" autoplay playsinline></video>
+                <video id="camera-stream" autoplay playsinline muted></video>
                 <div class="scan-guide"></div>
                 <div class="scan-text">쓰레기를 가운데에 맞춰주세요</div>
 
@@ -41,7 +41,8 @@
         </div>
     </div>
 
-    <script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
         // --- [헤더 사이드 메뉴 작동용 스크립트] ---
         function openMenu() {
             document.getElementById("sideMenu").classList.add("active");
@@ -52,53 +53,58 @@
             document.getElementById("menuOverlay").classList.remove("active");
         }
 
-        // --- [카메라 작동 스크립트] ---
         const video = document.getElementById('camera-stream');
         const canvas = document.getElementById('snapshot-canvas');
         const captureBtn = document.getElementById('capture-btn');
         const loadingScreen = document.getElementById('loading-screen');
 
-        // 1. 카메라 켜기
+        // 🌟 1. 카메라 켜기 (PC/모바일 호환성 강화)
+        // ideal: "environment"를 써서 후면을 지향하되, 없으면 아무 카메라나 켭니다.
         navigator.mediaDevices.getUserMedia({ 
-            video: { facingMode: "environment" }, 
+            video: { facingMode: { ideal: "environment" } }, 
             audio: false 
         })
         .then(function(stream) {
             video.srcObject = stream;
+            video.onloadedmetadata = function(e) {
+                video.play();
+            };
         })
         .catch(function(error) {
-            console.error("카메라를 켤 수 없습니다.", error);
-            alert("카메라 접근 권한을 허용해주세요!");
+            console.error("카메라 에러:", error);
+            // 권한이 이미 허용되어 있는데 안되는 경우, 대부분 다른 앱(Zoom, 탭)에서 사용 중인 경우입니다.
+            alert("카메라 장치를 찾을 수 없거나 다른 프로그램에서 사용 중입니다.");
         });
 
         // 2. 촬영 버튼 클릭 시
         captureBtn.addEventListener('click', function() {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            const context = canvas.getContext('2d');
-            
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            loadingScreen.style.display = 'flex'; // 로딩 화면 온!
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const context = canvas.getContext('2d');
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                loadingScreen.style.display = 'flex';
 
-            // 3. 위치 정보 가져와서 서버로 전송
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    sendToServer(position.coords.latitude, position.coords.longitude);
-                }, 
-                function(error) {
-                    sendToServer(35.1601, 126.8516); // 거부 시 기본 좌표
-                }
-            );
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        sendToServer(position.coords.latitude, position.coords.longitude);
+                    }, 
+                    function(error) {
+                        sendToServer(35.1601, 126.8516); // 거부 시 광주 좌표
+                    }
+                );
+            }
         });
 
         // 4. 컨트롤러로 폼(Form) 강제 전송
         function sendToServer(lat, lon) {
             canvas.toBlob(function(blob) {
                 const file = new File([blob], "recyq_scan.jpg", { type: "image/jpeg" });
-
                 const form = document.createElement("form");
                 form.method = "POST";
-                form.action = "/recyq/doScan"; 
+                // 🌟 타임리프의 컨텍스트 패스(/recyq) 반영
+                form.action = /*[[@{/doScan}]]*/ "/recyq/doScan"; 
                 form.enctype = "multipart/form-data";
 
                 const fileInput = document.createElement("input");
@@ -109,23 +115,20 @@
                 fileInput.files = dataTransfer.files;
                 form.appendChild(fileInput);
 
-                const latInput = document.createElement("input");
-                latInput.type = "hidden";
-                latInput.name = "lat";   
-                latInput.value = lat;
-                form.appendChild(latInput);
-
-                const lonInput = document.createElement("input");
-                lonInput.type = "hidden";
-                lonInput.name = "lon";   
-                lonInput.value = lon;
-                form.appendChild(lonInput);
+                const inputs = { lat: lat, lon: lon };
+                for (let key in inputs) {
+                    let input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = key;
+                    input.value = inputs[key];
+                    form.appendChild(input);
+                }
 
                 document.body.appendChild(form);
                 form.submit(); 
-
             }, 'image/jpeg', 0.9); 
         }
+        /*]]>*/
     </script>
 </body>
 </html>
