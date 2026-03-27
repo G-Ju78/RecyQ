@@ -42,21 +42,21 @@ body, html {
     padding: 0 20px;
     box-shadow: 4px 4px 4px rgba(0,0,0,0.25);
     border-radius: 20px;
-    /* 🌟 [수정] 위쪽 여백 25px로 늘리고, 양옆 여백 30px로 대폭 증가! */
-    margin: 25px 30px 15px 30px; 
+    /*양옆 여백 30px*/
+    margin: 5px 25px 15px 25px; 
     height: 60px;
     align-items: center;
     display: flex;
 }
-
+/*내 포인트 영역*/
 .white-card2 {
     background-color: #ffffff;
     box-shadow: 4px 4px 4px rgba(0,0,0,0.25);
     border-radius: 20px;
-    margin: 0 30px 15px 30px;
+    margin: 0 25px 15px 25px;
     align-items: stretch;
     display: flex;
-    padding: 0; /* 🌟 핵심: 20px 였던 패딩을 0으로 바꿔 여백을 없앱니다! */
+    padding: 0;
     
 }
 
@@ -70,8 +70,7 @@ body, html {
     padding: 20px;
     box-shadow: 4px 4px 4px rgba(0,0,0,0.25);
     border-radius: 20px;
-    /* 🌟 [수정] 양옆 여백 30px로 증가! */
-    margin: 0 30px 20px 30px; 
+    margin: 0 25px 20px 25px; 
 }
 
 /* 프로필 */
@@ -91,13 +90,13 @@ body, html {
 .profile-img img{
     height: 30px;
     width: 30px;
-    margin-top: 5px;
 }
 
 /* 사용자 이름 */
 .name{
     margin-left: 10px;
     font-weight: bold;
+    font-size: 19px;
 }
 
 /* 회원 정보 수정 */
@@ -105,7 +104,7 @@ body, html {
     color: #4A673B;
     font-size: 14px;
     font-weight: bold;
-    text-decoration: none;
+    text-decoration: underline;;
 }
 
 /* 이번달, 오늘 묶음 */
@@ -114,7 +113,6 @@ body, html {
     background-color: #F1FFEA;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
-    padding: 10px 0; /* 여백 살짝 추가 */
 }
 
 /* 내 포인트 */
@@ -140,7 +138,7 @@ body, html {
     margin-left: 10px;
 }
 
-/* 현재 내 포인트 */
+/* 내 포인트 */
 .point{
     margin-left: auto; /* 고정 픽셀(195px) 대신 auto로 밀어버림 */
     margin-right: 20px;
@@ -151,19 +149,19 @@ body, html {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 5px;
+    font-weight: bold;
 }
 
 /* 이번달 텍스트 */
 .point-month p{
     margin-left: 15px;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 /* 이번달 획득한 포인트 */
 .month-point{
     margin-right: 20px;
-    font-weight: bold;
+    
 }
 
 /* 오늘 획득한 포인트 칸 */
@@ -171,12 +169,13 @@ body, html {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-weight: bold;
 }
 
 /* 오늘 텍스트 */
 .point-today p{
     margin-left: 15px;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 /* 오늘 적립한 포인트 */
@@ -209,11 +208,11 @@ body, html {
     margin: 20px 0 10px 5px;
 }
 
-/* 연두색 내역 박스 */
+/* 최근내역 연두색 박스 */
 .point-item{
     background-color: #F1F9E9;
     border-radius: 20px;
-    padding: 12px 15px;
+    padding: 8px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
