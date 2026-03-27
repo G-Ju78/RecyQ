@@ -3,7 +3,7 @@
 /* 🌟 카메라 영역을 헤더와 네비바 사이에 꽉 차게 맞춤 */
 .camera-wrapper {
     position: relative;
-    width: 100%;
+    width: 92%;
     /* 헤더(약 70px)와 네비바(약 80px)를 제외한 나머지 화면 높이 계산 */
     height: calc(100vh - 150px); 
     background-color: #000;
@@ -11,6 +11,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius:20px;
+    margin-left: 20px;
 }
 
 /* 카메라 영상을 영역에 꽉 차게 */
