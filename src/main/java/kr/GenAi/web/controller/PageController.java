@@ -23,18 +23,18 @@ public class PageController {
    // [1] 기본 페이지 이동 라우팅
    // ====================================================================
 
-	@Autowired
-	private CommunityRepository communityRepository;
+   @Autowired
+   private CommunityRepository communityRepository;
    /**
     * 메인(홈) 페이지 이동
     * 주소창에 /main 이라고 치면 templates 폴더 안의 main.html을 열어줍니다.
     */
-	@GetMapping("/main")
-	public String main(Model model) {
-	    List<Community> hotPosts = communityRepository.findTop3ByOrderByLikeCountDescCreatedAtDesc();
-	    model.addAttribute("hotPosts", hotPosts);
-	    return "main";
-	}
+   @GetMapping("/main")
+   public String main(Model model) {
+       List<Community> hotPosts = communityRepository.findTop3ByOrderByLikeCountDescCreatedAtDesc();
+       model.addAttribute("hotPosts", hotPosts);
+       return "main";
+   }
    /**
     * 로그인 페이지 이동
     */
