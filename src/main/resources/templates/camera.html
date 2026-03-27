@@ -102,7 +102,7 @@
                 // 자바스크립트로 가짜 Form 만들기 (html의 <form> 태그 역할)
                 const form = document.createElement("form");
                 form.method = "POST";
-                form.action = "/doScan"; // 🌟 기존 컨트롤러의 @PostMapping 주소!
+                form.action = "/recyq/doScan"; // 🌟 기존 컨트롤러의 @PostMapping 주소!
                 form.enctype = "multipart/form-data"; // 파일 전송 필수 설정
 
                 // (1) 파일(file) 담기
