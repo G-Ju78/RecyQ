@@ -46,4 +46,29 @@ public class PointService {
         }
         return dtoList;
     }
+    
+ // 🌟 어제 만든 getRecentPointList 와 로직은 똑같고, Repository 메서드만 findAll 로 바꿨습니다.
+    public List<PointDTO> getAllPointList(String userId, int currentTotal) {
+        List<PointLog> logs = pointLogRepository.findAllByUser_IdOrderByCreatedAtDesc(userId);
+        List<PointDTO> dtoList = new ArrayList<>();
+        
+        int runningTotal = currentTotal; 
+        for(PointLog log : logs) {
+            dtoList.add(new PointDTO(
+                log.getPointIdx(), log.getUser().getId(), log.getLogDetail(),
+                log.getRecPoint(), runningTotal, log.getCreatedAt()
+            ));
+            runningTotal -= log.getRecPoint();
+        }
+        return dtoList;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

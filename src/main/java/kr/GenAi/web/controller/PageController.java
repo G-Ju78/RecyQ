@@ -131,12 +131,7 @@ public class PageController {
    }
    
     
-    // 포인트 내역 (로그인 필요)
-    @GetMapping("/pointList")
-    public String pointList(HttpSession session) {
-        if(session.getAttribute("loginMem") == null) return "redirect:/login";
-        return "pointList";
-    }
+
     
     // 퀴즈 시작 페이지
     @GetMapping("/quizStart")

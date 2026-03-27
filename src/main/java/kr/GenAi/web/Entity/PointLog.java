@@ -1,6 +1,7 @@
 package kr.GenAi.web.Entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -58,7 +59,6 @@ public class PointLog {
 	@Column(name="created_at", updatable=false)
 	@CreationTimestamp
 	private LocalDateTime createdAt; // 기록 시간
-	
 	
 	
 }
