@@ -33,6 +33,7 @@
     height: 40px; 
     pointer-events: none;
     z-index: 5;
+    margin-top: 10px;
 }
 
 /* 🌟 세로 라인 (딱 40px만) */
@@ -41,7 +42,7 @@
     position: absolute;
     top: 0; left: 50%;
     transform: translateX(-50%);
-    width: 2px;
+    width: 4px;
     height: 40px; /* 화면 끝까지 안 가고 40px까지만! */
     background-color: #9BC48B; /* 로고색 */
 }
@@ -53,7 +54,7 @@
     top: 50%; left: 0;
     transform: translateY(-50%);
     width: 40px; /* 화면 끝까지 안 가고 40px까지만! */
-    height: 2px;
+    height: 4px;
     background-color: #9BC48B; /* 로고색 */
 }
 
