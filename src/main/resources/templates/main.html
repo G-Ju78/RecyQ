@@ -7,9 +7,13 @@
 
 <title>메인페이지</title>
 
+
+<link rel="stylesheet" th:href="@{/css/main.css}" >
+
 <link rel="stylesheet" th:href="@{/css/main.css?v=3}">
 <link rel="stylesheet" th:href="@{/css/header.css?v=3}">
 <link rel="stylesheet" th:href="@{/css/nav.css?v=3}">
+
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -92,7 +96,7 @@
 								<span class="hot-post-card-title" th:text="${post.title}">
 									게시글 제목 </span> <span class="hot-post-meta"> <span
 									th:text="|❤️ ${post.likeCount}|">❤️ 0</span> <span
-									th:text="|👀 ${post.replyCount}|">👀 0</span>
+									th:text="|💬 ${post.replyCount}|">👀 0</span>
 							</span>
 
 							</a>

@@ -23,18 +23,18 @@ public class PageController {
    // [1] 기본 페이지 이동 라우팅
    // ====================================================================
 
-	@Autowired
-	private CommunityRepository communityRepository;
+   @Autowired
+   private CommunityRepository communityRepository;
    /**
     * 메인(홈) 페이지 이동
     * 주소창에 /main 이라고 치면 templates 폴더 안의 main.html을 열어줍니다.
     */
-	@GetMapping("/main")
-	public String main(Model model) {
-	    List<Community> hotPosts = communityRepository.findTop3ByOrderByLikeCountDescCreatedAtDesc();
-	    model.addAttribute("hotPosts", hotPosts);
-	    return "main";
-	}
+   @GetMapping("/main")
+   public String main(Model model) {
+       List<Community> hotPosts = communityRepository.findTop3ByOrderByLikeCountDescCreatedAtDesc();
+       model.addAttribute("hotPosts", hotPosts);
+       return "main";
+   }
    /**
     * 로그인 페이지 이동
     */
@@ -130,19 +130,8 @@ public class PageController {
        return "scanResult"; 
    }
    
-   // 마이페이지 (로그인 필요)
-    @GetMapping("/mypage")
-    public String mypage(HttpSession session) {
-        if(session.getAttribute("loginMem") == null) return "redirect:/login";
-        return "mypage";
-    }
     
-    // 포인트 내역 (로그인 필요)
-    @GetMapping("/pointList")
-    public String pointList(HttpSession session) {
-        if(session.getAttribute("loginMem") == null) return "redirect:/login";
-        return "pointList";
-    }
+
     
     // 퀴즈 시작 페이지
     @GetMapping("/quizStart")
@@ -173,11 +162,12 @@ public class PageController {
         return "write";
     }
     
-    // 상점 페이지 (로그인 필요)
-    @GetMapping("/shop")
-    public String shop(HttpSession session) {
+ // 분리수거 배출 네비게이션 (로그인 필요)
+    @GetMapping("/map")
+    public String map(HttpSession session) {
         if(session.getAttribute("loginMem") == null) return "redirect:/login";
-        return "shop";
+        return "map";
     }
+    
     
 }
