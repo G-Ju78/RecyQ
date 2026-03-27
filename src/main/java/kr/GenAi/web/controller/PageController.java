@@ -169,5 +169,10 @@ public class PageController {
         return "map";
     }
     
-    
+ // 분리수거 배출 네비게이션 (로그인 필요)
+    @GetMapping("/shop")
+    public String shop(HttpSession session) {
+        if(session.getAttribute("loginMem") == null) return "redirect:/login";
+        return "shop";
+    }
 }
