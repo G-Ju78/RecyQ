@@ -34,7 +34,7 @@ public class Location {
 	
 	@Column(name="recycle_items", length=50, nullable=false)
 	private String recycleItems; 
-	// 6개 항목(폐의약품, 폐건전지, 의류 수거함, 음식물, 폐가전, 재활용 장소)
+	// 6개 항목(폐의약품, 폐건전지, 의류 수거함, 폐가전, 재활용 장소)
 	
 	
 	@Column(nullable=false, length=255)
