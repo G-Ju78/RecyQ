@@ -33,7 +33,7 @@ public class QuizController {
     public List<QuizDto> getQuizList() {
         try {
             // 우리가 아까 main.py에 만들어둔 파이썬 퀴즈 엔드포인트 주소입니다.
-            String fastapiUrl = "http://localhost:8000/api/quiz";
+            String fastapiUrl = "http://10.1.2.7:8000/api/quiz";
             
             RestTemplate restTemplate = new RestTemplate();
             
@@ -46,7 +46,7 @@ public class QuizController {
         } catch (Exception e) {
             System.out.println("🚨 파이썬 퀴즈 서버 통신 오류!");
             e.printStackTrace();
-            return null; 
+            throw new RuntimeException("퀴즈 서버 통신 실패",e);
         }
     }
 

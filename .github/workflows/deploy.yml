@@ -1,30 +1,36 @@
-name: Spring Boot CI:CD
+name: Spring Boot CI/CD
 
 on:
   push:
     branches:
-      - main 
+      - main
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
+      # 1) GitHub 저장소 코드 가져오기
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 1. JDK 버전을 21에서 17로 변경했습니다.
+      # 2) JDK 17 설정
+      # pom.xml의 java.version=17 에 맞춤
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: '17' # <--- 여기를 17로 수정!
+          java-version: '17'
           distribution: 'temurin'
-          cache: maven # 빌드 속도를 위해 캐시 추가
+          cache: maven
 
+      # 3) Maven 빌드
+      # 테스트는 일단 제외하고 jar 생성
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
-      # 2. 파일 전송 (퍼블릭 서버로)
+      # 4) 빌드된 jar 파일 + 배포 스크립트를 퍼블릭 서버로 복사
+      # 현재 pom.xml 버전이 0.0.1-SNAPSHOT 이므로 *SNAPSHOT.jar 사용
       - name: Copy Files to Public Server
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -33,9 +39,11 @@ jobs:
           key: ${{ secrets.PRIVATE_SSH_KEY }}
           source: "target/*SNAPSHOT.jar,deploy_private.sh"
           target: "/root/app"
-          strip_components: 0 
+          strip_components: 0
 
-      # 3. 퍼블릭 서버에서 스크립트 실행
+      # 5) 퍼블릭 서버에서 배포 스크립트 실행
+      # deploy_private.sh 안에서 Private(WAS) 서버로 jar 복사 후
+      # recyq-web 서비스를 재시작하도록 구성
       - name: Execute deploy_private.sh on Public Server
         uses: appleboy/ssh-action@v1.0.3
         with:
