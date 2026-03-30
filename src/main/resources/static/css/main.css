@@ -21,7 +21,7 @@ body {
 .page {
 	position: relative;
 	min-height: 100vh;
-	padding-bottom: 120px;
+	padding-bottom: 15px;
 	box-sizing: border-box;
 }
 
@@ -299,23 +299,24 @@ body {
 	margin-bottom: 10px;
 }
 
-.map-img {
+.PreviewMap {
 	width: 100%;
+	height: 350px;
 	border-radius: 10px;
+	overflow: hidden;           /* 모서리 둥글게 잘리게 */
+	background: #e8efe3;        /* 지도 로딩 전 빈 화면 색 */
 }
 
 /* 챗봇 버튼 */
 .chatbot-btn {
-	position: absolute;
-	right: 10px;
-	bottom: 88px;
+	position: fixed;
+	right: 20px;
+	bottom: 85px;      /* 네비바보다 위로 올림 */
 	width: 70px;
 	height: 70px;
 	border: none;
 	padding: 0;
 	background: transparent;
-	appearance: none;
-	-webkit-appearance: none;
 	cursor: pointer;
 	z-index: 9999;
 }
@@ -328,7 +329,7 @@ body {
 }
 
 .chatbot-btn:hover {
-	transform: scale(1.1);
+	transform: translateX(170px) scale(1.1);
 	transition: 0.2s;
 }
 
@@ -422,18 +423,4 @@ body {
 	font-size: 12px;
 	line-height: 1;
 	white-space: nowrap;
-}
-
-/* ==========================================================================
-   [🌟 전역 스크롤바 숨기기 (네이티브 앱처럼 깔끔하게!)]
-   - 마우스 휠, 터치 스크롤 기능은 정상 작동하되 투박한 막대기만 숨깁니다.
-   ========================================================================== */
-html, body {
-    -ms-overflow-style: none; /* 인터넷 익스플로러, 엣지(구형)용 */
-    scrollbar-width: none; /* 파이어폭스용 */
-}
-
-html::-webkit-scrollbar, 
-body::-webkit-scrollbar {
-    display: none; /* 크롬, 사파리, 오페라, 엣지용 마법! */
 }

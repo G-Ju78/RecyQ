@@ -27,8 +27,15 @@ public class PageController {
      */
     @GetMapping("/main")
     public String main(Model model) {
+        // 1. 메인 페이지 인기글 3개 조회
         List<Community> hotPosts = communityRepository.findTop3ByOrderByLikeCountDescCreatedAtDesc();
         model.addAttribute("hotPosts", hotPosts);
+
+        // 2. 메인 페이지에서도 카카오맵을 사용할 수 있도록 JS 키 전달
+        //    map.html에서만 쓰던 값을 main.html에서도 사용할 수 있게 추가
+        model.addAttribute("kakaoMapKey", kakaoMapKey);
+
+        // 3. 메인 페이지 반환
         return "main";
     }
 
