@@ -341,9 +341,16 @@ body {
 
 /* 챗봇 버튼 */
 .chatbot-btn {
+   /* 화면에 고정 */
    position: fixed;
-   left: calc(50% + 250px - 80px);
+
+   /* 기본은 모바일 우선:
+      화면 오른쪽 안쪽에 12px 띄워서 절대 잘리지 않게 함 */
+   right: 12px;
+
+   /* 하단 네비바 위에 오도록 기존 값 유지 */
    bottom: 85px;
+
    width: 70px;
    height: 70px;
    border: none;
@@ -353,6 +360,7 @@ body {
    z-index: 9999;
 }
 
+/* 버튼 안 이미지가 버튼 크기에 맞게 들어가도록 유지 */
 .chatbot-btn img {
    display: block;
    width: 100%;
@@ -360,11 +368,19 @@ body {
    object-fit: contain;
 }
 
+/* hover 효과 유지 */
 .chatbot-btn:hover {
    transform: scale(1.1);
    transition: 0.2s;
 }
 
+/* 화면이 500px보다 넓을 때는
+   앱 컨테이너 오른쪽 끝 기준으로 다시 맞춤 */
+@media (min-width: 501px) {
+   .chatbot-btn {
+      right: calc((100vw - 500px) / 2 + 12px);
+   }
+}
 /* 햄버거 버튼 메뉴 */
 .side-menu {
    position: fixed;
