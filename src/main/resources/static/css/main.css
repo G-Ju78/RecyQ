@@ -310,8 +310,8 @@ body {
 /* 챗봇 버튼 */
 .chatbot-btn {
 	position: fixed;
-	right: 20px;
-	bottom: 85px;      /* 네비바보다 위로 올림 */
+	left: calc(50% + 250px - 80px);  /* 500px app-container 오른쪽 안쪽 기준 */
+	bottom: 85px;                    /* 네비바 위 */
 	width: 70px;
 	height: 70px;
 	border: none;
@@ -329,7 +329,7 @@ body {
 }
 
 .chatbot-btn:hover {
-	transform: translateX(170px) scale(1.1);
+	transform: scale(1.1);
 	transition: 0.2s;
 }
 
