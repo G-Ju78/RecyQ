@@ -1,170 +1,175 @@
-body{
-    margin:0;
-    font-family:'Inter', sans-serif;
-    background-color:#FFFFFF;
+/* =====================================================================
+   login.css
+   모바일에서 웹과 같은 비율을 최대한 유지하기 위한 수정본
+   - 핵심 원인 1: width:100% + padding 조합인데 box-sizing이 없어 입력칸이 박스 밖으로 튐
+   - 핵심 원인 2: 고정 폭(width:360px)만 쓰고 모바일 보정이 약해서 좁은 화면에서 답답해짐
+   - 핵심 원인 3: 모바일 브라우저의 글자 자동 확대(text autosize)로 비율이 달라질 수 있음
+   ===================================================================== */
 
-    display:flex;
-    justify-content:center;
+/* 브라우저 기본 여백 제거 + 모바일 글자 자동 확대 방지 */
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+/* 모든 요소를 border-box 기준으로 계산하게 해서
+   padding/border가 width 계산에 포함되도록 통일 */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
 }
 
 /* 앱 화면 */
-.app-container{
-    width:100%;
-    max-width:500px;      /* 모바일 앱 크기 */
-    min-height:100vh;
-
-    background:#F1FFEA;
-
-    box-shadow:0 0 20px rgba(0,0,0,0.1);
+.app-container {
+    width: 100%;
+    max-width: 500px;      /* 모바일 앱 규격 유지 */
+    min-height: 100vh;
+    background: #F1FFEA;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
 
 /* 전체 페이지 */
-.page{
-    width:100%;
-    min-height:100vh;
-    background-color:#F1FFEA;
-    position:relative;
-    margin:0 auto;
+.page {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #F1FFEA;
+    position: relative;
+    margin: 0 auto;
+    padding-bottom: 32px; /* 하단 여백을 살짝 줘서 답답함 방지 */
 }
 
 /* 상단 영역 */
-.header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:25px;
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 25px;
 }
 
-/*RecyQ글씨*/
-.title{
-    font-size:42px;
-    font-weight:bold;
-    color:#496D36;
+/* RecyQ 글씨 */
+.title {
+    font-size: 42px;
+    font-weight: bold;
+    color: #496D36;
 }
 
-/*로고 이미지*/
-.logo{
-    width:80px;
+/* 로고 이미지 */
+.logo {
+    width: 80px;
+    flex-shrink: 0; /* 화면이 좁아져도 로고가 찌그러지지 않게 고정 */
 }
 
 /* 로그인 박스 */
-.login-box{
-    width:360px;
-    justify-content:center;
-
-    background:#FFFFFF;
-    border-radius:20px;
-
-    box-shadow:4px 4px 4px rgba(0,0,0,0.25);
-
-    padding:40px;
-    margin:180px auto 0 auto;
+.login-box {
+    width: calc(100% - 40px);   /* 좌우 20px씩 여백을 두고 꽉 차게 사용 */
+    max-width: 360px;           /* 웹에서 보던 기존 박스 크기 유지 */
+    justify-content: center;
+    background: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 4px 4px 4px rgba(0,0,0,0.25);
+    padding: 40px;
+    margin: 180px auto 0 auto;
 }
 
 /* 로그인 글씨 */
-.login-title{
-    text-align:center;
-    font-size:28px;
-    font-weight:bold;
-    margin-bottom:40px;
-    color:#4B613D;
+.login-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    color: #4B613D;
 }
 
 /* 입력 영역 */
-.input-group{
-    margin-bottom:20px;
+.input-group {
+    margin-bottom: 20px;
 }
 
-.input-group label{
-    display:block;
-    margin-bottom:8px;
-    font-weight:bold;
-    color:#4B613D;
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #4B613D;
 }
 
-.input-group input{
-    width:100%;
-    height:40px;
-
-    border:1px solid #aaa;
-    border-radius:6px;
-
-    padding-left:10px;
+.input-group input {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    padding: 0 10px; /* left만 주지 않고 좌우 모두 균형 맞춤 */
+    font: inherit;   /* 모바일에서 input 폰트가 따로 커지는 현상 방지 */
 }
 
-/* 회원가입 페이지로 이동하는 태그*/
-.go-join{
-    display:block;
-    width:fit-content;
-    margin:10px auto 30px auto;
-    font-size:12px;
-    color:#4B613D;
-    text-decoration:underline;
+/* 회원가입 페이지로 이동하는 태그 */
+.go-join {
+    display: block;
+    width: fit-content;
+    margin: 10px auto 30px auto;
+    font-size: 12px;
+    color: #4B613D;
+    text-decoration: underline;
 }
+
 /* 로그인 버튼 */
-.login-btn{
-    width:100%;
-    height:45px;
-    margin-top:20px;
-
-    background:#A0CD88;
-    border:none;
-    border-radius:8px;
-
-    font-size:20px;
-    font-weight:bold;
-    color:#2d3b26;
-
-    cursor:pointer;
-}
-.input-group input:focus{
-    outline:none;
-    border:2px solid #496D36;
+.login-btn {
+    width: 100%;
+    height: 45px;
+    margin-top: 20px;
+    background: #A0CD88;
+    border: none;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2d3b26;
+    cursor: pointer;
+    font-family: inherit;
 }
 
+.input-group input:focus {
+    outline: none;
+    border: 2px solid #496D36;
+}
 
-/* -------------------- */
 /* 태블릿 반응형 */
-/* -------------------- */
+@media (max-width: 1024px) {
+    .title {
+        font-size: 42px;
+    }
 
-@media (max-width:1024px){
+    .logo {
+        width: 80px;
+    }
 
-.title{
-    font-size:42px;
+    .login-box {
+        margin: 180px auto 0 auto;
+    }
 }
 
-.logo{
-    width:80px;
-}
-
-.login-box{
-    margin:180px auto 0 auto;
-}
-
-}
-
-/* -------------------- */
 /* 모바일 반응형 */
-/* -------------------- */
+@media (max-width: 768px) {
+    .title {
+        font-size: 42px;
+    }
 
-@media (max-width:768px){
+    .logo {
+        width: 80px;
+    }
 
-.title{
-    font-size:42px;
-}
+    .login-box {
+        margin: 140px auto 0 auto; /* 모바일에서 너무 아래로 내려가지 않도록 조정 */
+        padding: 25px;
+        width: calc(100% - 32px);  /* 실제 휴대폰 폭에 맞게 좌우 여백 축소 */
+    }
 
-.logo{
-    width:80px;
-}
-
-.login-box{
-    margin:180px auto 0 auto;
-    padding:25px;
-}
-
-.login-title{
-    font-size:28px;
-}
-
+    .login-title {
+        font-size: 28px;
+    }
 }
