@@ -44,11 +44,7 @@
 	</div>
 
 	<script th:inline="javascript">
- 	// 스캔 전송 자바스크립트 부분
-    	const form = document.createElement("form");
-    	form.style.display = "none"; // 🌟 이 한 줄을 반드시 추가하세요! 숨김 처리!
-    	form.method = "POST";
-    	// ... (나머지 코드 동일)
+ 	
         /*<![CDATA[*/
         // --- [헤더 사이드 메뉴 작동용 스크립트] ---
         function openMenu() {
@@ -108,7 +104,11 @@
         function sendToServer(lat, lon) {
             canvas.toBlob(function(blob) {
                 const file = new File([blob], "recyq_scan.jpg", { type: "image/jpeg" });
+             // 여기서 진짜 폼을 만듭니다.
                 const form = document.createElement("form");
+                
+                // 🌟🌟🌟 핵심 수정: 진짜 폼을 만들자마자 바로 숨겨버립니다! 🌟🌟🌟
+                form.style.display = "none";
                 form.method = "POST";
                 // 🌟 타임리프의 컨텍스트 패스(/recyq) 반영
                 form.action = /*[[@{/doScan}]]*/ "/recyq/doScan"; 
