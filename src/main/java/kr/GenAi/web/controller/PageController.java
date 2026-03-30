@@ -76,12 +76,7 @@ public class PageController {
         return "updateUser";
     }
 
-    /** [AI 스캔] 쓰레기 인식 카메라 화면 이동 */
-    @GetMapping("/scan")
-    public String goScan(HttpSession session) {
-        return "scan";
-    }
-
+   
     /** [퀴즈 시작 안내] 퀴즈 진입 전 규칙 설명 화면 이동 */
     @GetMapping("/quizStart")
     public String quizStart(HttpSession session) {
