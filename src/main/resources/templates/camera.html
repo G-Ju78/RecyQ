@@ -1,47 +1,54 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RecyQ - AI 스캔</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RecyQ - AI 스캔</title>
 
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-    <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{/css/nav.css}">
-    <link rel="stylesheet" th:href="@{/css/camera.css}">
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/nav.css}">
+<link rel="stylesheet" th:href="@{/css/camera.css}">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
+	rel="stylesheet">
 </head>
 <body>
 
-    <div class="app-container">
-        <div class="page">
-            
-            <div th:replace="~{header :: headerFragment}"></div>
+	<div class="app-container">
+		<div class="page">
 
-            <div class="camera-wrapper">
-                <video id="camera-stream" autoplay playsinline muted></video>
-                <div class="scan-guide"></div>
-                <div class="scan-text">물체를 중앙에 맞춰주세요</div>
+			<div th:replace="~{header :: headerFragment}"></div>
 
-                <div class="capture-btn-container">
-                    <button class="capture-btn" id="capture-btn"></button>
-                </div>
-            </div>
+			<div class="camera-wrapper">
+				<video id="camera-stream" autoplay playsinline muted></video>
+				<div class="scan-guide"></div>
+				<div class="scan-text">물체를 중앙에 맞춰주세요</div>
 
-            <canvas id="snapshot-canvas" style="display: none;"></canvas>
+				<div class="capture-btn-container">
+					<button class="capture-btn" id="capture-btn"></button>
+				</div>
+			</div>
 
-            <div id="loading-screen">
-                <div class="spinner"></div>
-                <h2>AI가 분석 중입니다...</h2>
-            </div>
+			<canvas id="snapshot-canvas" style="display: none;"></canvas>
 
-            <div th:replace="~{nav :: navFragment}"></div>
+			<div id="loading-screen">
+				<div class="spinner"></div>
+				<h2>AI가 분석 중입니다...</h2>
+			</div>
 
-        </div>
-    </div>
+			<div th:replace="~{nav :: navFragment}"></div>
 
-    <script th:inline="javascript">
+		</div>
+	</div>
+
+	<script th:inline="javascript">
+ // 스캔 전송 자바스크립트 부분
+    const form = document.createElement("form");
+    form.style.display = "none"; // 🌟 이 한 줄을 반드시 추가하세요! 숨김 처리!
+    form.method = "POST";
+    // ... (나머지 코드 동일)
         /*<![CDATA[*/
         // --- [헤더 사이드 메뉴 작동용 스크립트] ---
         function openMenu() {
