@@ -1,158 +1,158 @@
-body{
-    margin:0;
-    font-family:'Inter', sans-serif;
-    background-color:#FFFFFF;
+/* =====================================================================
+   join.css
+   모바일에서 회원가입 폼 박스/입력칸 비율이 깨지는 문제 수정
+   - box-sizing 추가
+   - 모바일 글자 자동 확대 방지
+   - 잘못 작성된 .login-box / .login-title 선택자를 .join-box / .join-title로 수정
+   ===================================================================== */
 
-    display:flex;
-    justify-content:center;
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
 }
 
 /* 앱 화면 */
-.app-container{
-    width:100%;
-    max-width:500px;      /* 모바일 앱 크기 */
-    min-height:100vh;
-
-    background:#F1FFEA;
-
-    box-shadow:0 0 20px rgba(0,0,0,0.1);
+.app-container {
+    width: 100%;
+    max-width: 500px;
+    min-height: 100vh;
+    background: #F1FFEA;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
+
 /* 전체 페이지 */
-.page{
-    width:100%;
-    min-height:100vh;
-    background-color:#F1FFEA;
-    position:relative;
-    margin:0 auto;
+.page {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #F1FFEA;
+    position: relative;
+    margin: 0 auto;
+    padding-bottom: 32px;
 }
 
 /* 상단 영역 */
-.header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:25px;
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 25px;
 }
 
-/*RecyQ글씨*/
-.title{
-    font-size:42px;
-    font-weight:bold;
-    color:#496D36;
+/* RecyQ 글씨 */
+.title {
+    font-size: 42px;
+    font-weight: bold;
+    color: #496D36;
 }
 
-/*로고 이미지*/
-.logo{
-    width:80px;
+/* 로고 이미지 */
+.logo {
+    width: 80px;
+    flex-shrink: 0;
 }
+
 /* 회원가입 박스 */
-.join-box{
-    width:360px;
-    justify-content:center;
-
-    background:#FFFFFF;
-    border-radius:20px;
-
-    box-shadow:4px 4px 4px rgba(0,0,0,0.25);
-
-    padding:40px;
-    margin:100px auto 0 auto;
+.join-box {
+    width: calc(100% - 40px);   /* 모바일에서도 박스가 화면 안에 자연스럽게 들어오게 */
+    max-width: 360px;           /* 웹에서 보던 크기는 유지 */
+    justify-content: center;
+    background: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 4px 4px 4px rgba(0,0,0,0.25);
+    padding: 40px;
+    margin: 100px auto 0 auto;
 }
 
 /* 회원가입 글씨 */
-.join-title{
-    text-align:center;
-    font-size:28px;
-    font-weight:bold;
-    margin-bottom:40px;
-    color:#4B613D;
+.join-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    color: #4B613D;
 }
 
-/* 아이디, 비밀번호, 전화번호 입력 칸들 */
-.input-group{
-    margin-bottom:20px;
+/* 입력 칸들 */
+.input-group {
+    margin-bottom: 20px;
 }
 
-.input-group label{
-    display:block;
-    margin-bottom:8px;
-    font-weight:bold;
-    color:#4B613D;
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #4B613D;
 }
 
-.input-group input{
-    width:100%;
-    height:40px;
-
-    border:1px solid #aaa;
-    border-radius:6px;
-
-    padding-left:10px;
+.input-group input {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    padding: 0 10px;
+    font: inherit;
 }
 
 /* 회원가입 버튼 */
-.join-btn{
-    width:100%;
-    height:45px;
-    margin-top:10px;
-    margin-bottom:10px;
-
-    background:#A0CD88;
-    border:none;
-    border-radius:8px;
-
-    font-size:20px;
-    font-weight:bold;
-    color:#2d3b26;
-
-    cursor:pointer;
+.join-btn {
+    width: 100%;
+    height: 45px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: #A0CD88;
+    border: none;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2d3b26;
+    cursor: pointer;
+    font-family: inherit;
 }
 
-/* -------------------- */
 /* 태블릿 반응형 */
+@media (max-width: 1024px) {
+    .title {
+        font-size: 42px;
+    }
 
-@media (max-width:1024px){
+    .logo {
+        width: 80px;
+    }
 
-
-.title{ 
-/* recyq 어플 이름 텍스트 크기*/
-    font-size:42px;
+    .join-box {
+        margin: 100px auto 0 auto;
+    }
 }
 
-.logo{
-/* 재활용 로고 이미지 파일 크기*/
-    width:80px;
-}
-
-.join-box{
-/* 회원가입 박스 (아이디, 비밀번호, 전화번호 입력하는 요소가 들어있음)*/
-    margin:100px auto 0 auto;
-}
-
-}
-
-/* -------------------- */
 /* 모바일 반응형 */
-/* -------------------- */
- 
-@media (max-width:768px){
+@media (max-width: 768px) {
+    .title {
+        font-size: 42px;
+    }
 
-.title{
-    font-size:42px;
-}
+    .logo {
+        width: 80px;
+    }
 
-.logo{
-    width:80px;
-}
+    .join-box {
+        margin: 120px auto 0 auto;
+        padding: 25px;
+        width: calc(100% - 32px);
+    }
 
-.login-box{
-    margin:150px auto 0 auto;
-    padding:25px;
-}
-
-.login-title{
-    font-size:28px;
-}
-
+    .join-title {
+        font-size: 28px;
+    }
 }
