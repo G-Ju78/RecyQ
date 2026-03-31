@@ -13,10 +13,9 @@ body{
     max-width: 480px;      /* PC에서 볼 때 너무 커지지 않게 제한 */
     min-height: 100vh;     /* 세로를 무조건 화면 꽉 차게 */
     margin: 0 auto;
-    background-color: #F1FFEA; /* 🌟 RecyQ 메인 초록색으로 롤백! (또는 아예 이 줄을 삭제) */
+    background-color: #F1FFEA;
     position: relative;
     overflow: hidden; 
-    /* 기존 box-shadow 등은 그대로 유지하세요 */
 }
 
 /* 전체 페이지 */
