@@ -1,5 +1,11 @@
 @charset "UTF-8";
 
+/* =========================================================
+   [1] 전체 기본 설정
+   - 여백 초기화
+   - 박스 크기 계산 통일
+   - 기본 폰트 지정
+   ========================================================= */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -7,12 +13,23 @@
     font-family: 'Inter', 'Apple SD Gothic Neo', sans-serif;
 }
 
+/* =========================================================
+   [2] html, body 기본 설정
+   - 전체 화면 높이 사용
+   - 페이지 스크롤 방지
+   ========================================================= */
 html, body {
     width: 100%;
     height: 100vh;
-    overflow: hidden; /* 전체 페이지 스크롤 방지 */
+    overflow: hidden;
 }
 
+/* =========================================================
+   [3] 앱 전체 컨테이너
+   - 모바일 화면처럼 최대 폭 제한
+   - 세로 flex 배치
+   - 하단 nav 높이만큼 여백 확보
+   ========================================================= */
 .app-container {
     position: relative;
     width: 100%;
@@ -21,11 +38,15 @@ html, body {
     display: flex;
     flex-direction: column;
     background: #F1FFEA;
-    margin: 0 auto; /* 중앙 정렬 */
+    margin: 0 auto;
     overflow: hidden;
-    padding-bottom: 60px; /* 네비게이션 공간 */
+    padding-bottom: 60px;
 }
 
+/* =========================================================
+   [4] 본문(main) 영역
+   - header 아래, nav 위 공간
+   ========================================================= */
 main {
     flex: 1;
     display: flex;
@@ -33,13 +54,16 @@ main {
     min-height: 0;
 }
 
-/* 검색 및 카테고리 영역 */
+/* =========================================================
+   [5] 검색 + 카테고리 영역
+   ========================================================= */
 .search-section {
     padding: 10px 20px;
     background-color: #F1FFEA;
     flex-shrink: 0;
 }
 
+/* 페이지 제목 */
 .page-title {
     font-size: 18px;
     margin-bottom: 12px;
@@ -47,12 +71,17 @@ main {
     color: #496D36;
 }
 
+/* =========================================================
+   [6] 검색창 영역
+   - input + 버튼 가로 정렬
+   ========================================================= */
 .search-bar {
     display: flex;
     gap: 8px;
     margin-bottom: 15px;
 }
 
+/* 검색 입력창 */
 .search-bar input {
     flex: 1;
     height: 40px;
@@ -63,6 +92,7 @@ main {
     background: white url('https://img.icons8.com/material-outlined/24/3498db/search--v1.png') no-repeat 10px center / 18px;
 }
 
+/* 검색 버튼 */
 .search-btn {
     width: 60px;
     background-color: #A0CD88;
@@ -73,25 +103,125 @@ main {
     cursor: pointer;
 }
 
-/* 카테고리 슬라이더 */
-.category-wrapper { display: flex; align-items: center; gap: 5px; }
-.category-viewport { flex: 1; overflow: hidden; }
-.category-slider { display: flex; width: 200%; }
-.category-page { width: 50%; display: flex; justify-content: space-between; padding: 5px; }
-.category-item { width: 23%; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; }
-.category-item span { font-size: 11px; font-weight: 700; color: #496D36; text-align: center; line-height: 1.2; }
-.icon-circle { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
-.icon-circle img { width: 22px; height: 22px; }
+/* =========================================================
+   [7] 카테고리 슬라이더 전체 영역
+   - 아이콘 버튼 + 오른쪽 화살표
+   ========================================================= */
+.category-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
 
-/* 지도 영역 */
+/* 슬라이더가 보이는 영역만 잘라서 표시 */
+.category-viewport {
+    flex: 1;
+    overflow: hidden;
+}
+
+/* 슬라이더 전체 줄
+   - 페이지가 2개라 width를 200%로 설정
+   */
+.category-slider {
+    display: flex;
+    width: 200%;
+}
+
+/* 슬라이더 한 페이지 */
+.category-page {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 2px;
+}
+
+/* 카테고리 1개 단위 */
+.category-item {
+    width: 23%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+/* 카테고리 설명 글씨 */
+.category-item span {
+    font-size: 11px;
+    font-weight: 700;
+    color: #496D36;
+    text-align: center;
+    line-height: 1.25;
+}
+
+/* =========================================================
+   [8] 원형 아이콘 버튼 스타일
+   - 공통 크기 / 정렬 / 그림자
+   ========================================================= */
+.icon-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.20),
+        0 2px 4px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* 아이콘 이미지 크기 */
+.icon-circle img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+/* 버튼 누르는 순간 효과 */
+.category-item:active .icon-circle {
+    transform: scale(0.96);
+    box-shadow:
+        0 2px 5px rgba(0, 0, 0, 0.18),
+        0 1px 2px rgba(0, 0, 0, 0.10);
+}
+
+/* 선택된 버튼 강조 */
+.category-item.active .icon-circle {
+    box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.35),
+        0 6px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* ALL 버튼 전용 스타일 */
+.icon-circle.all {
+    font-weight: 400;
+    font-size: 15px;
+    color: #ffffff;
+}
+
+/* =========================================================
+   [9] 지도 영역
+   - 남은 공간 전체 사용
+   ========================================================= */
 .map-area {
     flex: 1;
     position: relative;
     background-color: #f2f2f2;
+    min-height: 0;
 }
 
-#map { width: 100%; height: 100%; }
+/* 카카오맵 div */
+#map {
+    width: 100%;
+    height: 100%;
+}
 
+/* =========================================================
+   [10] 지도 위 필터 버튼 영역
+   - 현 위치 버튼 + 지역 select
+   - 지도 위에 absolute로 배치
+   ========================================================= */
 .map-filters {
     position: absolute;
     top: 10px;
@@ -101,7 +231,9 @@ main {
     gap: 5px;
 }
 
-.map-filters select, .current-loc-btn {
+/* 지도 위 버튼 / select 공통 */
+.map-filters select,
+.current-loc-btn {
     padding: 5px 12px;
     border-radius: 15px;
     border: 1px solid #ddd;
@@ -111,4 +243,9 @@ main {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.current-loc-btn { background: #4CAF50; color: white; border: none; }
+/* 현 위치 버튼 전용 */
+.current-loc-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+}
