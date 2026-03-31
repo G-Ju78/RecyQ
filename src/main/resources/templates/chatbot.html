@@ -9,6 +9,15 @@
     <link rel="stylesheet" th:href="@{/css/nav.css}">
     <link rel="stylesheet" th:href="@{/css/chatbot.css}">
 </head>
+<style>
+    ::-webkit-scrollbar {
+        display: none !important; /* 크롬, 사파리, 엣지 스크롤바 완전 숨김 */
+    }
+    html, body, .app-container {
+        -ms-overflow-style: none !important; /* 구형 엣지, IE 숨김 */
+        scrollbar-width: none !important; /* 파이어폭스 숨김 */
+    }
+</style>
 <body>
     <div class="app-container">
         

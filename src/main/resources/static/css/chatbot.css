@@ -23,10 +23,13 @@ body {
 .chat-wrap {
     height: calc(100vh - 70px - 70px - 80px); /* 전체 - 헤더 - 입력창 - 네비바 */
     overflow-y: auto; /* 내용이 많아지면 세로 스크롤 생성 */
-    padding: 20px 15px;
+    /* 🌟 수정 포인트 1: 아래쪽 여백(padding)을 20px -> 40px로 늘려서 숨쉴 공간 확보 */
+    padding: 20px 15px 20px 15px;
     display: flex;
     flex-direction: column;
     gap: 15px; /* 말풍선 사이 간격 */
+    /* 🌟 수정 포인트 2: 패딩이 늘어나도 전체 height(calc)를 넘지 않도록 박스 크기 강제 고정! */
+    box-sizing: border-box;
 }
 
 /* 🌟 말풍선 공통 스타일 */

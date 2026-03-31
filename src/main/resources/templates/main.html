@@ -3,12 +3,9 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>메인페이지</title>
 
-
-<link rel="stylesheet" th:href="@{/css/main.css}" >
 
 <link rel="stylesheet" th:href="@{/css/main.css?v=3}">
 <link rel="stylesheet" th:href="@{/css/header.css?v=3}">
@@ -110,11 +107,11 @@
 			</div>
 
 			<div class="map-section">
-
+			
 				<div class="map-title">📍 내 주변 분리수거장 위치</div>
-
-				<img th:src="@{/img/map.png}" class="map-img">
-
+			
+				<div id="mainPreviewMap" class="PreviewMap"></div>
+			
 			</div>
 
 			<button class="chatbot-btn" onclick="goChatbot()">
@@ -123,41 +120,220 @@
 
 		</div> <div th:replace="~{nav :: navFragment}"></div>
 
-	</div> <script>
-		function openCamera() {
-			window.location.href = "/camera";
-		}
+	</div>
 
+	<!-- 카카오맵 SDK 추가 -->
+	<script th:src="@{https://dapi.kakao.com/v2/maps/sdk.js(appkey=${kakaoMapKey},libraries='services',autoload='false')}"></script>
+	
+	<script th:inline="javascript">
 		function openMenu() {
 			document.getElementById("sideMenu").classList.add("active");
 			document.getElementById("menuOverlay").classList.add("active");
 		}
-
+	
 		function closeMenu() {
 			document.getElementById("sideMenu").classList.remove("active");
 			document.getElementById("menuOverlay").classList.remove("active");
 		}
+	
 		function slideLeft() {
 			document.getElementById("hotPostSlider").scrollBy({
 				left : -300,
 				behavior : "smooth"
 			});
 		}
-
+	
 		function slideRight() {
 			document.getElementById("hotPostSlider").scrollBy({
 				left : 300,
 				behavior : "smooth"
 			});
 		}
-		
-		// 기존 코드: window.location.href = "/camera";
-		// 🌟 수정할 코드:
+	
+		/* 카메라 이동 */
 		function openCamera() {
-		    window.location.href = "/recyq/camera"; // 우리 프로젝트 기본 경로 추가!
+		    window.location.href = "/recyq/camera";
 		}
-		
-		
+	
+		/* 챗봇 이동 */
+		function goChatbot() {
+			window.location.href = "/recyq/chatbot";
+		}
+	
+		/* =========================
+		   메인 지도 미리보기
+		   - 기존 이미지 자리만 실제 지도 div로 변경
+		   - 가까운 장소 3개만 마커 표시
+		========================= */
+	
+		let previewMap;
+		let previewMarkers = [];
+		let currentMarker = null;
+	
+		// /recyq context-path 자동 반영
+		const locationApiUrl = /*[[@{/api/locations}]]*/ '';
+		const fullMapPageUrl = /*[[@{/map}]]*/ '';
+	
+		window.addEventListener('load', function () {
+			if (typeof kakao !== 'undefined' && kakao.maps) {
+				kakao.maps.load(function () {
+					initMainPreviewMap();
+				});
+			}
+		});
+	
+		function initMainPreviewMap() {
+			const mapContainer = document.getElementById('mainPreviewMap');
+
+			// 혹시 지도 영역이 없으면 종료
+			if (!mapContainer) return;
+
+			// 기본 중심좌표 (광주)
+			const defaultLat = 35.1461;
+			const defaultLon = 126.9231;
+			const defaultCenter = new kakao.maps.LatLng(defaultLat, defaultLon);
+
+			const options = {
+				center: defaultCenter,
+				level: 5
+			};
+
+			previewMap = new kakao.maps.Map(mapContainer, options);
+
+			// 지도 영역 클릭 시 /map 페이지로 이동
+			kakao.maps.event.addListener(previewMap, 'click', function () {
+				window.location.href = fullMapPageUrl;
+			});
+
+			// 위치 먼저 가져와서 현위치 중심으로 시작
+			loadCurrentLocationAndMarkers();
+
+			// 처음 렌더링 깨짐 방지
+			setTimeout(function () {
+				previewMap.relayout();
+			}, 300);
+		}
+	
+		function loadCurrentLocationAndMarkers() {
+			const fallbackLat = 35.1461;
+			const fallbackLon = 126.9231;
+			const fallbackLatLng = new kakao.maps.LatLng(fallbackLat, fallbackLon);
+
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(
+					function(position) {
+						const userLat = position.coords.latitude;
+						const userLon = position.coords.longitude;
+						const currentLatLng = new kakao.maps.LatLng(userLat, userLon);
+
+						// 현위치 중심으로 지도 이동
+						previewMap.setCenter(currentLatLng);
+						previewMap.setLevel(4);
+
+						// 현재 위치 마커
+						drawCurrentMarker(currentLatLng);
+
+						// 주변 분리수거장 불러오기
+						fetchNearbyLocations(userLat, userLon);
+					},
+					function(error) {
+						console.error("위치 정보를 가져오지 못했습니다.", error);
+
+						// 실패 시 광주 기본 좌표 기준
+						previewMap.setCenter(fallbackLatLng);
+						previewMap.setLevel(5);
+
+						drawCurrentMarker(fallbackLatLng);
+						fetchNearbyLocations(fallbackLat, fallbackLon);
+					},
+					{
+						enableHighAccuracy: true,
+						timeout: 10000,
+						maximumAge: 0
+					}
+				);
+			} else {
+				previewMap.setCenter(fallbackLatLng);
+				previewMap.setLevel(5);
+
+				drawCurrentMarker(fallbackLatLng);
+				fetchNearbyLocations(fallbackLat, fallbackLon);
+			}
+		}
+	
+		function drawCurrentMarker(latLng) {
+			if (currentMarker) {
+				currentMarker.setMap(null);
+			}
+	
+			currentMarker = new kakao.maps.Marker({
+				map: previewMap,
+				position: latLng
+			});
+		}
+	
+		function fetchNearbyLocations(userLat, userLon) {
+			fetch(locationApiUrl)
+				.then(response => response.json())
+				.then(data => {
+					const nearestList = data
+						.map(loc => ({
+							...loc,
+							distance: getDistanceKm(userLat, userLon, loc.lat, loc.lon)
+						}))
+						.sort((a, b) => a.distance - b.distance)
+						.slice(0, 3); // 메인에서는 가까운 3개만
+	
+					drawLocationMarkers(nearestList, userLat, userLon);
+				})
+				.catch(error => {
+					console.error("장소 데이터를 불러오는 중 오류 발생:", error);
+				});
+		}
+	
+		function drawLocationMarkers(locations, userLat, userLon) {
+			previewMarkers.forEach(marker => marker.setMap(null));
+			previewMarkers = [];
+	
+			const bounds = new kakao.maps.LatLngBounds();
+	
+			// 현재 위치 bounds 포함
+			bounds.extend(new kakao.maps.LatLng(userLat, userLon));
+	
+			locations.forEach(loc => {
+				const position = new kakao.maps.LatLng(loc.lat, loc.lon);
+	
+				const marker = new kakao.maps.Marker({
+					map: previewMap,
+					position: position
+				});
+	
+				previewMarkers.push(marker);
+				bounds.extend(position);
+			});
+	
+			if (locations.length > 0) {
+				previewMap.setBounds(bounds);
+			}
+		}
+	
+		function getDistanceKm(lat1, lon1, lat2, lon2) {
+			const R = 6371;
+			const dLat = deg2rad(lat2 - lat1);
+			const dLon = deg2rad(lon2 - lon1);
+	
+			const a =
+				Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+				Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+				Math.sin(dLon / 2) * Math.sin(dLon / 2);
+	
+			const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+			return R * c;
+		}
+	
+		function deg2rad(deg) {
+			return deg * (Math.PI / 180);
+		}
 	</script>
 
 </body>

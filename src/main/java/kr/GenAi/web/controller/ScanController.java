@@ -69,7 +69,7 @@ public class ScanController {
 			// [STEP 1] FastAPI(Python AI 서버)와 통신 준비
 			// ====================================================================
 			// 내부망(로컬)에서 실행 중인 파이썬 AI 서버의 엔드포인트 주소
-			String fastapiUrl = "http://localhost:8000/api/scan";
+			String fastapiUrl = "http://10.1.2.7:8000/api/scan";
 
 			// RestTemplate: 스프링 부트에서 다른 서버(외부 API)로 HTTP 요청을 보낼 때 사용하는 도구
 			RestTemplate restTemplate = new RestTemplate();

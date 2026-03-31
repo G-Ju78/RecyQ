@@ -1,32 +1,34 @@
 #!/bin/bash
 
 # --- Private 서버 정보 ---
-PRIVATE_HOST="10.1.2.6"          # 실제 Private 서버 IP
-PRIVATE_USER="root"                 # Private 서버 계정
-PRIVATE_KEY="/root/.ssh/id_rsa"     # Public 서버에서 Private 서버 접속용 키
+PRIVATE_HOST="10.1.2.6"
+PRIVATE_USER="root"
+PRIVATE_KEY="/root/.ssh/id_rsa"
 
-# --- 실행 후 로그 남기기 ---
+# --- 퍼블릭 서버에서 남길 배포 로그 파일 ---
 exec > /root/app/deploy_private.log 2>&1
 echo "Starting deployment to Private server..."
 
-# 현재 shell 세션에 SSH agent 등록 및 활성화
-eval $(ssh-agent -s)
-ssh-add $PRIVATE_KEY
+# SSH agent 실행
+eval "$(ssh-agent -s)"
 
-# 원격 서버에 애플리케이션을 저장할 디렉토리(폴더) 생성
-ssh -o StrictHostKeyChecking=no $PRIVATE_USER@$PRIVATE_HOST "mkdir -p /root/app"
+# 퍼블릭 서버에 저장된 Private 서버 접속용 개인키 등록
+ssh-add "$PRIVATE_KEY"
 
-# 로컬에서 빌드된 JAR 파일을 원격 서버의 /root/app/app.jar 로 복사
-scp -o StrictHostKeyChecking=no /root/app/target/*.jar $PRIVATE_USER@$PRIVATE_HOST:/root/app/app.jar
+# --- Private(WAS) 서버에 프로젝트 폴더 생성 ---
+ssh -o StrictHostKeyChecking=no "$PRIVATE_USER@$PRIVATE_HOST" "mkdir -p /root/app"
 
-# 애플리케이션을 백그라운드에서 실행하고 로그는 app.log에 저장
-ssh -o StrictHostKeyChecking=no $PRIVATE_USER@$PRIVATE_HOST "nohup java -jar /root/app/app.jar \
---spring.config.location=/home/config/application.properties > /root/app/app.log 2>&1 &"
+# --- 퍼블릭 서버 -> Private(WAS) 서버로 빌드된 jar 복사 ---
+scp -o StrictHostKeyChecking=no /root/app/target/*SNAPSHOT.jar "$PRIVATE_USER@$PRIVATE_HOST:/root/app/app.jar"
 
-# 추가 배포 작업이 필요한 경우 실행
-ssh -o StrictHostKeyChecking=no $PRIVATE_USER@$PRIVATE_HOST "bash < /root/deploy.sh"
+# --- Private(WAS) 서버에서 Spring Boot 서비스 재시작 ---
+# 기존 nohup java -jar 방식 대신 systemd 서비스(recyq-web) 사용
+ssh -o StrictHostKeyChecking=no "$PRIVATE_USER@$PRIVATE_HOST" "
+systemctl daemon-reload && \
+systemctl restart recyq-web
+"
 
-# SSH 세션 종료 후 보안상 agent 종료
+# --- 보안상 ssh-agent 종료 ---
 ssh-agent -k
 
-echo "Deployment to Private server completed."
+echo 'Deployment to Private server completed.'

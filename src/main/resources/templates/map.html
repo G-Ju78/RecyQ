@@ -10,15 +10,15 @@
 
     <!-- =========================================================
          [2] 폰트 / CSS 연결
-         - map.css : 지도 페이지 전용 스타일
          - header.css : 상단 헤더 스타일
-         - nav.css : 하단 네비게이션 스타일
+         - nav.css    : 하단 네비게이션 스타일
+         - map.css    : 지도 페이지 전용 스타일
          ========================================================= -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" th:href="@{/css/map.css?v=15}">
+    <link rel="stylesheet" th:href="@{/css/map.css?v=16}">
     <link rel="stylesheet" th:href="@{/css/header.css?v=10}">
     <link rel="stylesheet" th:href="@{/css/nav.css?v=10}">
 
@@ -34,7 +34,7 @@
 
         /* =========================================================
            [4] 마커 클릭 시 뜨는 정보창 스타일
-           - 텍스트 길이에 따라 박스 크기가 늘어나도록 처리
+           - 텍스트 길이에 따라 박스 크기가 자연스럽게 늘어나도록 처리
            ========================================================= */
         .info-content {
             display: inline-block;
@@ -109,8 +109,9 @@
             <h2 class="page-title">배출장소 전체보기</h2>
 
             <!-- =====================================================
-                 [6-1] 주소 / 장소 검색창
+                 [6-1] 주소 / 장소명 검색창
                  - Enter 키 또는 검색 버튼으로 searchLocation() 실행
+                 - 행정구역 / 도로명주소 / 역 이름 / 건물명 검색 가능
                  ===================================================== -->
             <div class="search-bar">
                 <input type="text"
@@ -122,15 +123,12 @@
 
             <!-- =====================================================
                  [7] 카테고리 슬라이더
-                 - 페이지 1 / 페이지 2로 구성
                  ===================================================== -->
             <div class="category-wrapper">
                 <div class="category-viewport">
                     <div class="category-slider" id="categorySlider">
 
-                        <!-- =====================
-                             [7-1] 1페이지 카테고리
-                             ===================== -->
+                        <!-- 1페이지 -->
                         <div class="category-page">
                             <div class="category-item active" onclick="filterMarkers('all', this)">
                                 <div class="icon-circle all" style="background: #9e9e9e;">ALL</div>
@@ -159,9 +157,7 @@
                             </div>
                         </div>
 
-                        <!-- =====================
-                             [7-2] 2페이지 카테고리
-                             ===================== -->
+                        <!-- 2페이지 -->
                         <div class="category-page">
                             <div class="category-item" onclick="filterMarkers('clothes', this)">
                                 <div class="icon-circle clothes" style="background: #ff9800;">
@@ -214,7 +210,7 @@
 
 <!-- =========================================================
      [10] 카카오 지도 SDK
-     - services 라이브러리가 있어야 주소검색/장소검색 가능
+     - services 라이브러리가 있어야 주소검색 / 장소검색 가능
      ========================================================= -->
 <script th:src="@{https://dapi.kakao.com/v2/maps/sdk.js(appkey=${kakaoMapKey}, libraries='services', autoload='false')}"></script>
 
@@ -258,6 +254,7 @@ window.onload = function() {
             .then(data => displayMarkers(data))
             .catch(err => console.error("데이터 수신 에러:", err));
 
+        // 지도 렌더링 보정
         setTimeout(function () {
             map.relayout();
         }, 200);
@@ -353,7 +350,7 @@ function getCurrentLocation() {
    [17] 주소 / 장소명 검색 함수
    - 1차: 주소 검색(addressSearch)
    - 2차: 장소명 검색(keywordSearch)
-   - 주소/역이름/건물명 모두 대응 가능
+   - 행정구역 / 도로명주소 / 역 이름 / 건물명 모두 대응
    ========================================================= */
 function searchLocation() {
     var input = document.getElementById('addressInput').value.trim();
@@ -366,16 +363,16 @@ function searchLocation() {
     // 주소 검색 객체
     var geocoder = new kakao.maps.services.Geocoder();
 
-    // 장소명 검색 객체
+    // 장소명(키워드) 검색 객체
     var places = new kakao.maps.services.Places();
 
     /* ---------------------------------------------------------
        [1차] 주소 검색
-       - 예: 광주광역시 동구, 북구, 금남로 등
+       - 예: 광산구, 북구, 동구, 광주광역시 동구, 금남로 등
        --------------------------------------------------------- */
     geocoder.addressSearch(input, function(result, status) {
 
-        // 주소 검색 성공 시 지도 이동
+        // 주소 검색 성공 시
         if (status === kakao.maps.services.Status.OK && result.length > 0) {
             var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
             map.setCenter(coords);
@@ -385,9 +382,11 @@ function searchLocation() {
 
         /* -----------------------------------------------------
            [2차] 키워드(장소명) 검색
-           - 예: 문화전당역, 금남로5가역, 전남대병원
+           - 예: 문화전당역, 금남로5가역, 전남대병원, 아시아문화전당
            ----------------------------------------------------- */
         places.keywordSearch(input, function(data, status) {
+
+            // 키워드 검색 성공 시
             if (status === kakao.maps.services.Status.OK && data.length > 0) {
                 var coords = new kakao.maps.LatLng(data[0].y, data[0].x);
                 map.setCenter(coords);

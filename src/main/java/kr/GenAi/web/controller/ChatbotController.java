@@ -31,7 +31,7 @@ public class ChatbotController {
             // 파이썬 담당 팀원에게 "http://localhost:8000/api/chatbot 으로 
             // {"question": "질문"} 형태의 POST 요청을 보낼게!" 라고 알려주시면 됩니다.
             // ==========================================================
-            String fastapiUrl = "http://localhost:8000/api/chatbot";
+            String fastapiUrl = "http://10.1.2.7:8000/api/chatbot";
             RestTemplate restTemplate = new RestTemplate();
             
             // 파이썬으로 보낼 데이터 포장
