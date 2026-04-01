@@ -1,11 +1,6 @@
 @charset "UTF-8";
 
-/* =========================================================
-   [1] 전체 기본 설정
-   - 여백 초기화
-   - 박스 크기 계산 통일
-   - 기본 폰트 지정
-   ========================================================= */
+/* 기본 설정 */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -14,53 +9,54 @@
 }
 
 /* =========================================================
-   [2] html, body 기본 설정
-   - 전체 화면 높이 사용
-   - 페이지 스크롤 방지
+   [1] 페이지 전체 스크롤 가능하게 변경
+   - overflow:hidden 제거
+   - 스크롤바는 숨기되 스크롤은 가능
    ========================================================= */
 html, body {
     width: 100%;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    -ms-overflow-style: none;   /* IE, Edge */
+    scrollbar-width: none;      /* Firefox */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;              /* Chrome, Safari */
 }
 
 /* =========================================================
-   [3] 앱 전체 컨테이너
-   - 모바일 화면처럼 최대 폭 제한
-   - 세로 flex 배치
-   - 하단 nav 높이만큼 여백 확보
+   [2] 앱 컨테이너
+   - 높이 100vh 고정 제거
+   - 세로로 자연스럽게 늘어나게 변경
    ========================================================= */
 .app-container {
     position: relative;
     width: 100%;
     max-width: 500px;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+    min-height: 100vh;
     background: #F1FFEA;
     margin: 0 auto;
-    overflow: hidden;
-    padding-bottom: 60px;
+    padding-bottom: 60px; /* 하단 nav 공간 */
+    overflow-x: hidden;
 }
 
 /* =========================================================
-   [4] 본문(main) 영역
-   - header 아래, nav 위 공간
+   [3] main도 고정 flex 해제
    ========================================================= */
 main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
+    display: block;
 }
 
 /* =========================================================
-   [5] 검색 + 카테고리 영역
+   [4] 검색/카테고리 영역
    ========================================================= */
 .search-section {
-    padding: 10px 20px;
+    padding: 10px 20px 16px;
     background-color: #F1FFEA;
-    flex-shrink: 0;
 }
 
 /* 페이지 제목 */
@@ -71,17 +67,13 @@ main {
     color: #496D36;
 }
 
-/* =========================================================
-   [6] 검색창 영역
-   - input + 버튼 가로 정렬
-   ========================================================= */
+/* 검색창 */
 .search-bar {
     display: flex;
     gap: 8px;
     margin-bottom: 15px;
 }
 
-/* 검색 입력창 */
 .search-bar input {
     flex: 1;
     height: 40px;
@@ -92,7 +84,6 @@ main {
     background: white url('https://img.icons8.com/material-outlined/24/3498db/search--v1.png') no-repeat 10px center / 18px;
 }
 
-/* 검색 버튼 */
 .search-btn {
     width: 60px;
     background-color: #A0CD88;
@@ -103,31 +94,23 @@ main {
     cursor: pointer;
 }
 
-/* =========================================================
-   [7] 카테고리 슬라이더 전체 영역
-   - 아이콘 버튼 + 오른쪽 화살표
-   ========================================================= */
+/* 카테고리 */
 .category-wrapper {
     display: flex;
     align-items: center;
     gap: 5px;
 }
 
-/* 슬라이더가 보이는 영역만 잘라서 표시 */
 .category-viewport {
     flex: 1;
     overflow: hidden;
 }
 
-/* 슬라이더 전체 줄
-   - 페이지가 2개라 width를 200%로 설정
-   */
 .category-slider {
     display: flex;
     width: 200%;
 }
 
-/* 슬라이더 한 페이지 */
 .category-page {
     width: 50%;
     display: flex;
@@ -135,7 +118,6 @@ main {
     padding: 5px 2px;
 }
 
-/* 카테고리 1개 단위 */
 .category-item {
     width: 23%;
     display: flex;
@@ -145,7 +127,6 @@ main {
     cursor: pointer;
 }
 
-/* 카테고리 설명 글씨 */
 .category-item span {
     font-size: 11px;
     font-weight: 700;
@@ -154,10 +135,6 @@ main {
     line-height: 1.25;
 }
 
-/* =========================================================
-   [8] 원형 아이콘 버튼 스타일
-   - 공통 크기 / 정렬 / 그림자
-   ========================================================= */
 .icon-circle {
     width: 50px;
     height: 50px;
@@ -171,14 +148,12 @@ main {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* 아이콘 이미지 크기 */
 .icon-circle img {
     width: 22px;
     height: 22px;
     object-fit: contain;
 }
 
-/* 버튼 누르는 순간 효과 */
 .category-item:active .icon-circle {
     transform: scale(0.96);
     box-shadow:
@@ -186,14 +161,12 @@ main {
         0 1px 2px rgba(0, 0, 0, 0.10);
 }
 
-/* 선택된 버튼 강조 */
 .category-item.active .icon-circle {
     box-shadow:
         0 10px 20px rgba(0, 0, 0, 0.35),
         0 6px 10px rgba(0, 0, 0, 0.25);
 }
 
-/* ALL 버튼 전용 스타일 */
 .icon-circle.all {
     font-weight: 400;
     font-size: 15px;
@@ -201,27 +174,25 @@ main {
 }
 
 /* =========================================================
-   [9] 지도 영역
-   - 남은 공간 전체 사용
+   [5] 지도 영역
+   - 검색영역 아래에 크게 배치
+   - 스크롤 내리면 자연스럽게 지도 보이게
    ========================================================= */
 .map-area {
-    flex: 1;
     position: relative;
+    width: 100%;
+    margin-top: 8px;
     background-color: #f2f2f2;
-    min-height: 0;
 }
 
-/* 카카오맵 div */
+/* 지도 높이를 크게 줘서 아래로 내리며 볼 수 있게 */
 #map {
     width: 100%;
-    height: 100%;
+    height: 70vh;
+    min-height: 500px;
 }
 
-/* =========================================================
-   [10] 지도 위 필터 버튼 영역
-   - 현 위치 버튼 + 지역 select
-   - 지도 위에 absolute로 배치
-   ========================================================= */
+/* 지도 위 필터 */
 .map-filters {
     position: absolute;
     top: 10px;
@@ -231,7 +202,6 @@ main {
     gap: 5px;
 }
 
-/* 지도 위 버튼 / select 공통 */
 .map-filters select,
 .current-loc-btn {
     padding: 5px 12px;
@@ -243,7 +213,6 @@ main {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* 현 위치 버튼 전용 */
 .current-loc-btn {
     background: #4CAF50;
     color: white;
