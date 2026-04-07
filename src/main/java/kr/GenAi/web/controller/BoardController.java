@@ -179,43 +179,41 @@ public class BoardController {
 		return "write";
 	}
 
-	/* ========================================================= */
 	/* [5] 게시글 삭제 */
 	/* - 로그인한 사용자만 가능 */
 	/* - 본인 글일 때만 삭제 가능 */
 	/* - 게시글 삭제 전 댓글 전체 먼저 삭제 */
-	/* ========================================================= */
 	@PostMapping("/post/delete")
 	public String deletePost(@RequestParam("boardId") Integer boardId, HttpSession session) {
 
-		// 1. 로그인 사용자 확인
-		User loginMem = (User) session.getAttribute("loginMem");
+	    // 1. 로그인 사용자 확인
+	    User loginMem = (User) session.getAttribute("loginMem");
 
-		if (loginMem == null) {
-			return "redirect:/login";
-		}
+	    if (loginMem == null) {
+	        return "redirect:/login";
+	    }
 
-		// 2. 삭제할 게시글 조회
-		Community post = repository.findById(boardId).orElse(null);
+	    // 2. 삭제할 게시글 조회
+	    Community post = repository.findById(boardId).orElse(null);
 
-		// 게시글이 없으면 목록으로 이동
-		if (post == null) {
-			return "redirect:/board";
-		}
+	    // 게시글이 없으면 목록으로 이동
+	    if (post == null) {
+	        return "redirect:/board";
+	    }
 
-		// 3. 본인 글인지 확인
-		if (post.getUser() == null || !post.getUser().getUserCode().equals(loginMem.getUserCode())) {
-			return "redirect:/post/" + boardId;
-		}
+	    // 3. 본인 글인지 확인
+	    if (post.getUser() == null || !post.getUser().getUserCode().equals(loginMem.getUserCode())) {
+	        return "redirect:/post/" + boardId;
+	    }
 
-		// 4. 댓글 먼저 삭제
-		// FK 제약 때문에 댓글이 남아 있으면 게시글 삭제가 안 될 수 있음
-		commentRepository.deleteByCommunity_BoardIdx(boardId);
+	    // 4. 댓글 먼저 삭제
+	    // FK 제약 때문에 댓글이 남아 있으면 게시글 삭제가 안 될 수 있음
+	    commentRepository.deleteByCommunity_BoardIdx(boardId);
 
-		// 5. 게시글 삭제
-		repository.delete(post);
+	    // 5. 게시글 삭제
+	    repository.delete(post);
 
-		// 6. 게시판 목록으로 이동
-		return "redirect:/board";
+	    // 6. 게시판 목록으로 이동
+	    return "redirect:/board";
 	}
 }
