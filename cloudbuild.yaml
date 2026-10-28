@@ -1,6 +1,6 @@
 steps:
   - name: 'maven:3.8.5-openjdk-17'
-    args: ['clean', 'package', '-DskipTests']
+    args: ['mvn', 'clean', 'package', '-DskipTests']
 
 options:
   logging: CLOUD_LOGGING_ONLY
